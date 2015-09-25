@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E45D08E-C8F5-4377-8312-92E66DF09589}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SnowplowTracker</RootNamespace>
+    <AssemblyName>SnowplowTracker</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>0.1.0</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Mono.Data.SqliteClient">
+      <HintPath>..\..\Resources\Assets\Plugins\Mono.Data.SqliteClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>..\..\Assets\Plugins\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web">
+      <HintPath>..\..\Assets\Plugins\System.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Resources\Assets\Plugins\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Tracker.cs" />
+    <Compile Include="Version.cs" />
+    <Compile Include="Enums\DevicePlatforms.cs" />
+    <Compile Include="Enums\HttpMethod.cs" />
+    <Compile Include="Enums\HttpProtocol.cs" />
+    <Compile Include="Events\PageView.cs" />
+    <Compile Include="Requests\RequestResult.cs" />
+    <Compile Include="Storage\EventRow.cs" />
+    <Compile Include="Storage\EventStore.cs" />
+    <Compile Include="Requests\ReadyRequest.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Events\IEvent.cs" />
+    <Compile Include="Events\Structured.cs" />
+    <Compile Include="Events\Unstructured.cs" />
+    <Compile Include="Events\Timing.cs" />
+    <Compile Include="Events\ScreenView.cs" />
+    <Compile Include="Events\EcommerceTransaction.cs" />
+    <Compile Include="Events\EcommerceTransactionItem.cs" />
+    <Compile Include="Subject.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Events\AbstractEvent.cs" />
+    <Compile Include="Payloads\SelfDescribingJson.cs" />
+    <Compile Include="Payloads\TrackerPayload.cs" />
+    <Compile Include="Payloads\IPayload.cs" />
+    <Compile Include="Payloads\Contexts\AbstractContext.cs" />
+    <Compile Include="Payloads\Contexts\IContext.cs" />
+    <Compile Include="Payloads\AbstractPayload.cs" />
+    <Compile Include="Enums\NetworkType.cs" />
+    <Compile Include="Enums\StorageMechanism.cs" />
+    <Compile Include="Payloads\Contexts\MobileContext.cs" />
+    <Compile Include="Payloads\Contexts\SessionContext.cs" />
+    <Compile Include="Payloads\Contexts\GeoLocationContext.cs" />
+    <Compile Include="Payloads\Contexts\DesktopContext.cs" />
+    <Compile Include="Payloads\Contexts\GenericContext.cs" />
+    <Compile Include="Collections\ConcurrentQueue.cs" />
+    <Compile Include="Emitters\IEmitter.cs" />
+    <Compile Include="Emitters\AsyncEmitter.cs" />
+    <Compile Include="Emitters\AbstractEmitter.cs" />
+    <Compile Include="Emitters\SyncEmitter.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\UnityHTTP\UnityHTTP.csproj">
+      <Project>{3AF92E7F-BCA5-45DC-9D9C-BE1FDBB4B30A}</Project>
+      <Name>UnityHTTP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UnityJSON\UnityJSON.csproj">
+      <Project>{FC6AC074-5825-4DFF-B10D-1C7B2BD2A35A}</Project>
+      <Name>UnityJSON</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Collections\" />
+    <Folder Include="Emitters\" />
+  </ItemGroup>
+</Project>
