@@ -182,8 +182,14 @@ namespace SnowplowTracker.Emitters {
 							failure += result.rowIds.Count;
 						}
 					}
-					
-					eventStore.DeleteEvents(eventsToDelete);
+					if (emitLock != null)
+		    			{
+						lock (emitLock)
+						{
+					    		eventStore.DeleteEvents(eventsToDelete);
+					    		Monitor.Pulse(emitLock);
+						}
+				    	}
 					
 					Log.Debug ("Emitter: event sending results.");
 					Log.Debug (" + Successful: " + success);
