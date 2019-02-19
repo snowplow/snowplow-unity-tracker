@@ -161,9 +161,15 @@ namespace SnowplowTracker.Emitters {
 					Log.Debug ("Emitter: EmitLoop shutting down...");
 					break;
 				}
+				List<EventRow> events = new List<EventRow>();
 
+				if (emitLock != null) {
+				    lock (emitLock) {
+					events = eventStore.GetDescEventRange (sendLimit);
+					Monitor.Pulse(emitLock);
+				    }
+				}
 				// Send events!
-				List<EventRow> events = eventStore.GetDescEventRange (sendLimit);
 				if (events.Count != 0) {
 					Log.Debug ("Emitter: Event count: " + events.Count);
 					List<RequestResult> results = SendRequests (events);
@@ -182,8 +188,12 @@ namespace SnowplowTracker.Emitters {
 							failure += result.rowIds.Count;
 						}
 					}
-					
-					eventStore.DeleteEvents(eventsToDelete);
+					if (emitLock != null) {
+						lock (emitLock) {
+					    		eventStore.DeleteEvents(eventsToDelete);
+					    		Monitor.Pulse(emitLock);
+						}
+				    	}
 					
 					Log.Debug ("Emitter: event sending results.");
 					Log.Debug (" + Successful: " + success);
