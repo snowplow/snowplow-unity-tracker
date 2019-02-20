@@ -163,7 +163,6 @@ namespace SnowplowTracker.Emitters {
 				}
 				List<EventRow> events = new List<EventRow>();
 
-				// Send events!
 				if (emitLock != null)
 				{
 				    lock (emitLock)
@@ -173,7 +172,6 @@ namespace SnowplowTracker.Emitters {
 				    }
 				}
 				// Send events!
-				List<EventRow> events = eventStore.GetDescEventRange (sendLimit);
 				if (events.Count != 0) {
 					Log.Debug ("Emitter: Event count: " + events.Count);
 					List<RequestResult> results = SendRequests (events);
