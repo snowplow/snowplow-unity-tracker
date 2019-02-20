@@ -161,7 +161,17 @@ namespace SnowplowTracker.Emitters {
 					Log.Debug ("Emitter: EmitLoop shutting down...");
 					break;
 				}
+				List<EventRow> events = new List<EventRow>();
 
+				// Send events!
+				if (emitLock != null)
+				{
+				    lock (emitLock)
+				    {
+					events = eventStore.GetDescEventRange (sendLimit);
+					Monitor.Pulse(emitLock);
+				    }
+				}
 				// Send events!
 				List<EventRow> events = eventStore.GetDescEventRange (sendLimit);
 				if (events.Count != 0) {
