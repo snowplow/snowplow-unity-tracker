@@ -163,10 +163,8 @@ namespace SnowplowTracker.Emitters {
 				}
 				List<EventRow> events = new List<EventRow>();
 
-				if (emitLock != null)
-				{
-				    lock (emitLock)
-				    {
+				if (emitLock != null) {
+				    lock (emitLock) {
 					events = eventStore.GetDescEventRange (sendLimit);
 					Monitor.Pulse(emitLock);
 				    }
@@ -190,10 +188,8 @@ namespace SnowplowTracker.Emitters {
 							failure += result.rowIds.Count;
 						}
 					}
-					if (emitLock != null)
-		    			{
-						lock (emitLock)
-						{
+					if (emitLock != null) {
+						lock (emitLock) {
 					    		eventStore.DeleteEvents(eventsToDelete);
 					    		Monitor.Pulse(emitLock);
 						}
