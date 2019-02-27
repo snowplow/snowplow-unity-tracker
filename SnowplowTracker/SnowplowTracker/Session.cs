@@ -44,19 +44,21 @@ namespace SnowplowTracker {
 		private int sessionIndex;
 		private StorageMechanism sessionStorage = StorageMechanism.Sqlite;
 		private Timer sessionCheckTimer;
+        private string SessionPath;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SnowplowTracker.Session"/> class.
-		/// </summary>
-		/// <param name="foregroundTimeout">Foreground timeout.</param>
-		/// <param name="backgroundTimeout">Background timeout.</param>
-		/// <param name="checkInterval">Check interval.</param>
-		public Session (long foregroundTimeout = 600, long backgroundTimeout = 300, long checkInterval = 15) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Session"/> class.
+        /// </summary>
+        /// <param name="foregroundTimeout">Foreground timeout.</param>
+        /// <param name="backgroundTimeout">Background timeout.</param>
+        /// <param name="checkInterval">Check interval.</param>
+        public Session (string sessionPath, long foregroundTimeout = 600, long backgroundTimeout = 300, long checkInterval = 15) {
 			this.foregroundTimeout = foregroundTimeout * 1000;
 			this.backgroundTimeout = backgroundTimeout * 1000;
 			this.checkInterval = checkInterval;
 
-			Dictionary<string, object> maybeSessionDict = Utils.ReadDictionaryFromFile (SESSION_SAVE_PATH);
+            SessionPath = sessionPath;
+            Dictionary<string, object> maybeSessionDict = Utils.ReadDictionaryFromFile (SESSION_SAVE_PATH);
 			if (maybeSessionDict == null) {
 				this.userId = Utils.GetGUID();
 				this.currentSessionId = null;
@@ -83,7 +85,7 @@ namespace SnowplowTracker {
 			UpdateSession ();
 			UpdateAccessedLast ();
 			UpdateSessionDict ();
-			Utils.WriteDictionaryToFile(SESSION_SAVE_PATH, sessionContext.GetData());
+			Utils.WriteDictionaryToFile(SessionPath, sessionContext.GetData());
 		}
 
 		// --- Public
