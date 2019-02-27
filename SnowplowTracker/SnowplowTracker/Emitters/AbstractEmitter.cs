@@ -104,22 +104,29 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="eventRows">Event rows.</param>
 		protected int HttpGet(List<EventRow> eventRows, ConcurrentQueue<RequestResult> resultQueue) {
 			int count = eventRows.Count;
-			
-			// Send each row as an individual GET Request
-			foreach (EventRow eRow in eventRows) {
-				TrackerPayload payload = eRow.GetPayload ();
-				long byteSize = payload.GetByteSize () + POST_STM_BYTES;
-				bool oversize = byteSize > byteLimitGet;
-				Log.Debug ("Emitter: Sending GET with byte-size: " + byteSize);
-				new ReadyRequest(
-					GetGETRequest(payload.GetDictionary ()), 
-					new List<int>{eRow.GetRowId ()}, 
-				oversize, 
-				resultQueue
-				).Send();
-			}
-			
-			return count;
+            try
+            {
+                // Send each row as an individual GET Request
+                foreach (EventRow eRow in eventRows)
+                {
+                    TrackerPayload payload = eRow.GetPayload();
+                    long byteSize = payload.GetByteSize() + POST_STM_BYTES;
+                    bool oversize = byteSize > byteLimitGet;
+                    Log.Debug("Emitter: Sending GET with byte-size: " + byteSize);
+                    new ReadyRequest(
+                        GetGETRequest(payload.GetDictionary()),
+                        new List<int> { eRow.GetRowId() },
+                    oversize,
+                    resultQueue
+                    ).Send();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("Emitter: caught exception in HTTPGet request: " + e.Message);
+                Log.Debug("Emitter: HTTPGet exception trace: " + e.StackTrace);
+            }
+            return count;
 		}
 		
 		/// <summary>
@@ -133,44 +140,58 @@ namespace SnowplowTracker.Emitters {
 			List<int> rowIds = new List<int>();
 			List<Dictionary<string, object>> payloadDicts = new List<Dictionary<string, object>>();
 			long totalByteSize = 0;
-			
-			for (int i = 0; i < eventRows.Count; i++) {
-				TrackerPayload payload = eventRows [i].GetPayload ();
-				long payloadByteSize = payload.GetByteSize () + POST_STM_BYTES;
-				
-				if ((payloadByteSize + POST_WRAPPER_BYTES) > byteLimitPost) {
-					// A single Payload has exceeded the Byte Limit
-					Log.Debug ("Emitter: Single event exceeds byte limit: " + (payloadByteSize + POST_WRAPPER_BYTES) + " is > " + byteLimitPost);
-					Log.Debug ("Sending POST with byte-size: " + (payloadByteSize + POST_WRAPPER_BYTES));
-					List<Dictionary<string, object>> singlePayloadPost = new List<Dictionary<string, object>> { payload.GetDictionary() };
-					List<int> singlePayloadId = new List<int> { eventRows[i].GetRowId() };
-					new ReadyRequest(GetPOSTRequest(singlePayloadPost), singlePayloadId, true, resultQueue).Send();
-					count++;
-				} else if ((totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) > byteLimitPost) {
-					Log.Debug ("Emitter: Byte limit reached: " + (totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) + 
-					           " is > " + byteLimitPost);
-					Log.Debug ("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
-					new ReadyRequest(GetPOSTRequest(payloadDicts), rowIds, false, resultQueue).Send();
-					count++;
-					
-					// Reset collections
-					payloadDicts = new List<Dictionary<string, object>> { payload.GetDictionary() };
-					rowIds = new List<int> { eventRows[i].GetRowId() };
-					totalByteSize = payloadByteSize;
-				} else {
-					payloadDicts.Add (payload.GetDictionary ());
-					rowIds.Add (eventRows [i].GetRowId ());
-					totalByteSize += payloadByteSize;
-				}
-			}
-			
-			if (payloadDicts.Count > 0) {
-				Log.Debug ("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
-				new ReadyRequest(GetPOSTRequest(payloadDicts), rowIds, false, resultQueue).Send();
-				count++;
-			}
-			
-			return count;
+            try
+            {
+
+                for (int i = 0; i < eventRows.Count; i++)
+                {
+                    TrackerPayload payload = eventRows[i].GetPayload();
+                    long payloadByteSize = payload.GetByteSize() + POST_STM_BYTES;
+
+                    if ((payloadByteSize + POST_WRAPPER_BYTES) > byteLimitPost)
+                    {
+                        // A single Payload has exceeded the Byte Limit
+                        Log.Debug("Emitter: Single event exceeds byte limit: " + (payloadByteSize + POST_WRAPPER_BYTES) + " is > " + byteLimitPost);
+                        Log.Debug("Sending POST with byte-size: " + (payloadByteSize + POST_WRAPPER_BYTES));
+                        List<Dictionary<string, object>> singlePayloadPost = new List<Dictionary<string, object>> { payload.GetDictionary() };
+                        List<int> singlePayloadId = new List<int> { eventRows[i].GetRowId() };
+                        new ReadyRequest(GetPOSTRequest(singlePayloadPost), singlePayloadId, true, resultQueue).Send();
+                        count++;
+                    }
+                    else if ((totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) > byteLimitPost)
+                    {
+                        Log.Debug("Emitter: Byte limit reached: " + (totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) +
+                                   " is > " + byteLimitPost);
+                        Log.Debug("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
+                        new ReadyRequest(GetPOSTRequest(payloadDicts), rowIds, false, resultQueue).Send();
+                        count++;
+
+                        // Reset collections
+                        payloadDicts = new List<Dictionary<string, object>> { payload.GetDictionary() };
+                        rowIds = new List<int> { eventRows[i].GetRowId() };
+                        totalByteSize = payloadByteSize;
+                    }
+                    else
+                    {
+                        payloadDicts.Add(payload.GetDictionary());
+                        rowIds.Add(eventRows[i].GetRowId());
+                        totalByteSize += payloadByteSize;
+                    }
+                }
+
+                if (payloadDicts.Count > 0)
+                {
+                    Log.Debug("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
+                    new ReadyRequest(GetPOSTRequest(payloadDicts), rowIds, false, resultQueue).Send();
+                    count++;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("Emitter: caught exception in HTTPPost request: " + e.Message);
+                Log.Debug("Emitter: HTTPPost exception trace: " + e.StackTrace);
+            }
+            return count;
 		}
 
 		// --- Helpers
