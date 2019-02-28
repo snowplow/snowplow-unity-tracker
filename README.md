@@ -67,7 +67,7 @@ Tested Platforms:
 
 ## Copyright and license
 
-The Snowplow Unity Tracker is copyright 2015 Snowplow Analytics Ltd.
+The Snowplow Unity Tracker is copyright 2015-2019 Snowplow Analytics Ltd.
 
 Licensed under the **[Apache License, Version 2.0] [license]** (the "License");
 you may not use this software except in compliance with the License.
@@ -85,7 +85,7 @@ limitations under the License.
 [vagrant-install]: http://docs.vagrantup.com/v2/installation/index.html
 [virtualbox-install]: https://www.virtualbox.org/wiki/Downloads
 
-[release-image]: http://img.shields.io/badge/release-0.1.0-blue.svg?style=flat
+[release-image]: http://img.shields.io/badge/release-0.2.0-blue.svg?style=flat
 [releases]: https://github.com/snowplow/snowplow-unity-tracker/releases
 
 [license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat

@@ -9,4 +9,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Snowplow Analytics Ltd")]
 [assembly: AssemblyTrademark("Apache 2.0")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.1.0")]
+[assembly: AssemblyVersion("0.2.0")]
