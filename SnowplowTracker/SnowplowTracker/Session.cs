@@ -44,7 +44,6 @@ namespace SnowplowTracker {
 		private int sessionIndex;
 		private StorageMechanism sessionStorage = StorageMechanism.Sqlite;
 		private Timer sessionCheckTimer;
-        private string SessionPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SnowplowTracker.Session"/> class.
@@ -57,7 +56,7 @@ namespace SnowplowTracker {
 			this.backgroundTimeout = backgroundTimeout * 1000;
 			this.checkInterval = checkInterval;
 
-            SessionPath = sessionPath;
+            SESSION_SAVE_PATH = sessionPath;
             Dictionary<string, object> maybeSessionDict = Utils.ReadDictionaryFromFile (SESSION_SAVE_PATH);
 			if (maybeSessionDict == null) {
 				this.userId = Utils.GetGUID();
@@ -85,7 +84,7 @@ namespace SnowplowTracker {
 			UpdateSession ();
 			UpdateAccessedLast ();
 			UpdateSessionDict ();
-			Utils.WriteDictionaryToFile(SessionPath, sessionContext.GetData());
+			Utils.WriteDictionaryToFile(SESSION_SAVE_PATH, sessionContext.GetData());
 		}
 
 		// --- Public

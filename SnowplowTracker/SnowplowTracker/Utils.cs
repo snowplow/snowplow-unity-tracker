@@ -159,7 +159,7 @@ namespace SnowplowTracker {
 				File.WriteAllBytes (path, SerializeDictionary (dictionary));
 				return true;
 			} catch (Exception e) {
-				Log.Error("Utils: Error writing dictionary to file: " + e.StackTrace);
+				Log.Error("Utils: Error writing dictionary to file error: " + e.Message + " | trace: " + e.StackTrace);
 				return false;
 			}
 		}
@@ -174,7 +174,7 @@ namespace SnowplowTracker {
 				byte[] bytes = File.ReadAllBytes (path);
 				return DeserializeDictionary (bytes);
 			} catch (Exception e) {
-				Log.Error("Utils: Error reading dictionary from file: " + e.StackTrace);
+				Log.Error("Utils: Error reading dictionary from file error: " + e.Message + " | trace: " + e.StackTrace);
 				return null;
 			}
 		}
