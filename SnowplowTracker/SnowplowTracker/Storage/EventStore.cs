@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using Mono.Data.SqliteClient;
 using SnowplowTracker.Payloads;
+using UnityEngine;
 
 namespace SnowplowTracker.Storage
 {
@@ -32,7 +33,7 @@ namespace SnowplowTracker.Storage
     {
 
         // Database Details
-        private static string DATABASE_NAME = "URI=file:snowplow_events.db";
+        private static string DATABASE_NAME;
         private static readonly string TABLE_NAME = "events";
         private static readonly string COLUMN_ID = "id";
         private static readonly string COLUMN_EVENT_DATA = "eventData";
@@ -56,6 +57,10 @@ namespace SnowplowTracker.Storage
         /// </summary>
         public EventStore()
         {
+            if (DATABASE_NAME == null)
+            {
+                DATABASE_NAME = "URI=file:"+Application.persistentDataPath+"/snowplow_events.db";
+            }
             Open();
         }
 

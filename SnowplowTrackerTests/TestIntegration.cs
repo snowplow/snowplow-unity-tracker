@@ -81,7 +81,7 @@ namespace SnowplowTrackerTests {
 		}
 
 		private SnowplowTracker.Session GetSession() {
-			return new SnowplowTracker.Session ();
+			return new SnowplowTracker.Session(null);
 		}
 
 		private List<IContext> GetContextList() {
