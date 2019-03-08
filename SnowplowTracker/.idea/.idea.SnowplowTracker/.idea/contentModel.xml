@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="SnowplowTracker" t="IncludeRecursive">
+        <e p="AssemblyInfo.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Collections" t="Include">
+          <e p="ConcurrentQueue.cs" t="Include" />
+        </e>
+        <e p="Constants.cs" t="Include" />
+        <e p="Emitters" t="Include">
+          <e p="AbstractEmitter.cs" t="Include" />
+          <e p="AsyncEmitter.cs" t="Include" />
+          <e p="IEmitter.cs" t="Include" />
+          <e p="SyncEmitter.cs" t="Include" />
+        </e>
+        <e p="Enums" t="Include">
+          <e p="DevicePlatforms.cs" t="Include" />
+          <e p="HttpMethod.cs" t="Include" />
+          <e p="HttpProtocol.cs" t="Include" />
+          <e p="NetworkType.cs" t="Include" />
+          <e p="StorageMechanism.cs" t="Include" />
+        </e>
+        <e p="Events" t="Include">
+          <e p="AbstractEvent.cs" t="Include" />
+          <e p="EcommerceTransaction.cs" t="Include" />
+          <e p="EcommerceTransactionItem.cs" t="Include" />
+          <e p="IEvent.cs" t="Include" />
+          <e p="PageView.cs" t="Include" />
+          <e p="ScreenView.cs" t="Include" />
+          <e p="Structured.cs" t="Include" />
+          <e p="Timing.cs" t="Include" />
+          <e p="Unstructured.cs" t="Include" />
+        </e>
+        <e p="Log.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="Payloads" t="Include">
+          <e p="AbstractPayload.cs" t="Include" />
+          <e p="Contexts" t="Include">
+            <e p="AbstractContext.cs" t="Include" />
+            <e p="DesktopContext.cs" t="Include" />
+            <e p="GenericContext.cs" t="Include" />
+            <e p="GeoLocationContext.cs" t="Include" />
+            <e p="IContext.cs" t="Include" />
+            <e p="MobileContext.cs" t="Include" />
+            <e p="SessionContext.cs" t="Include" />
+          </e>
+          <e p="IPayload.cs" t="Include" />
+          <e p="SelfDescribingJson.cs" t="Include" />
+          <e p="TrackerPayload.cs" t="Include" />
+        </e>
+        <e p="Requests" t="Include">
+          <e p="ReadyRequest.cs" t="Include" />
+          <e p="RequestResult.cs" t="Include" />
+        </e>
+        <e p="Session.cs" t="Include" />
+        <e p="SnowplowTracker.csproj" t="IncludeRecursive" />
+        <e p="Storage" t="Include">
+          <e p="EventRow.cs" t="Include" />
+          <e p="EventStore.cs" t="Include" />
+        </e>
+        <e p="Subject.cs" t="Include" />
+        <e p="Tracker.cs" t="Include" />
+        <e p="Utils.cs" t="Include" />
+        <e p="Version.cs" t="Include" />
+      </e>
+      <e p="SnowplowTracker.sln" t="IncludeFlat" />
+    </e>
+    <e p="$PROJECT_DIR$/../SnowplowTrackerTests" t="IncludeRecursive">
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="Events" t="Include">
+        <e p="TestEcommerceTransaction.cs" t="Include" />
+        <e p="TestEcommerceTransactionItem.cs" t="Include" />
+        <e p="TestPageView.cs" t="Include" />
+        <e p="TestScreenView.cs" t="Include" />
+        <e p="TestStructured.cs" t="Include" />
+        <e p="TestTiming.cs" t="Include" />
+        <e p="TestUnstructured.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Payloads" t="Include">
+        <e p="Contexts" t="Include">
+          <e p="TestDesktopContext.cs" t="Include" />
+          <e p="TestGenericContext.cs" t="Include" />
+          <e p="TestGeoLocationContext.cs" t="Include" />
+          <e p="TestMobileContext.cs" t="Include" />
+          <e p="TestSessionContext.cs" t="Include" />
+        </e>
+        <e p="TestSelfDescribingJson.cs" t="Include" />
+        <e p="TestTrackerPayload.cs" t="Include" />
+      </e>
+      <e p="SnowplowTrackerTests.csproj" t="IncludeRecursive" />
+      <e p="Storage" t="Include">
+        <e p="TestEventStore.cs" t="Include" />
+      </e>
+      <e p="TestEmitter.cs" t="Include" />
+      <e p="TestHelpers" t="Include">
+        <e p="BaseEmitter.cs" t="Include" />
+      </e>
+      <e p="TestIntegration.cs" t="Include" />
+      <e p="TestSession.cs" t="Include" />
+      <e p="TestSubject.cs" t="Include" />
+      <e p="TestTracker.cs" t="Include" />
+      <e p="TestUtils.cs" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$/../UnityHTTP" t="IncludeRecursive">
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="Cache" t="Include">
+        <e p="DiskCache.cs" t="Include" />
+        <e p="DiskCacheOperation.cs" t="Include" />
+      </e>
+      <e p="Enums" t="Include">
+        <e p="RequestState.cs" t="Include" />
+        <e p="RequestType.cs" t="Include" />
+      </e>
+      <e p="Exceptions" t="Include">
+        <e p="HTTPException.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Request.cs" t="Include" />
+      <e p="Response.cs" t="Include" />
+      <e p="UnityHTTP.csproj" t="IncludeRecursive" />
+    </e>
+    <e p="$PROJECT_DIR$/../UnityJSON" t="IncludeRecursive">
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="JSON.cs" t="Include" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="UnityJSON.csproj" t="IncludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/resharper-host/local/Transient/ReSharperHost/v183/SolutionCaches/_SnowplowTracker.882542772.00" t="ExcludeRecursive" />
+  </component>
+</project>

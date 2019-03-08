@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7dbb2b7f-51ba-4969-a2b1-46647ed7c416" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../SnowplowTrackerTests/SnowplowTrackerTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../SnowplowTrackerTests/SnowplowTrackerTests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SnowplowTrackerTests/TestEmitter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SnowplowTrackerTests/TestEmitter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SnowplowTrackerTests/TestIntegration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SnowplowTrackerTests/TestIntegration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SnowplowTrackerTests/TestSession.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SnowplowTrackerTests/TestSession.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SnowplowTrackerTests/TestTracker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SnowplowTrackerTests/TestTracker.cs" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestEmitter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestSession.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestIntegration.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestTracker.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/../SnowplowTrackerTests/TestEmitter.cs" />
+        <option value="$PROJECT_DIR$/../SnowplowTrackerTests/TestIntegration.cs" />
+        <option value="$PROJECT_DIR$/../SnowplowTrackerTests/TestTracker.cs" />
+        <option value="$PROJECT_DIR$/../SnowplowTrackerTests/TestSession.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-127" />
+    <option name="y" value="-1057" />
+    <option name="width" value="1920" />
+    <option name="height" value="1057" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="SnowplowTracker" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="SnowplowTracker" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="SnowplowTracker" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="SnowplowTracker" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="SnowplowTrackerTests" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="SnowplowTracker" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="SnowplowTrackerTests" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="References" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-all-files" value="false" />
+      </pane>
+      <pane id="FileSystemExplorer" />
+      <pane id="AssemblyExplorer" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/NUnit/bin/net40/nunit.framework.dll" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7dbb2b7f-51ba-4969-a2b1-46647ed7c416" name="Default Changelist" comment="" />
+      <created>1552034191058</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552034191058</updated>
+      <workItem from="1552034192263" duration="497000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="497000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-127" y="-1057" width="1920" height="1057" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Capture Tool" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973376" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="NuGet" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Unit Tests" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Build" visible="true" weight="0.32953367" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Errors In Solution" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestEmitter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="49" column="31" lean-forward="true" selection-start-line="49" selection-start-column="31" selection-end-line="49" selection-end-column="31" />
+          <folding>
+            <marker date="1552034835586" expanded="true" signature="0:872" ph="/* TestEmitter.cs ... */" />
+            <marker date="1552034835586" expanded="false" signature="880:1028" ph="..." />
+            <marker date="1552034835586" expanded="true" signature="1061:3110" ph="{...}" />
+            <marker date="1552034835586" expanded="true" signature="1108:3108" ph="{...}" />
+            <marker date="1552034835586" expanded="true" signature="1162:1740" ph="{...}" />
+            <marker date="1552034835586" expanded="true" signature="1800:2052" ph="{...}" />
+            <marker date="1552034835586" expanded="true" signature="1832:1929" ph="{...}" />
+            <marker date="1552034835586" expanded="true" signature="1950:2025" ph="{...}" />
+            <marker date="1552034835586" expanded="true" signature="2111:3105" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestTracker.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="60" column="16" lean-forward="true" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
+          <folding>
+            <marker date="1552034893346" expanded="true" signature="0:872" ph="/* TestTracker.cs ... */" />
+            <marker date="1552034893346" expanded="true" signature="880:1130" ph="..." />
+            <marker date="1552034893346" expanded="true" signature="1163:4855" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="1209:4853" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="1263:1768" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="1823:2021" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="1853:1911" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="1932:1997" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="2078:3519" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="3570:4850" ph="{...}" />
+            <marker date="1552034893346" expanded="true" signature="4158:4846" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestSession.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="46" column="29" lean-forward="true" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+          <folding>
+            <marker date="1552034892457" expanded="true" signature="0:872" ph="/* TestSession.cs ... */" />
+            <marker date="1552034892457" expanded="false" signature="880:1008" ph="..." />
+            <marker date="1552034892457" expanded="true" signature="1041:2556" ph="{...}" />
+            <marker date="1552034892457" expanded="true" signature="1088:2554" ph="{...}" />
+            <marker date="1552034892457" expanded="true" signature="1137:1401" ph="{...}" />
+            <marker date="1552034892457" expanded="true" signature="1455:2551" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../SnowplowTrackerTests/TestIntegration.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
+          <folding>
+            <marker date="1552034894225" expanded="true" signature="0:876" ph="/* TestIntegration.cs ... */" />
+            <marker date="1552034894225" expanded="false" signature="884:1190" ph="..." />
+            <marker date="1552034894225" expanded="true" signature="1223:4782" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="1274:4780" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="1387:1635" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="1682:1931" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="1985:2935" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="2984:3357" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="3406:3456" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="3500:4496" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="4550:4777" ph="{...}" />
+            <marker date="1552034894225" expanded="true" signature="4596:4772" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
