@@ -32,7 +32,7 @@ namespace SnowplowTrackerTests {
 		
 		[Test()]
 		public void TestAsyncEmitterInit () {
-			IEmitter e1 = new AsyncEmitter ("acme.com");
+			IEmitter e1 = new AsyncEmitter ("acme.com", HttpProtocol.HTTP, HttpMethod.POST, 500, 52000L, 52000L);
 
 			Assert.NotNull (e1);
 			Assert.AreEqual ("http://acme.com/com.snowplowanalytics.snowplow/tp2", e1.GetCollectorUri ());
@@ -49,7 +49,7 @@ namespace SnowplowTrackerTests {
 		public void TestAsyncEmitterInitException () {
 			IEmitter e1 = null;
 			try {
-				e1 = new AsyncEmitter (null);
+				e1 = new AsyncEmitter (null, HttpProtocol.HTTP, HttpMethod.POST, 500, 52000L, 52000L);
 			} catch (Exception e) {
 				Assert.AreEqual("Endpoint cannot be null or empty.", e.Message);
 			}
@@ -58,7 +58,7 @@ namespace SnowplowTrackerTests {
 
 		[Test()]
 		public void TestAsyncEmitterSetFunctions () {
-			IEmitter e1 = new AsyncEmitter ("acme.com");
+			IEmitter e1 = new AsyncEmitter ("acme.com", HttpProtocol.HTTP, HttpMethod.POST, 500, 52000L, 52000L);
 
 			Assert.AreEqual ("http://acme.com/com.snowplowanalytics.snowplow/tp2", e1.GetCollectorUri ());
 			e1.SetCollectorUri("acme.com.au");
