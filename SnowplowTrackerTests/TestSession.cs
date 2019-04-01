@@ -31,7 +31,7 @@ namespace SnowplowTrackerTests {
 		
 		[Test()]
 		public void TestSessionInit () {
-			Session s1 = new Session ();
+			Session s1 = new Session (null);
 			Assert.NotNull (s1);
 			SessionContext c1 = s1.GetSessionContext ("first-event-id-0000");
 			Dictionary<string, object> data = c1.GetData ();
@@ -40,7 +40,7 @@ namespace SnowplowTrackerTests {
 
 		[Test()]
 		public void TestSessionSetFunctions () {
-			Session s1 = new Session ();
+			Session s1 = new Session (null);
 			SessionContext c1 = s1.GetSessionContext ("first-event-id-0000");
 			Dictionary<string, object> data = c1.GetData ();
 
