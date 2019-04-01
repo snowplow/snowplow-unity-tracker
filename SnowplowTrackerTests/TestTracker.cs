@@ -35,7 +35,7 @@ namespace SnowplowTrackerTests {
 
 		[Test()]
 		public void TestTrackerInitMinimal () {
-			Tracker t = new Tracker (new AsyncEmitter("acme.com"), "aNamespace", "aAppId");
+			Tracker t = new Tracker (new AsyncEmitter("acme.com", HttpProtocol.HTTP, HttpMethod.POST, 500, 52000L, 52000L), "aNamespace", "aAppId");
 
 			Assert.NotNull (t);
 			Assert.NotNull (t.GetEmitter());
@@ -61,8 +61,8 @@ namespace SnowplowTrackerTests {
 		[Test()]
 		public void TestTrackerSetterFunctions () {
 			Subject s1 = new Subject ();
-			Session sess1 = new Session ();
-			IEmitter e1 = new AsyncEmitter("acme.com");
+			Session sess1 = new Session (null);
+			IEmitter e1 = new AsyncEmitter("acme.com", HttpProtocol.HTTP, HttpMethod.POST, 500, 52000L, 52000L);
 			Tracker t = new Tracker (e1, "aNamespace", "aAppId", s1, sess1);
 
 			Assert.NotNull (t.GetEmitter());
@@ -74,7 +74,7 @@ namespace SnowplowTrackerTests {
 			Assert.AreEqual (true, t.GetBase64Encoded ());
 			Assert.AreEqual (DevicePlatforms.Mobile.Value, t.GetPlatform ().Value);
 
-			IEmitter e2 = new AsyncEmitter("acme.com.au");
+			IEmitter e2 = new AsyncEmitter("acme.com.au", HttpProtocol.HTTP, HttpMethod.POST, 500, 52000L, 52000L);
 
 			t.SetEmitter(e2);
 			Assert.AreEqual ("http://acme.com.au/com.snowplowanalytics.snowplow/tp2", t.GetEmitter ().GetCollectorUri ());
