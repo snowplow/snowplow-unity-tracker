@@ -57,8 +57,16 @@ namespace SnowplowTracker {
 			this.backgroundTimeout = backgroundTimeout * 1000;
 			this.checkInterval = checkInterval;
 
-            SessionPath = sessionPath;
-            Dictionary<string, object> maybeSessionDict = Utils.ReadDictionaryFromFile (SESSION_SAVE_PATH);
+            if (sessionPath != null)
+            {
+                SessionPath = Utils.UpdateMobilePath(sessionPath);
+            }
+            else
+            {
+                SessionPath = Utils.UpdateMobilePath(SESSION_SAVE_PATH);
+            }
+
+            Dictionary<string, object> maybeSessionDict = Utils.ReadDictionaryFromFile (SessionPath);
 			if (maybeSessionDict == null) {
 				this.userId = Utils.GetGUID();
 				this.currentSessionId = null;
@@ -212,7 +220,7 @@ namespace SnowplowTracker {
 				UpdateSession();
 				UpdateAccessedLast();
 				UpdateSessionDict();
-				Utils.WriteDictionaryToFile(SESSION_SAVE_PATH, sessionContext.GetData());
+				Utils.WriteDictionaryToFile(SessionPath, sessionContext.GetData());
 			}
 
 			sessionCheckTimer.Change( checkInterval * 1000, Timeout.Infinite );
