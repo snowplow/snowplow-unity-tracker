@@ -25,9 +25,20 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using UnityJSON;
+using UnityEngine;
 
 namespace SnowplowTracker {
 	public class Utils {
+
+		/// <summary>
+		/// Updated the provided path with the iOS persistant data path, if necessary
+		/// </summary>
+		/// <returns>the updated path</returns>
+		public static string UpdateMobilePath(string path)
+		{
+			string iPhonePath = Application.platform == RuntimePlatform.IPhonePlayer ? Application.persistentDataPath + "/" : "";
+			return iPhonePath + path;
+		}
 
 		/// <summary>
 		/// Returns the current time since the UNIX Epoch
@@ -112,7 +123,7 @@ namespace SnowplowTracker {
 				return null;
 			}
 		}
-		
+
 		/// <summary>
 		/// Deserialize the specified bytes.
 		/// </summary>
@@ -127,7 +138,7 @@ namespace SnowplowTracker {
 				return null;
 			}
 		}
-		
+
 		/// <summary>
 		/// Determines whether the request was successful against the specified code.
 		/// </summary>
