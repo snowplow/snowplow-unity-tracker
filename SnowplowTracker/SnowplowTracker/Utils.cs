@@ -25,15 +25,26 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using UnityJSON;
+using UnityEngine;
 
 namespace SnowplowTracker {
 	public class Utils {
 
-		/// <summary>
-		/// Returns the current time since the UNIX Epoch
-		/// </summary>
-		/// <returns>the time since UNIX Epoch in milliseconds</returns>
-		public static long GetTimestamp() {
+				/// <summary>
+        /// Updated the provided path with the iOS persistant data path, if necessary
+        /// </summary>
+        /// <returns>the updated path</returns>
+        public static string UpdateMobilePath(string path)
+        {
+            string iPhonePath = Application.platform == RuntimePlatform.IPhonePlayer ? Application.persistentDataPath + "/" : "";
+            return iPhonePath + path;
+        }
+
+        /// <summary>
+        /// Returns the current time since the UNIX Epoch
+        /// </summary>
+        /// <returns>the time since UNIX Epoch in milliseconds</returns>
+        public static long GetTimestamp() {
 			return (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
 		}
 
