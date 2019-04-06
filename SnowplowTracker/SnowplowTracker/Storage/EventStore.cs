@@ -32,7 +32,8 @@ namespace SnowplowTracker.Storage
     {
 
         // Database Details
-        private static string DATABASE_NAME = "URI=file:snowplow_events.db";
+        private static string DATABASE_NAME = "snowplow_events.db";
+        private static string DATABASE_PATH = "URI=file:" + DATABASE_NAME;
         private static readonly string TABLE_NAME = "events";
         private static readonly string COLUMN_ID = "id";
         private static readonly string COLUMN_EVENT_DATA = "eventData";
@@ -56,6 +57,7 @@ namespace SnowplowTracker.Storage
         /// </summary>
         public EventStore()
         {
+            MakeMobileDatabasePath();
             Open();
         }
 
@@ -69,8 +71,15 @@ namespace SnowplowTracker.Storage
             {
                 DATABASE_NAME = DatabaseName;
             }
+            MakeMobileDatabasePath();
             Log.Debug("EventStore: creating new eventstore");
             Open();
+        }
+
+        private void MakeMobileDatabasePath()
+        {
+            DATABASE_PATH = "URI=file:" + Utils.UpdateMobilePath(DATABASE_NAME);
+            Log.Debug("EventStore: Mobile database path: " + DATABASE_PATH);
         }
 
         /// <summary>
@@ -80,8 +89,21 @@ namespace SnowplowTracker.Storage
         {
             if (!IsDatabaseOpen())
             {
-                dbConnection = new SqliteConnection(DATABASE_NAME);
+                dbConnection = new SqliteConnection(DATABASE_PATH);
                 dbConnection.Open();
+
+                string mobileFilePath = Utils.UpdateMobilePath(DATABASE_NAME);
+                if (File.Exists(mobileFilePath))
+                {
+                    Log.Debug("Execute: Database exists!!");
+                }
+                else
+                {
+                    Log.Debug("Execute: No database - create: " + mobileFilePath);
+                    FileStream fileStream = File.Create(mobileFilePath);
+                    Log.Debug("Execute: Database created: " + fileStream.Name);
+                }
+
                 using (var someCommand = dbConnection.CreateCommand())
                 {
                     someCommand.CommandType = System.Data.CommandType.Text;
