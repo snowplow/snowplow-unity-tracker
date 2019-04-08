@@ -1,12 +1,12 @@
 # Unity Analytics for Snowplow
 
-[![Release][release-image]] [releases] [![License][license-image]] [license]
+[![Release][release-image]][releases] [![License][license-image]][license]
 
 ## UNRELEASED
 
 ## Overview
 
-Add analytics to your Unity games and apps with the **[Snowplow] [snowplow]** event tracker for **[Unity] [unity]**.
+Add analytics to your Unity games and apps with the **[Snowplow][snowplow]** event tracker for **[Unity][unity]**.
 
 With this tracker you can collect event data from your Unity-based applications, games or frameworks.
 
@@ -14,7 +14,7 @@ With this tracker you can collect event data from your Unity-based applications,
 
 ### Building
 
-Assuming git, **[Vagrant] [vagrant-install]** and **[VirtualBox] [virtualbox-install]** installed:
+Assuming git, **[Vagrant][vagrant-install]** and **[VirtualBox][virtualbox-install]** installed:
 
 ```bash
  host$ git clone https://github.com/snowplow/snowplow-unity-tracker.git
@@ -60,16 +60,16 @@ Tested Platforms:
 
 ## Find out more
 
-| Technical Docs                  | Setup Guide               | Roadmap                 | Contributing                      |
-|---------------------------------|---------------------------|-------------------------|-----------------------------------|
-| ![i1] [techdocs-image]          | ![i2] [setup-image]       | ![i3] [roadmap-image]   | ![i4] [contributing-image]        |
-| **[Technical Docs] [techdocs]** | **[Setup Guide] [setup]** | **[Roadmap] [roadmap]** | **[Contributing] [contributing]** |
+| Technical Docs                 | Setup Guide               | Roadmap                | Contributing                     |
+|--------------------------------|---------------------------|------------------------|----------------------------------|
+| ![i1][techdocs-image]          | ![i2][setup-image]        | ![i3][roadmap-image]   | ![i4][contributing-image]        |
+| **[Technical Docs][techdocs]** | **[Setup Guide][setup]**  | **[Roadmap][roadmap]** | **[Contributing][contributing]** |
 
 ## Copyright and license
 
 The Snowplow Unity Tracker is copyright 2015-2019 Snowplow Analytics Ltd.
 
-Licensed under the **[Apache License, Version 2.0] [license]** (the "License");
+Licensed under the **[Apache License, Version 2.0][license]** (the "License");
 you may not use this software except in compliance with the License.
 
 Unless required by applicable law or agreed to in writing, software
@@ -85,7 +85,7 @@ limitations under the License.
 [vagrant-install]: http://docs.vagrantup.com/v2/installation/index.html
 [virtualbox-install]: https://www.virtualbox.org/wiki/Downloads
 
-[release-image]: http://img.shields.io/badge/release-0.2.0-blue.svg?style=flat
+[release-image]: http://img.shields.io/badge/release-0.3.0-blue.svg?style=flat
 [releases]: https://github.com/snowplow/snowplow-unity-tracker/releases
 
 [license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
