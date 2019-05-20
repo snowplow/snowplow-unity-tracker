@@ -31,3 +31,6 @@ TestResult.xml
 # Mountebank
 *mb.pid
 *mb.log
+
+# Mac
+.DS_Store
