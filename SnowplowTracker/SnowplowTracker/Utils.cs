@@ -31,13 +31,13 @@ namespace SnowplowTracker {
 	public class Utils {
 
 		/// <summary>
-		/// Updated the provided path with the iOS persistant data path, if necessary
+		/// Updated the provided path with the iOS or Android persistant data path, if necessary
 		/// </summary>
 		/// <returns>the updated path</returns>
 		public static string UpdateMobilePath(string path)
 		{
-			string iPhonePath = Application.platform == RuntimePlatform.IPhonePlayer ? Application.persistentDataPath + "/" : "";
-			return iPhonePath + path;
+			string mobilePath = Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android ? Application.persistentDataPath + "/" : "";
+			return mobilePath + path;
 		}
 
 		/// <summary>
