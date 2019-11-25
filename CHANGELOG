@@ -1,9 +1,15 @@
-Version 0.3.0 (2019-4-08)
+Version 0.3.1 (2019-11-25)
+--------------------------
+Fix Peru version so vagrant up succeeds (#20)
+Update Android Libraries to include x64 libsqlite3 (#19)
+Fix Mobile Paths to support Android (#18)
+
+Version 0.3.0 (2019-04-08)
 --------------------------
 Fix paths used in mobile file storage and databases (close #15)
 Fix test method call parameter ambiguities (close #16)
 
-Version 0.2.0 (2019-2-28)
+Version 0.2.0 (2019-02-28)
 --------------------------
 Update the tracker to handle mobile devices (#10)
 Fix race condition in the emit loop (#8)
