@@ -90,5 +90,10 @@ namespace SnowplowTracker {
 		public static void SetLogLevel(int newLevel) {
 			level = newLevel;
 		}
-	}
+
+        internal static void Debug(object p)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

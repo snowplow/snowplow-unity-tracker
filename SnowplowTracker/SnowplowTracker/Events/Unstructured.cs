@@ -18,13 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Events {
-	public class Unstructured : AbstractEvent<Unstructured> {
+namespace SnowplowTracker.Events
+{
+    public class Unstructured : AbstractEvent<Unstructured> {
 		
 		private SelfDescribingJson eventData;
 		private bool base64Encode = false;

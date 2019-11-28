@@ -19,12 +19,11 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Events {
-	public class Structured : AbstractEvent<Structured> {
+namespace SnowplowTracker.Events
+{
+    public class Structured : AbstractEvent<Structured> {
 
 		private string category;
         private string action;

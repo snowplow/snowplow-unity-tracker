@@ -25,6 +25,8 @@ using SnowplowTracker.Enums;
 using SnowplowTracker.Storage;
 using SnowplowTracker.Collections;
 using SnowplowTracker.Requests;
+using System.Net.Http;
+using System.Text;
 
 namespace SnowplowTracker.Emitters {
 	public abstract class AbstractEmitter : IEmitter {
@@ -34,14 +36,14 @@ namespace SnowplowTracker.Emitters {
 		protected int FAIL_INTERVAL  = 10000;  // If all events failed to send
 
 		protected string endpoint;
-		protected string collectorUri;
+		protected Uri collectorUri;
 		protected HttpProtocol httpProtocol;
-		protected HttpMethod httpMethod;
+		protected Enums.HttpMethod httpMethod;
 		protected int sendLimit;
 		protected long byteLimitGet;
 		protected long byteLimitPost;
 		protected EventStore eventStore;
-		protected bool synchronous;
+		protected bool emitSynchronously;
 
 		/// <summary>
 		/// Adds an event payload to the database.
@@ -78,13 +80,13 @@ namespace SnowplowTracker.Emitters {
 		/// <returns>The results of sending all requests</returns>
 		/// <param name="eventRows">Event rows from the database</param>
 		protected List<RequestResult> SendRequests(List<EventRow> eventRows) {
-			ConcurrentQueue<RequestResult> resultQueue = new ConcurrentQueue<RequestResult> ();
-			int count = 0;
+			ConcurrentQueue<RequestResult> resultQueue = new ConcurrentQueue<RequestResult>();
+			int count;
 			
-			if (httpMethod == HttpMethod.GET) {
-				count = HttpGet (eventRows, resultQueue);
+			if (httpMethod == Enums.HttpMethod.GET) {
+				count = HttpGet(eventRows, resultQueue);
 			} else {
-				count = HttpPost (eventRows, resultQueue);
+				count = HttpPost(eventRows, resultQueue);
 			}
 			
 			// Wait for the results of each request
@@ -114,11 +116,11 @@ namespace SnowplowTracker.Emitters {
                     bool oversize = byteSize > byteLimitGet;
                     Log.Debug("Emitter: Sending GET with byte-size: " + byteSize);
                     new ReadyRequest(
-                        GetGETRequest(payload.GetDictionary()),
+                        new HttpRequest(Enums.HttpMethod.GET, GetGETRequest(payload.GetDictionary())),
                         new List<int> { eRow.GetRowId() },
-                    oversize,
-                    resultQueue
-                    ).Send();
+                        oversize,
+                        resultQueue
+                    ).Send(emitSynchronously);
                 }
             }
             catch (Exception e)
@@ -155,7 +157,7 @@ namespace SnowplowTracker.Emitters {
                         Log.Debug("Sending POST with byte-size: " + (payloadByteSize + POST_WRAPPER_BYTES));
                         List<Dictionary<string, object>> singlePayloadPost = new List<Dictionary<string, object>> { payload.GetDictionary() };
                         List<int> singlePayloadId = new List<int> { eventRows[i].GetRowId() };
-                        new ReadyRequest(GetPOSTRequest(singlePayloadPost), singlePayloadId, true, resultQueue).Send();
+                        new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(singlePayloadPost)), singlePayloadId, true, resultQueue).Send(emitSynchronously);
                         count++;
                     }
                     else if ((totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) > byteLimitPost)
@@ -163,7 +165,7 @@ namespace SnowplowTracker.Emitters {
                         Log.Debug("Emitter: Byte limit reached: " + (totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) +
                                    " is > " + byteLimitPost);
                         Log.Debug("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
-                        new ReadyRequest(GetPOSTRequest(payloadDicts), rowIds, false, resultQueue).Send();
+                        new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(payloadDicts)), rowIds, false, resultQueue).Send(emitSynchronously);
                         count++;
 
                         // Reset collections
@@ -182,7 +184,7 @@ namespace SnowplowTracker.Emitters {
                 if (payloadDicts.Count > 0)
                 {
                     Log.Debug("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
-                    new ReadyRequest(GetPOSTRequest(payloadDicts), rowIds, false, resultQueue).Send();
+                    new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(payloadDicts)), rowIds, false, resultQueue).Send(emitSynchronously);
                     count++;
                 }
             }
@@ -203,18 +205,17 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="events">Events to send in the post</param>
 		/// <param name="ids">The row ids</param>
 		/// <param name="oversize">If the event list is oversize</param>
-		protected UnityHTTP.Request GetPOSTRequest(List<Dictionary<string, object>> events) {
+		protected HttpContent GetPOSTRequest(List<Dictionary<string, object>> events) {
 			// Add STM to event
 			AddSentTimeToEvents(events);
 			
 			// Build the event
-			SelfDescribingJson sdj = new SelfDescribingJson (Constants.SCHEMA_PAYLOAD_DATA, events);
-			byte[] data = Utils.StringToBytes (sdj.ToString ());
-			UnityHTTP.Request httpRequest = new UnityHTTP.Request (UnityHTTP.Enums.RequestType.POST, this.collectorUri, data);
-			httpRequest.AddHeader( "Content-Type", Constants.POST_CONTENT_TYPE );
-			httpRequest.synchronous = this.synchronous;
+			SelfDescribingJson sdj = new SelfDescribingJson(Constants.SCHEMA_PAYLOAD_DATA, events);
+			string data = sdj.ToString();
+
+            HttpContent httpContent = new StringContent(data, Encoding.UTF8, Constants.POST_CONTENT_TYPE);
 			
-			return httpRequest;
+			return httpContent;
 		}
 		
 		/// <summary>
@@ -224,16 +225,12 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="events">Event to send in the GET</param>
 		/// <param name="ids">The row id</param>
 		/// <param name="oversize">If the event list is oversize</param>
-		protected UnityHTTP.Request GetGETRequest(Dictionary<string, object> eventDict) {
+		protected Uri GetGETRequest(Dictionary<string, object> eventDict) {
 			// Add STM to event
 			eventDict.Add (Constants.SENT_TIMESTAMP, Utils.GetTimestamp ().ToString ());
 			
 			// Build the event
-			string url = this.collectorUri + Utils.ToQueryString (eventDict);
-			UnityHTTP.Request httpRequest = new UnityHTTP.Request(UnityHTTP.Enums.RequestType.GET, url);
-			httpRequest.synchronous = this.synchronous;
-			
-			return httpRequest;
+			return new Uri(collectorUri + Utils.ToQueryString(eventDict));
 		}
 		
 		/// <summary>
@@ -243,10 +240,10 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="endpoint">Endpoint.</param>
 		/// <param name="protocol">Protocol.</param>
 		/// <param name="method">Method.</param>
-		protected string MakeCollectorUri(string endpoint, HttpProtocol protocol, HttpMethod method) {
-			string path = (method == HttpMethod.GET) ? Constants.GET_URI_SUFFIX : Constants.POST_URI_SUFFIX;
+		protected Uri MakeCollectorUri(string endpoint, HttpProtocol protocol, Enums.HttpMethod method) {
+			string path = (method == Enums.HttpMethod.GET) ? Constants.GET_URI_SUFFIX : Constants.POST_URI_SUFFIX;
 			string requestProtocol = (protocol == HttpProtocol.HTTP) ? "http" : "https";
-			return String.Format("{0}://{1}{2}", requestProtocol, endpoint, path);
+			return new Uri($"{requestProtocol}://{endpoint}{path}");
 		}
 		
 		/// <summary>
@@ -268,7 +265,7 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="endpoint">Endpoint.</param>
 		public void SetCollectorUri(string endpoint) {
 			this.endpoint = endpoint;
-			this.collectorUri = MakeCollectorUri (this.endpoint, this.httpProtocol, this.httpMethod);
+			collectorUri = MakeCollectorUri(this.endpoint, this.httpProtocol, this.httpMethod);
 		}
 		
 		/// <summary>
@@ -277,16 +274,16 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="httpProtocol">Http protocol.</param>
 		public void SetHttpProtocol(HttpProtocol httpProtocol) {
 			this.httpProtocol = httpProtocol;
-			this.collectorUri = MakeCollectorUri (this.endpoint, this.httpProtocol, this.httpMethod);
+			collectorUri = MakeCollectorUri(this.endpoint, this.httpProtocol, this.httpMethod);
 		}
 		
 		/// <summary>
 		/// Sets the http method.
 		/// </summary>
 		/// <param name="httpMethod">Http method.</param>
-		public void SetHttpMethod(HttpMethod httpMethod) {
+		public void SetHttpMethod(Enums.HttpMethod httpMethod) {
 			this.httpMethod = httpMethod;
-			this.collectorUri = MakeCollectorUri (this.endpoint, this.httpProtocol, this.httpMethod);
+			collectorUri = MakeCollectorUri(this.endpoint, this.httpProtocol, this.httpMethod);
 		}
 		
 		/// <summary>
@@ -319,8 +316,8 @@ namespace SnowplowTracker.Emitters {
 		/// Gets the collector URI.
 		/// </summary>
 		/// <returns>The collector URI.</returns>
-		public string GetCollectorUri() {
-			return this.collectorUri;
+		public Uri GetCollectorUri() {
+			return collectorUri;
 		}
 		
 		/// <summary>
@@ -328,15 +325,15 @@ namespace SnowplowTracker.Emitters {
 		/// </summary>
 		/// <returns>The http protocol.</returns>
 		public HttpProtocol GetHttpProtocol() {
-			return this.httpProtocol;
+			return httpProtocol;
 		}
 		
 		/// <summary>
 		/// Gets the http method.
 		/// </summary>
 		/// <returns>The http method.</returns>
-		public HttpMethod GetHttpMethod() {
-			return this.httpMethod;
+		public Enums.HttpMethod GetHttpMethod() {
+			return httpMethod;
 		}
 		
 		/// <summary>
@@ -344,7 +341,7 @@ namespace SnowplowTracker.Emitters {
 		/// </summary>
 		/// <returns>The send limit.</returns>
 		public int GetSendLimit() {
-			return this.sendLimit;
+			return sendLimit;
 		}
 		
 		/// <summary>
@@ -352,7 +349,7 @@ namespace SnowplowTracker.Emitters {
 		/// </summary>
 		/// <returns>The byte limit get.</returns>
 		public long GetByteLimitGet() {
-			return this.byteLimitGet;
+			return byteLimitGet;
 		}
 		
 		/// <summary>
@@ -360,7 +357,7 @@ namespace SnowplowTracker.Emitters {
 		/// </summary>
 		/// <returns>The byte limit post.</returns>
 		public long GetByteLimitPost() {
-			return this.byteLimitPost;
+			return byteLimitPost;
 		}
 
 		/// <summary>
@@ -368,7 +365,7 @@ namespace SnowplowTracker.Emitters {
 		/// </summary>
 		/// <returns>The event store.</returns>
 		public EventStore GetEventStore() {
-			return this.eventStore;
+			return eventStore;
 		}
 	}
 }

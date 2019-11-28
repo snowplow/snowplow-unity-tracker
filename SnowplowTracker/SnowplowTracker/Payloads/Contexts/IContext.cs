@@ -18,12 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
 using System.Collections.Generic;
-using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Payloads.Contexts {
-	public interface IContext {
+namespace SnowplowTracker.Payloads.Contexts
+{
+    public interface IContext {
 
 		/// <summary>
 		/// Gets the context as a self describing json.

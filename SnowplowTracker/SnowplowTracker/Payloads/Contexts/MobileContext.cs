@@ -18,11 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
 using SnowplowTracker.Enums;
 
-namespace SnowplowTracker.Payloads.Contexts {
-	public class MobileContext : AbstractContext<MobileContext> {
+namespace SnowplowTracker.Payloads.Contexts
+{
+    public class MobileContext : AbstractContext<MobileContext> {
 
 		/// <summary>
 		/// Sets the type of the os.

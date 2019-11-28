@@ -44,7 +44,7 @@ namespace SnowplowTracker {
 		// Emitter
 		public readonly static string GET_URI_SUFFIX        = "/i";
 		public readonly static string POST_URI_SUFFIX       = "/com.snowplowanalytics.snowplow/tp2";
-		public readonly static string POST_CONTENT_TYPE     = "application/json; charset=utf-8";
+		public readonly static string POST_CONTENT_TYPE     = "application/json";
 
 		// Session
 		public readonly static string SESSION_USER_ID       = "userId";
