@@ -18,12 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
 using System.Collections.Generic;
-using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Payloads.Contexts {
-	public class GenericContext : AbstractContext<GenericContext> {
+namespace SnowplowTracker.Payloads.Contexts
+{
+    public class GenericContext : AbstractContext<GenericContext> {
 
 		/// <summary>
 		/// Sets the schema.

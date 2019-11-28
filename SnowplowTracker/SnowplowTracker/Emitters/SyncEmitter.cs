@@ -18,23 +18,15 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-using System.Net;
-using System.Web;
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Threading;
 using SnowplowTracker.Payloads;
 using SnowplowTracker.Enums;
 using SnowplowTracker.Requests;
 using SnowplowTracker.Storage;
-using SnowplowTracker.Collections;
-using UnityHTTP;
 
-namespace SnowplowTracker.Emitters {
-	public class SyncEmitter : AbstractEmitter {
+namespace SnowplowTracker.Emitters
+{
+    public class SyncEmitter : AbstractEmitter {
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SnowplowTracker.Emitter"/> class.
@@ -47,7 +39,7 @@ namespace SnowplowTracker.Emitters {
 		/// <param name="byteLimitPost">The byte limit for a POST request</param>
 		public SyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
 		                    int sendLimit = 10, long byteLimitGet = 52000, long byteLimitPost = 52000) {
-			Utils.CheckArgument (!String.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
+			Utils.CheckArgument (!string.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;
 			this.collectorUri = MakeCollectorUri(endpoint, protocol, method);
 			this.httpProtocol = protocol;
@@ -55,8 +47,8 @@ namespace SnowplowTracker.Emitters {
 			this.sendLimit = sendLimit;
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
-			this.eventStore = new EventStore ();
-			this.synchronous = true;
+			this.eventStore = new EventStore();
+			this.emitSynchronously = true;
 		}
 		
 		/// <summary>
@@ -95,7 +87,7 @@ namespace SnowplowTracker.Emitters {
 				List<EventRow> events = eventStore.GetDescEventRange (sendLimit);
 				if (events.Count != 0) {
 					Log.Debug ("Emitter: Event count: " + events.Count);
-					List<RequestResult> results = SendRequests (events);
+					List<RequestResult> results = SendRequests(events);
 					events = null;
 					
 					int success = 0;

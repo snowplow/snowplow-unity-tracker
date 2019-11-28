@@ -18,13 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Storage {
-	public class EventRow {
+namespace SnowplowTracker.Storage
+{
+    public class EventRow {
 
 		private int rowId;
 		private TrackerPayload payload;

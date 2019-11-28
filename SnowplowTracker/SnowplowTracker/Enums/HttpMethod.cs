@@ -18,10 +18,9 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-
-namespace SnowplowTracker.Enums {
-	public enum HttpMethod {
+namespace SnowplowTracker.Enums
+{
+    public enum HttpMethod {
 		GET,
 		POST
 	}

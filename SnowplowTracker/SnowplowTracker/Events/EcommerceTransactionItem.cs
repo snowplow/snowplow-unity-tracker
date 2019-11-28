@@ -19,12 +19,11 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Events {
-	public class EcommerceTransactionItem : AbstractEvent<EcommerceTransactionItem> {
+namespace SnowplowTracker.Events
+{
+    public class EcommerceTransactionItem : AbstractEvent<EcommerceTransactionItem> {
 
 		private string itemId;
 		private string sku;

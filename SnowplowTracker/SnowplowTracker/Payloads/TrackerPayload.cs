@@ -19,11 +19,11 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
-namespace SnowplowTracker.Payloads {
-	public class TrackerPayload : AbstractPayload {
+namespace SnowplowTracker.Payloads
+{
+    public class TrackerPayload : AbstractPayload {
 
 		/// <summary>
 		/// Add the specified key and value.
