@@ -18,11 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
 using SnowplowTracker.Enums;
 
-namespace SnowplowTracker.Payloads.Contexts {
-	public class SessionContext : AbstractContext<SessionContext> {
+namespace SnowplowTracker.Payloads.Contexts
+{
+    public class SessionContext : AbstractContext<SessionContext> {
 
 		/// <summary>
 		/// Sets the user identifier.

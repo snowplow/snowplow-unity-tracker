@@ -18,10 +18,9 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-
-namespace SnowplowTracker.Payloads.Contexts {
-	public class DesktopContext : AbstractContext<DesktopContext> {
+namespace SnowplowTracker.Payloads.Contexts
+{
+    public class DesktopContext : AbstractContext<DesktopContext> {
 
 		/// <summary>
 		/// Sets the type of the OS.

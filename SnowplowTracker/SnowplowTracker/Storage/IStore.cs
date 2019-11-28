@@ -1,6 +1,6 @@
-/*
- * RequestResult.cs
- * SnowplowTracker.Requests
+﻿/*
+ * EventStore.cs
+ * SnowplowTracker.Storage
  * 
  * Copyright (c) 2015 Snowplow Analytics Ltd. All rights reserved.
  *
@@ -18,23 +18,17 @@
  * License: Apache License Version 2.0
  */
 
+using System;
 using System.Collections.Generic;
+using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Requests
+namespace SnowplowTracker.Storage
 {
-    public class RequestResult {
-		
-		public bool success;
-		public List<int> rowIds;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SnowplowTracker.Requests.RequestResult"/> class.
-		/// </summary>
-		/// <param name="success">If set to <c>true</c> success.</param>
-		/// <param name="rowIds">Row identifiers.</param>
-		public RequestResult(bool success, List<int> rowIds) {
-			this.success = success;
-			this.rowIds = rowIds;
-		}
-	}
+    public interface IStore
+    {
+        bool AddEvent(TrackerPayload payload);
+        bool DeleteEvents(List<Guid> rowIds);
+        long GetEventCount();
+        List<EventRow> GetEvents(int range);
+    }
 }

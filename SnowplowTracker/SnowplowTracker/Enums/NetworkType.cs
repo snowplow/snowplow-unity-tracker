@@ -18,10 +18,9 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-
-namespace SnowplowTracker.Enums {
-	public class NetworkType {
+namespace SnowplowTracker.Enums
+{
+    public class NetworkType {
 		
 		public string Value { get; set; }
 		
