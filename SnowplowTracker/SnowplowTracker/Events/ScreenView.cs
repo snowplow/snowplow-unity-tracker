@@ -19,12 +19,11 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Events {
-	public class ScreenView : AbstractEvent<ScreenView> {
+namespace SnowplowTracker.Events
+{
+    public class ScreenView : AbstractEvent<ScreenView> {
 		
 		private string name;
 		private string id;

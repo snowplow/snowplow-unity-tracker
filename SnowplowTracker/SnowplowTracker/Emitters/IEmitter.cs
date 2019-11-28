@@ -97,7 +97,7 @@ namespace SnowplowTracker.Emitters {
 		/// Gets the collector URI.
 		/// </summary>
 		/// <returns>The collector URI.</returns>
-		string GetCollectorUri ();
+		Uri GetCollectorUri ();
 		
 		/// <summary>
 		/// Gets the http protocol.

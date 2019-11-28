@@ -18,21 +18,20 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using UnityHTTP;
-using SnowplowTracker.Payloads;
+using System.Net.Http;
+using System.Threading.Tasks;
 using SnowplowTracker.Collections;
 
-namespace SnowplowTracker.Requests {
-	public class ReadyRequest {
+namespace SnowplowTracker.Requests
+{
+    public class ReadyRequest {
 
-		private Request request;
-		private List<int> rowIds;
-		private bool oversize;
-		private ConcurrentQueue<RequestResult> resultQueue;
+        private static readonly HttpClient client = new HttpClient();
+        private readonly HttpRequest request;
+        private readonly List<int> rowIds;
+		private readonly bool oversize;
+		private readonly ConcurrentQueue<RequestResult> resultQueue;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SnowplowTracker.Requests.ReadyRequest"/> class.
@@ -40,35 +39,42 @@ namespace SnowplowTracker.Requests {
 		/// <param name="request">Request.</param>
 		/// <param name="rowIds">Row identifiers.</param>
 		/// <param name="oversize">If set to <c>true</c> oversize.</param>
-		public ReadyRequest(Request request, List<int> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue) {
-			this.rowIds = rowIds;
+		public ReadyRequest(HttpRequest request, List<int> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue) {
+            this.request = request;
+            this.rowIds = rowIds;
 			this.oversize = oversize;
 			this.resultQueue = resultQueue;
-			this.request = request;
 		}
 
 		/// <summary>
 		/// Send the request with the callback mechanism.
 		/// </summary>
-		public void Send() {
-			request.Send ((Action<UnityHTTP.Request>) RequestCallback);
-		}
+		public void Send(bool synchronous) {
+            Task<HttpResponseMessage> response = null;
+            switch (request.Method)
+            {
+                case Enums.HttpMethod.POST:
+                    response = client.PostAsync(request.CollectorUri, request.Content);
+                    break;
+                case Enums.HttpMethod.GET:
+                    response = client.GetAsync(request.CollectorUri);
+                    break;
+            }
 
-		/// <summary>
-		/// Waits for the result to be ready and sleeps for intervals of 1ms whilst waiting.
-		/// </summary>
-		public void RequestCallback(UnityHTTP.Request result) {
-			if (this.oversize) {
-				resultQueue.Enqueue(new RequestResult(true, this.rowIds));
-			} else {
-				if (result.response != null) {
-					int code = result.response.status;
-					bool success = Utils.IsSuccessfulRequest(code);
-					resultQueue.Enqueue(new RequestResult(success, this.rowIds));
-				} else {
-					resultQueue.Enqueue(new RequestResult(false, this.rowIds));
-				}
-			}
-		}
+            if (synchronous)
+            {
+                AddToResultQueue(response.Result);
+            }
+            else
+            {
+                response.ContinueWith(r => AddToResultQueue(r.Result));
+            }
+        }
+
+        private void AddToResultQueue(HttpResponseMessage response)
+        {
+            var success = oversize ? true : response.IsSuccessStatusCode;
+            resultQueue.Enqueue(new RequestResult(success, rowIds));
+        }
 	}
 }

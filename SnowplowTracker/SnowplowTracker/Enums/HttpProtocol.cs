@@ -18,10 +18,9 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-
-namespace SnowplowTracker.Enums {
-	public enum HttpProtocol {
+namespace SnowplowTracker.Enums
+{
+    public enum HttpProtocol {
 		HTTP,
 		HTTPS
 	}

@@ -20,17 +20,16 @@
 
 using System;
 using System.Threading;
-using System.Collections;
 using System.Collections.Generic;
 using SnowplowTracker.Emitters;
 using SnowplowTracker.Payloads;
 using SnowplowTracker.Payloads.Contexts;
 using SnowplowTracker.Events;
-using SnowplowTracker.Storage;
 using SnowplowTracker.Enums;
 
-namespace SnowplowTracker {
-	public class Tracker {
+namespace SnowplowTracker
+{
+    public class Tracker {
 
 		private IEmitter emitter;
 		private Subject subject;

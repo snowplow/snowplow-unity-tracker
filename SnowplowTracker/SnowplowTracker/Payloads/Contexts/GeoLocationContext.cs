@@ -18,10 +18,9 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-
-namespace SnowplowTracker.Payloads.Contexts {
-	public class GeoLocationContext : AbstractContext<GeoLocationContext> {
+namespace SnowplowTracker.Payloads.Contexts
+{
+    public class GeoLocationContext : AbstractContext<GeoLocationContext> {
 
 		/// <summary>
 		/// Sets the latitude.

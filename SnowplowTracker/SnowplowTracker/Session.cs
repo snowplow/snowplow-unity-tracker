@@ -18,15 +18,14 @@
  * License: Apache License Version 2.0
  */
 
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using SnowplowTracker.Enums;
-using SnowplowTracker.Payloads;
 using SnowplowTracker.Payloads.Contexts;
 
-namespace SnowplowTracker {
-	public class Session {
+namespace SnowplowTracker
+{
+    public class Session {
 
 		private string SESSION_SAVE_PATH = "snowplow_session.dict";
 

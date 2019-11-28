@@ -19,13 +19,13 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 using SnowplowTracker.Payloads.Contexts;
 
-namespace SnowplowTracker.Events {
-	public abstract class AbstractEvent<T> : IEvent {
+namespace SnowplowTracker.Events
+{
+    public abstract class AbstractEvent<T> : IEvent {
 
 		protected List<IContext> customContexts = new List<IContext>();
 		protected long timestamp = Utils.GetTimestamp();
