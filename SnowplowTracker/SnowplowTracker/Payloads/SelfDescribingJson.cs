@@ -19,11 +19,10 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace SnowplowTracker.Payloads {
-	public class SelfDescribingJson : AbstractPayload {
+namespace SnowplowTracker.Payloads
+{
+    public class SelfDescribingJson : AbstractPayload {
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SnowplowTracker.Payload.SelfDescribingJson"/> class.

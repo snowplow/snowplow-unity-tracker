@@ -19,12 +19,12 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Events {
-	public class Timing : AbstractEvent<Timing> {
+namespace SnowplowTracker.Events
+{
+    public class Timing : AbstractEvent<Timing> {
 
 		private string category;
 		private string variable;

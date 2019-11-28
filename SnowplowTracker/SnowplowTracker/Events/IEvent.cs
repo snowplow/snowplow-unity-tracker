@@ -18,14 +18,13 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 using SnowplowTracker.Payloads.Contexts;
 
-namespace SnowplowTracker.Events {
-	public interface IEvent {
+namespace SnowplowTracker.Events
+{
+    public interface IEvent {
 
 		/// <summary>
 		/// Gets the list of custom contexts attached to the event.

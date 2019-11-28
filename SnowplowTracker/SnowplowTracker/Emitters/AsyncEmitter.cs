@@ -19,22 +19,17 @@
  */
 
 using System;
-using System.Net;
-using System.Web;
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Threading;
 using SnowplowTracker.Payloads;
 using SnowplowTracker.Enums;
 using SnowplowTracker.Requests;
 using SnowplowTracker.Storage;
 using SnowplowTracker.Collections;
-using UnityHTTP;
 
-namespace SnowplowTracker.Emitters {
-	public class AsyncEmitter : AbstractEmitter {
+namespace SnowplowTracker.Emitters
+{
+    public class AsyncEmitter : AbstractEmitter {
 
 		// Emitter loop variables
 		private readonly object emitLock = new object ();
@@ -66,7 +61,7 @@ namespace SnowplowTracker.Emitters {
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
 			this.eventStore = new EventStore ();
-			this.synchronous = false;
+			this.emitSynchronously = false;
 		}
 
         /// <summary>
@@ -92,7 +87,7 @@ namespace SnowplowTracker.Emitters {
             this.byteLimitPost = byteLimitPost;
             Log.Debug("Emitter: Creating new .");
             eventStore = new EventStore(DatabaseName);
-            synchronous = false;
+            emitSynchronously = false;
         }
 
         /// <summary>

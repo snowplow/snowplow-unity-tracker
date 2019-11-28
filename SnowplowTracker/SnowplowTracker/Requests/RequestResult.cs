@@ -18,13 +18,11 @@
  * License: Apache License Version 2.0
  */
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using SnowplowTracker.Payloads;
 
-namespace SnowplowTracker.Requests {
-	public class RequestResult {
+namespace SnowplowTracker.Requests
+{
+    public class RequestResult {
 		
 		public bool success;
 		public List<int> rowIds;

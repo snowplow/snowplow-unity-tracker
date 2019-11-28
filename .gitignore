@@ -11,6 +11,7 @@
 *.userprefs
 *.pidb
 *.booproj
+*.vs
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -31,3 +32,6 @@ TestResult.xml
 # Mountebank
 *mb.pid
 *mb.log
+
+# MacOS
+*.DS_Store

@@ -27,8 +27,9 @@ using System.Web;
 using UnityJSON;
 using UnityEngine;
 
-namespace SnowplowTracker {
-	public class Utils {
+namespace SnowplowTracker
+{
+    public class Utils {
 
 		/// <summary>
 		/// Updated the provided path with the iOS or Android persistant data path, if necessary
@@ -53,7 +54,7 @@ namespace SnowplowTracker {
 		/// </summary>
 		/// <returns>a new GUID</returns>
 		public static string GetGUID() {
-			return Guid.NewGuid ().ToString ();
+			return Guid.NewGuid().ToString();
 		}
 
 		/// <summary>
@@ -61,7 +62,7 @@ namespace SnowplowTracker {
 		/// </summary>
 		/// <returns>the dictionary as a JSON String</returns>
 		public static string DictToJSONString(IDictionary dict) {
-			string result = JSON.JsonEncode(dict);
+			string result = JSON.Serialize(dict);
 			if (result == null) {
 				Log.Error("Utils: Error serializing dictionary to JSON string.");
 			}
@@ -74,7 +75,7 @@ namespace SnowplowTracker {
 		/// <returns>The UTF8 length</returns>
 		/// <param name="str">String to get the length of</param>
 		public static long GetUTF8Length(string str) {
-			return System.Text.Encoding.UTF8.GetByteCount (str);
+			return System.Text.Encoding.UTF8.GetByteCount(str);
 		}
 
 		/// <summary>
@@ -94,7 +95,7 @@ namespace SnowplowTracker {
 		public static string ToQueryString(Dictionary<string, object> payload) {
 			List<string> encodedKvPairs = new List<string> ();
 			foreach (KeyValuePair<string, object> kvPair in payload) {
-				encodedKvPairs.Add (string.Format("{0}={1}", HttpUtility.UrlEncode(kvPair.Key), HttpUtility.UrlEncode((string)kvPair.Value)));
+				encodedKvPairs.Add(string.Format("{0}={1}", HttpUtility.UrlEncode(kvPair.Key), HttpUtility.UrlEncode((string)kvPair.Value)));
 			}
 			return String.Format("?{0}", String.Join("&", encodedKvPairs.ToArray()));
 		}
@@ -140,15 +141,6 @@ namespace SnowplowTracker {
 		}
 
 		/// <summary>
-		/// Determines whether the request was successful against the specified code.
-		/// </summary>
-		/// <returns><c>true</c> if this request is successful against the specified code; otherwise, <c>false</c>.</returns>
-		/// <param name="code">HttpResponse code</param>
-		public static bool IsSuccessfulRequest(int code) {
-			return code >= 200 && code < 300;
-		}
-
-		/// <summary>
 		/// Checks the argument providied and will throw an exception if it fails.
 		/// </summary>
 		/// <param name="argument">If set to <c>true</c> argument.</param>
@@ -167,7 +159,7 @@ namespace SnowplowTracker {
 		/// <param name="dictionary">Dictionary.</param>
 		public static bool WriteDictionaryToFile(string path, Dictionary<string, object> dictionary) {
 			try {
-				File.WriteAllBytes (path, SerializeDictionary (dictionary));
+				File.WriteAllBytes(path, SerializeDictionary (dictionary));
 				return true;
 			} catch (Exception e) {
 				Log.Error("Utils: Error writing dictionary to file: " + e.StackTrace);
@@ -182,8 +174,8 @@ namespace SnowplowTracker {
 		/// <param name="path">Path.</param>
 		public static Dictionary<string, object> ReadDictionaryFromFile(string path) {
 			try {
-				byte[] bytes = File.ReadAllBytes (path);
-				return DeserializeDictionary (bytes);
+				byte[] bytes = File.ReadAllBytes(path);
+				return DeserializeDictionary(bytes);
 			} catch (Exception e) {
 				Log.Error("Utils: Error reading dictionary from file: " + e.StackTrace);
 				return null;
