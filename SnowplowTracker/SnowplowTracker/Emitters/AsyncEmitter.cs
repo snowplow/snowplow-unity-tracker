@@ -60,8 +60,7 @@ namespace SnowplowTracker.Emitters
 			this.sendLimit = sendLimit;
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
-			this.eventStore = new EventStore ();
-			this.emitSynchronously = false;
+			this.eventStore = new EventStore();
 		}
 
         /// <summary>
@@ -73,11 +72,11 @@ namespace SnowplowTracker.Emitters
         /// <param name="sendLimit">The amount of events to pull from the database per sending attempt</param>
         /// <param name="byteLimitGet">The byte limit for a GET request</param>
         /// <param name="byteLimitPost">The byte limit for a POST request</param>
-        /// <param name="DatabaseName"> Decides where the sqlite database will be located</param>
+        /// <param name="DatabaseName"> Decides where the litedb database will be located</param>
         public AsyncEmitter(string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST,
-                             int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000, string DatabaseName = "")
+                             int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000, string DatabaseName = "snowplow_events_lite.db")
         {
-            Utils.CheckArgument(!String.IsNullOrEmpty(endpoint), "Endpoint cannot be null or empty.");
+            Utils.CheckArgument(!string.IsNullOrEmpty(endpoint), "Endpoint cannot be null or empty.");
             this.endpoint = endpoint;
             collectorUri = MakeCollectorUri(endpoint, protocol, method);
             httpProtocol = protocol;
@@ -87,7 +86,6 @@ namespace SnowplowTracker.Emitters
             this.byteLimitPost = byteLimitPost;
             Log.Debug("Emitter: Creating new .");
             eventStore = new EventStore(DatabaseName);
-            emitSynchronously = false;
         }
 
         /// <summary>
@@ -143,7 +141,7 @@ namespace SnowplowTracker.Emitters
 		/// Consumes events from the event queue and adds them to the database.
 		/// </summary>
 		private void EventConsumer() {
-			Log.Debug ("Emitter: Event consumer starting up");
+			Log.Debug("Emitter: Event consumer starting up");
 
 			while (consuming) {
 				TrackerPayload payload = payloadQueue.Dequeue ();
@@ -167,7 +165,7 @@ namespace SnowplowTracker.Emitters
 		/// and subsequent removal of events from the database.
 		/// </summary>
 		private void EmitLoop() {
-			Log.Debug ("Emitter: EmitLoop starting up");
+			Log.Debug("Emitter: EmitLoop starting up");
 
 			while (sending) {
 				// Wait for something to be sent!
@@ -179,27 +177,27 @@ namespace SnowplowTracker.Emitters
 
 				// If the emitter was shutdown while waiting
 				if (!sending) {
-					Log.Debug ("Emitter: EmitLoop shutting down...");
+					Log.Debug("Emitter: EmitLoop shutting down...");
 					break;
 				}
 				List<EventRow> events = new List<EventRow>();
 
 				if (emitLock != null) {
 				    lock (emitLock) {
-					events = eventStore.GetDescEventRange (sendLimit);
-					Monitor.Pulse(emitLock);
+					    events = eventStore.GetEvents(sendLimit);
+					    Monitor.Pulse(emitLock);
 				    }
 				}
 				// Send events!
 				if (events.Count != 0) {
-					Log.Debug ("Emitter: Event count: " + events.Count);
-					List<RequestResult> results = SendRequests (events);
+					Log.Debug("Emitter: Event count: " + events.Count);
+					List<RequestResult> results = SendRequests(events);
 					events = null;
 					
 					int success = 0;
 					int failure = 0;
 					
-					List<int> eventsToDelete = new List<int>();
+					List<Guid> eventsToDelete = new List<Guid>();
 					
 					foreach (RequestResult result in results) {
 						if (result.success) {
@@ -211,20 +209,20 @@ namespace SnowplowTracker.Emitters
 					}
 					if (emitLock != null) {
 						lock (emitLock) {
-					    		eventStore.DeleteEvents(eventsToDelete);
-					    		Monitor.Pulse(emitLock);
+					    	eventStore.DeleteEvents(eventsToDelete);
+					    	Monitor.Pulse(emitLock);
 						}
-				    	}
+				    }
 					
-					Log.Debug ("Emitter: event sending results.");
-					Log.Debug (" + Successful: " + success);
-					Log.Debug (" + Failure: " + failure);
+					Log.Debug("Emitter: event sending results.");
+					Log.Debug(" + Successful: " + success);
+					Log.Debug(" + Failure: " + failure);
 					
 					if (failure > 0 && success == 0) {
-						Log.Error ("Emitter: All events failed to send; pausing emitter for ten seconds...");
-						Thread.Sleep (FAIL_INTERVAL);
+						Log.Error("Emitter: All events failed to send; pausing emitter for ten seconds...");
+						Thread.Sleep(FAIL_INTERVAL);
 					} else {
-						Log.Debug ("Emitter: All events sent successfully; waiting for more...");
+						Log.Debug("Emitter: All events sent successfully; waiting for more...");
 					}
 				}
 			}

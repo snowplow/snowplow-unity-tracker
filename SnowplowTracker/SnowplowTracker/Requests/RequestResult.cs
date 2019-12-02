@@ -18,23 +18,25 @@
  * License: Apache License Version 2.0
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace SnowplowTracker.Requests
 {
-    public class RequestResult {
-		
-		public bool success;
-		public List<int> rowIds;
+    public class RequestResult
+    {
+        public bool success;
+        public List<Guid> rowIds;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SnowplowTracker.Requests.RequestResult"/> class.
-		/// </summary>
-		/// <param name="success">If set to <c>true</c> success.</param>
-		/// <param name="rowIds">Row identifiers.</param>
-		public RequestResult(bool success, List<int> rowIds) {
-			this.success = success;
-			this.rowIds = rowIds;
-		}
-	}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Requests.RequestResult"/> class.
+        /// </summary>
+        /// <param name="success">If set to <c>true</c> success.</param>
+        /// <param name="rowIds">Row identifiers.</param>
+        public RequestResult(bool success, List<Guid> rowIds)
+        {
+            this.success = success;
+            this.rowIds = rowIds;
+        }
+    }
 }

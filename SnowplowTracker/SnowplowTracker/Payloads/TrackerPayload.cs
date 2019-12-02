@@ -25,6 +25,15 @@ namespace SnowplowTracker.Payloads
 {
     public class TrackerPayload : AbstractPayload {
 
+        public static TrackerPayload From(string json)
+        {
+            var trackerPayload = new TrackerPayload
+            {
+                payload = Utils.JSONStringToDict(json)
+            };
+            return trackerPayload;
+        }
+
 		/// <summary>
 		/// Add the specified key and value.
 		/// </summary>
@@ -34,7 +43,7 @@ namespace SnowplowTracker.Payloads
 			if (String.IsNullOrEmpty(key) || String.IsNullOrEmpty(value)) {
 				return;
 			}
-			payload [key] = value;
+			payload[key] = value;
 		}
 
 		/// <summary>
@@ -46,7 +55,7 @@ namespace SnowplowTracker.Payloads
 				return;
 			}
 			foreach (KeyValuePair<string, string> entry in dictionary) {
-				Add (entry.Key, entry.Value);
+				Add(entry.Key, entry.Value);
 			}
 		}
 
@@ -60,7 +69,7 @@ namespace SnowplowTracker.Payloads
 			}
 			foreach (KeyValuePair<string, object> entry in dictionary) {
 				if (entry.Value is string) {
-					Add (entry.Key, (string)entry.Value);
+					Add(entry.Key, (string)entry.Value);
 				}
 			}
 		}
@@ -76,12 +85,12 @@ namespace SnowplowTracker.Payloads
 			if (jsonDict == null || jsonDict.Count == 0) {
 				return;
 			}
-			string jsonString = Utils.DictToJSONString (jsonDict);
-			if (!String.IsNullOrEmpty (jsonString)) {
+			string jsonString = Utils.DictToJSONString(jsonDict);
+			if (!String.IsNullOrEmpty(jsonString)) {
 				if (encodeBase64) {
-					Add (typeEncoded, Utils.Base64EncodeString (jsonString));
+					Add(typeEncoded, Utils.Base64EncodeString (jsonString));
 				} else {
-					Add (typeNotEncoded, jsonString);
+					Add(typeNotEncoded, jsonString);
 				}
 			}
 		}

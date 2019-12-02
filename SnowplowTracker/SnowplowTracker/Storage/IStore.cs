@@ -1,6 +1,6 @@
-/*
- * StorageMechanism.cs
- * SnowplowTracker.Enums
+﻿/*
+ * EventStore.cs
+ * SnowplowTracker.Storage
  * 
  * Copyright (c) 2015 Snowplow Analytics Ltd. All rights reserved.
  *
@@ -18,20 +18,16 @@
  * License: Apache License Version 2.0
  */
 
-namespace SnowplowTracker.Enums
+using System;
+using System.Collections.Generic;
+using SnowplowTracker.Payloads;
+
+namespace SnowplowTracker.Storage
 {
-    public class StorageMechanism {
-		
-		public string Value { get; set; }
-		
-		private StorageMechanism (string value) { 
-			Value = value; 
-		}
-		
-		public static StorageMechanism Litedb       { get { return new StorageMechanism("LITEDB"); }}
-		public static StorageMechanism Cookie1      { get { return new StorageMechanism("COOKIE_1"); }}
-		public static StorageMechanism Cookie3      { get { return new StorageMechanism("COOKIE_3"); }}
-		public static StorageMechanism LocalStorage { get { return new StorageMechanism("LOCAL_STORAGE"); }}
-		public static StorageMechanism FlashLso     { get { return new StorageMechanism("FLASH_LSO"); }}
-	}
+    public interface IStore
+    {
+        bool AddEvent(TrackerPayload payload);
+        bool DeleteEvents(List<Guid> rowIds);
+        long GetEventCount();
+    }
 }

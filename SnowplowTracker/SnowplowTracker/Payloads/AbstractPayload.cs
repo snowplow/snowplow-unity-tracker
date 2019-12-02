@@ -39,15 +39,15 @@ namespace SnowplowTracker.Payloads {
 		/// </summary>
 		/// <returns>The total byte size</returns>
 		public long GetByteSize() {
-			return Utils.GetUTF8Length (ToString ());
+			return Utils.GetUTF8Length(ToString ());
 		}
 
 		/// <summary>
 		/// Returns a JSON string representing the payload.
 		/// </summary>
 		/// <returns>A JSON string representing the payload.</returns>
-		public override String ToString() {
-			return Utils.DictToJSONString (payload);
+		public override string ToString() {
+			return Utils.DictToJSONString(payload);
 		}
 	}
 }
