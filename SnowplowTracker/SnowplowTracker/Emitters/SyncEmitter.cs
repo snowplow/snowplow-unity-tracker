@@ -23,6 +23,7 @@ using SnowplowTracker.Payloads;
 using SnowplowTracker.Enums;
 using SnowplowTracker.Requests;
 using SnowplowTracker.Storage;
+using System;
 
 namespace SnowplowTracker.Emitters
 {
@@ -39,7 +40,7 @@ namespace SnowplowTracker.Emitters
 		/// <param name="byteLimitPost">The byte limit for a POST request</param>
 		public SyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
 		                    int sendLimit = 10, long byteLimitGet = 52000, long byteLimitPost = 52000) {
-			Utils.CheckArgument (!string.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
+			Utils.CheckArgument(!string.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;
 			this.collectorUri = MakeCollectorUri(endpoint, protocol, method);
 			this.httpProtocol = protocol;
@@ -48,7 +49,6 @@ namespace SnowplowTracker.Emitters
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
 			this.eventStore = new EventStore();
-			this.emitSynchronously = true;
 		}
 		
 		/// <summary>
@@ -56,8 +56,9 @@ namespace SnowplowTracker.Emitters
 		/// </summary>
 		/// <param name="payload">Payload.</param>
 		public override void Add(TrackerPayload payload) {
-			eventStore.AddEvent (payload);
-			if (eventStore.GetEventCount () >= sendLimit) {
+			eventStore.AddEvent(payload);
+
+			if (eventStore.GetEventCount() >= sendLimit) {
 				EmitLoop();
 			}
 		}
@@ -66,7 +67,7 @@ namespace SnowplowTracker.Emitters
 		/// Starts an Emit() Loop which will attempt to send the events in the database.
 		/// </summary>
 		public override void Start() {
-			EmitLoop ();
+			EmitLoop();
 		}
 		
 		/// <summary>
@@ -82,18 +83,18 @@ namespace SnowplowTracker.Emitters
 		/// Will send events until either everything fails or the database is empty.
 		/// </summary>
 		private void EmitLoop() {
-			Log.Debug ("Emitter: EmitLoop starting...");
-			while (eventStore.GetEventCount () != 0) {
-				List<EventRow> events = eventStore.GetDescEventRange (sendLimit);
+			Log.Debug("Emitter: EmitLoop starting...");
+			while (eventStore.GetEventCount() != 0) {
+				List<EventRow> events = eventStore.GetEvents(sendLimit);
 				if (events.Count != 0) {
-					Log.Debug ("Emitter: Event count: " + events.Count);
+					Log.Debug("Emitter: Event count: " + events.Count);
 					List<RequestResult> results = SendRequests(events);
 					events = null;
 					
 					int success = 0;
 					int failure = 0;
 					
-					List<int> eventsToDelete = new List<int>();
+					List<Guid> eventsToDelete = new List<Guid>();
 					
 					foreach (RequestResult result in results) {
 						if (result.success) {
@@ -106,19 +107,19 @@ namespace SnowplowTracker.Emitters
 					
 					eventStore.DeleteEvents(eventsToDelete);
 					
-					Log.Debug ("Emitter: event sending results.");
-					Log.Debug (" + Successful: " + success);
-					Log.Debug (" + Failure: " + failure);
+					Log.Debug("Emitter: event sending results.");
+					Log.Debug(" + Successful: " + success);
+					Log.Debug(" + Failure: " + failure);
 					
 					if (failure > 0 && success == 0) {
-						Log.Error ("Emitter: All events failed to send; exiting loop.");
+						Log.Error("Emitter: All events failed to send; exiting loop.");
 						break;
 					} else {
-						Log.Debug ("Emitter: All events sent successfully, checking for more...");
+						Log.Debug("Emitter: All events sent successfully, checking for more...");
 					}
 				}
 			}
-			Log.Debug ("Emitter: EmitLoop ended.");
+			Log.Debug("Emitter: EmitLoop ended.");
 		}
 		
 		// --- Helpers

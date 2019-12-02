@@ -18,13 +18,14 @@
  * License: Apache License Version 2.0
  */
 
+using System;
 using SnowplowTracker.Payloads;
 
 namespace SnowplowTracker.Storage
 {
     public class EventRow {
 
-		private int rowId;
+		private Guid rowId;
 		private TrackerPayload payload;
 
 		/// <summary>
@@ -32,7 +33,7 @@ namespace SnowplowTracker.Storage
 		/// </summary>
 		/// <param name="rowId">The row number of the event in the database</param>
 		/// <param name="payload">The event payload that needs to be sent</param>
-		public EventRow (int rowId, TrackerPayload payload) {
+		public EventRow (Guid rowId, TrackerPayload payload) {
 			this.rowId = rowId;
 			this.payload = payload;
 		}
@@ -41,7 +42,7 @@ namespace SnowplowTracker.Storage
 		/// Gets the row identifier.
 		/// </summary>
 		/// <returns>The row identifier.</returns>
-		public int GetRowId() {
+		public Guid GetRowId() {
 			return rowId;
 		}
 
