@@ -19,44 +19,34 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.IO;
+using System.Threading;
+using UnityEngine;
 using SnowplowTracker.Payloads;
+using LiteDB;
 
 namespace SnowplowTracker.Storage
 {
-    public class EventStore
+    public class EventStore : IStore
     {
-        // Connection
-        //private SqliteConnection dbConnection;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SnowplowTracker.Storage.EventStore"/> class.
-        /// </summary>
-        public EventStore()
+        public class Event
         {
+            public int Id { get; set; }
+            public string Payload { get; set; }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SnowplowTracker.Storage.EventStore"/> class.
-        /// With the database location.
-        /// </summary>
-        public EventStore(string DatabaseName)
-        {
-        }
+        private readonly LiteDatabase _db;
+        private readonly ReaderWriterLockSlim _dbLock = new ReaderWriterLockSlim();
 
-        /// <summary>
-        /// Opens a connection and create's the events tables if required.
-        /// </summary>
-        public void Open()
+        public EventStore(string filename = "snowplow_events.db")
         {
-        }
-
-        /// <summary>
-        /// Closes the database connection if is currently active.
-        /// </summary>
-        public void Close()
-        {
+            //Exclusive mode required for iOS
+            _db = new LiteDatabase(
+                    new ConnectionString($"{Application.persistentDataPath }/{filename}")
+                    {
+                        Mode = FileMode.Exclusive
+                    });
         }
 
         // --- Database Functions
@@ -68,17 +58,26 @@ namespace SnowplowTracker.Storage
         /// <param name="payload">An event payload</param>
         public bool AddEvent(TrackerPayload payload)
         {
-            return false;
-        }
+            try
+            {
+                _dbLock.EnterWriteLock();
+                // Get event collection
+                var col = _db.GetCollection<Event>("event");
 
-        /// <summary>
-        /// Deletes the event.
-        /// </summary>
-        /// <returns><c>true</c>, if event was deleted, <c>false</c> otherwise.</returns>
-        /// <param name="rowId">Row id number</param>
-        public bool DeleteEvent(int rowId)
-        {
-            return false;
+                col.Insert(new Event { Payload = payload.ToString() });
+
+                Log.Verbose("EventStore: Event added");
+                return true;
+            }
+            catch (Exception)
+            {
+                Log.Verbose("EventStore: Event add failed");
+                return false;
+            }
+            finally
+            {
+                _dbLock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -88,16 +87,26 @@ namespace SnowplowTracker.Storage
         /// <param name="rowId">Row id number</param>
         public bool DeleteEvents(List<int> rowIds)
         {
-            return false;
-        }
+            try
+            {
+                _dbLock.EnterWriteLock();
+                // Get event collection
+                var events = _db.GetCollection<Event>("event");
 
-        /// <summary>
-        /// Deletes all events.
-        /// </summary>
-        /// <returns><c>true</c>, if all events was deleted, <c>false</c> otherwise.</returns>
-        public bool DeleteAllEvents()
-        {
-            return false;
+                var deleteCount = events.Delete(x => rowIds.Contains(x.Id));
+
+                Log.Verbose($"EventStore: Events deleted - Attempted: {rowIds.Count} / Deleted: {deleteCount}");
+                return deleteCount == rowIds.Count;
+            }
+            catch (Exception)
+            {
+                Log.Verbose($"EventStore: Events delete failed");
+                return false;
+            }
+            finally
+            {
+                _dbLock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -106,26 +115,20 @@ namespace SnowplowTracker.Storage
         /// <returns>The event count.</returns>
         public long GetEventCount()
         {
-            return 0L;
-        }
-
-        /// <summary>
-        /// Gets an event at a specific row id
-        /// </summary>
-        /// <returns>The event row</returns>
-        /// <param name="rowId">Row id number</param>
-        public EventRow GetEvent(int rowId)
-        {
-                return null;
-        }
-
-        /// <summary>
-        /// Gets all events in the database
-        /// </summary>
-        /// <returns>The list of rows</returns>
-        public List<EventRow> GetAllEvents()
-        {
-            return new List<EventRow>();
+            try
+            {
+                _dbLock.EnterReadLock();
+                return _db.GetCollection<Event>("event").LongCount();
+            }
+            catch (Exception)
+            {
+                Log.Verbose($"EventStore: Get Event Count failed");
+                return 0L;
+            }
+            finally
+            {
+                _dbLock.ExitReadLock();
+            }
         }
 
         /// <summary>
@@ -133,30 +136,29 @@ namespace SnowplowTracker.Storage
         /// </summary>
         /// <returns>The list of rows within the range</returns>
         /// <param name="range">The amount of rows we want</param>
-        public List<EventRow> GetDescEventRange(int range)
+        public List<EventRow> GetEvents(int range)
         {
-            return new List<EventRow>();
-        }
+            try
+            {
+                _dbLock.EnterReadLock();
+                // Get event collection
+                var events = _db.GetCollection<Event>("event");
 
-        /// <summary>
-        /// Queries the database.
-        /// </summary>
-        /// <returns>A list of rows returned from the database</returns>
-        /// <param name="query">The SQL Query to execute</param>
-        public List<EventRow> QueryDatabase(string query)
-        {
-            return new List<EventRow>();
-        }
-
-        // --- Helpers
-
-        /// <summary>
-        /// Determines whether this database connection is open.
-        /// </summary>
-        /// <returns><c>true</c> if this the database is open; otherwise, <c>false</c>.</returns>
-        public bool IsDatabaseOpen()
-        {
-            return false;
+                return events.FindAll()
+                        .OrderByDescending(x => x.Id)
+                        .Take(range)
+                        .Select(x => new EventRow(x.Id, TrackerPayload.From(x.Payload)))
+                        .ToList();
+            }
+            catch (Exception)
+            {
+                Log.Verbose($"EventStore: Get Events failed");
+                return new List<EventRow>();
+            }
+            finally
+            {
+                _dbLock.ExitReadLock();
+            }
         }
     }
 }

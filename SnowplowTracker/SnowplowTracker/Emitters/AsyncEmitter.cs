@@ -186,7 +186,7 @@ namespace SnowplowTracker.Emitters
 
 				if (emitLock != null) {
 				    lock (emitLock) {
-					events = eventStore.GetDescEventRange (sendLimit);
+					events = eventStore.GetEvents(sendLimit);
 					Monitor.Pulse(emitLock);
 				    }
 				}

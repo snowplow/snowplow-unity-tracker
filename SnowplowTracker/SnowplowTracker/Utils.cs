@@ -69,12 +69,26 @@ namespace SnowplowTracker
 			return result;
 		}
 
-		/// <summary>
-		/// Gets the length of the UTF8 String.
-		/// </summary>
-		/// <returns>The UTF8 length</returns>
-		/// <param name="str">String to get the length of</param>
-		public static long GetUTF8Length(string str) {
+        /// <summary>
+        /// Returns a dictionary converted to a JSON String
+        /// </summary>
+        /// <returns>the dictionary as a JSON String</returns>
+        public static Dictionary<string, object> JSONStringToDict(string jsonString)
+        {
+            var result = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
+            if (result == null)
+            {
+                Log.Error("Utils: Error deserializing JSON string to dictionary.");
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the length of the UTF8 String.
+        /// </summary>
+        /// <returns>The UTF8 length</returns>
+        /// <param name="str">String to get the length of</param>
+        public static long GetUTF8Length(string str) {
 			return System.Text.Encoding.UTF8.GetByteCount(str);
 		}
 
