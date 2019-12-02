@@ -18,6 +18,7 @@
  * License: Apache License Version 2.0
  */
 
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -34,30 +35,30 @@ namespace SnowplowTracker.Requests
         };
 
         private readonly HttpRequest request;
-        private readonly List<int> rowIds;
-		private readonly bool oversize;
-		private readonly ConcurrentQueue<RequestResult> resultQueue;
+        private readonly List<Guid> rowIds;
+        private readonly bool oversize;
+        private readonly ConcurrentQueue<RequestResult> resultQueue;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SnowplowTracker.Requests.ReadyRequest"/> class.
-		/// </summary>
-		/// <param name="request">Request.</param>
-		/// <param name="rowIds">Row identifiers.</param>
-		/// <param name="oversize">If set to <c>true</c> oversize.</param>
-		public ReadyRequest(HttpRequest request, List<int> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Requests.ReadyRequest"/> class.
+        /// </summary>
+        /// <param name="request">Request.</param>
+        /// <param name="rowIds">Row identifiers.</param>
+        /// <param name="oversize">If set to <c>true</c> oversize.</param>
+        public ReadyRequest(HttpRequest request, List<Guid> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue)
+        {
             this.request = request;
             this.rowIds = rowIds;
-			this.oversize = oversize;
-			this.resultQueue = resultQueue;
-		}
+            this.oversize = oversize;
+            this.resultQueue = resultQueue;
+        }
 
-		/// <summary>
-		/// Send the request with the callback mechanism.
-		/// </summary>
-		public void Send(bool synchronous) {
-            Task<HttpResponseMessage> response = null;
-            switch (request.Method)
-            {
+        /// <summary>
+        /// Send a blocking request.
+        /// </summary>
+        public void Send()
+        {
+            try {
                 Task<HttpResponseMessage> response = null;
 
                 switch (request.Method)
@@ -83,5 +84,5 @@ namespace SnowplowTracker.Requests
             var success = oversize ? true : response.IsSuccessStatusCode;
             resultQueue.Enqueue(new RequestResult(success, rowIds));
         }
-	}
+    }
 }

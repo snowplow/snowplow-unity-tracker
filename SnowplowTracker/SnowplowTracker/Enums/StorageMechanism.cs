@@ -28,7 +28,7 @@ namespace SnowplowTracker.Enums
 			Value = value; 
 		}
 		
-		public static StorageMechanism Sqlite       { get { return new StorageMechanism("SQLITE"); }}
+		public static StorageMechanism Litedb       { get { return new StorageMechanism("LITEDB"); }}
 		public static StorageMechanism Cookie1      { get { return new StorageMechanism("COOKIE_1"); }}
 		public static StorageMechanism Cookie3      { get { return new StorageMechanism("COOKIE_3"); }}
 		public static StorageMechanism LocalStorage { get { return new StorageMechanism("LOCAL_STORAGE"); }}
