@@ -210,8 +210,6 @@ namespace SnowplowTracker.Emitters
         /// </summary>
         /// <returns>The POST request that is already being sent</returns>
         /// <param name="events">Events to send in the post</param>
-        /// <param name="ids">The row ids</param>
-        /// <param name="oversize">If the event list is oversize</param>
         protected HttpContent GetPOSTRequest(List<Dictionary<string, object>> events)
         {
             // Add STM to event
@@ -229,9 +227,7 @@ namespace SnowplowTracker.Emitters
         /// Gets a ready request containing a GET
         /// </summary>
         /// <returns>The GET request that is already being sent</returns>
-        /// <param name="events">Event to send in the GET</param>
-        /// <param name="ids">The row id</param>
-        /// <param name="oversize">If the event list is oversize</param>
+        /// <param name="eventDict">The event to be converted into a URI</param>
         protected Uri GetGETRequest(Dictionary<string, object> eventDict)
         {
             // Add STM to event

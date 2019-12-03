@@ -28,17 +28,18 @@ using System;
 namespace SnowplowTracker.Emitters
 {
     public class SyncEmitter : AbstractEmitter {
-		
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SnowplowTracker.Emitter"/> class.
-		/// </summary>
-		/// <param name="endpoint">The collector endpoint uri</param>
-		/// <param name="protocol">What protocol to send under</param>
-		/// <param name="method">What method of sending to use</param>
-		/// <param name="sendLimit">The amount of events to pull from the database per sending attempt</param>
-		/// <param name="byteLimitGet">The byte limit for a GET request</param>
-		/// <param name="byteLimitPost">The byte limit for a POST request</param>
-		public SyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Emitters.SyncEmitter"/> class.
+        /// </summary>
+        /// <param name="endpoint">The collector endpoint uri</param>
+        /// <param name="protocol">What protocol to send under</param>
+        /// <param name="method">What method of sending to use</param>
+        /// <param name="sendLimit">The amount of events to pull from the database per sending attempt</param>
+        /// <param name="byteLimitGet">The byte limit for a GET request</param>
+        /// <param name="byteLimitPost">The byte limit for a POST request</param>
+        /// <param name="eventStore">Will default to new EventStore()</param>
+        public SyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
 		                    int sendLimit = 10, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
 			Utils.CheckArgument(!string.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;

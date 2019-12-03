@@ -41,17 +41,18 @@ namespace SnowplowTracker.Emitters
 		private volatile bool consuming = false;
 		private Thread payloadConsumer;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SnowplowTracker.Emitter"/> class.
-		/// </summary>
-		/// <param name="endpoint">The collector endpoint uri</param>
-		/// <param name="protocol">What protocol to send under</param>
-		/// <param name="method">What method of sending to use</param>
-		/// <param name="sendLimit">The amount of events to pull from the database per sending attempt</param>
-		/// <param name="byteLimitGet">The byte limit for a GET request</param>
-		/// <param name="byteLimitPost">The byte limit for a POST request</param>
-		public AsyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
-		                     int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Emitters.AsyncEmitter"/> class.
+        /// </summary>
+        /// <param name="endpoint">The collector endpoint uri</param>
+        /// <param name="protocol">What protocol to send under</param>
+        /// <param name="method">What method of sending to use</param>
+        /// <param name="sendLimit">The amount of events to pull from the database per sending attempt</param>
+        /// <param name="byteLimitGet">The byte limit for a GET request</param>
+        /// <param name="byteLimitPost">The byte limit for a POST request</param>
+        /// <param name="eventStore">Will default to new EventStore()</param>
+        public AsyncEmitter(string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST,
+                             int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
 			Utils.CheckArgument (!String.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;
 			this.collectorUri = MakeCollectorUri(endpoint, protocol, method);
