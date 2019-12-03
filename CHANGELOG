@@ -1,4 +1,11 @@
-Version 0.3.0 (2019-4-08)
+Version 0.4.0 (2019-12-03)
+--------------------------
+Migrate SnowplowTracker to .NET Standard 2.0 (close #22)
+Switch to new Database library for better cross platform support (close #23)
+Fix Peru version so vagrant up succeeds (close #20)
+Fix Mobile Paths to support Android (close #18)
+
+Version 0.3.0 (2019-04-08)
 --------------------------
 Fix paths used in mobile file storage and databases (close #15)
 Fix test method call parameter ambiguities (close #16)
