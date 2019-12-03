@@ -45,6 +45,7 @@ namespace SnowplowTracker.Requests
         /// <param name="request">Request.</param>
         /// <param name="rowIds">Row identifiers.</param>
         /// <param name="oversize">If set to <c>true</c> oversize.</param>
+        /// <param name="resultQueue">The queue that sent events will be added to</param>
         public ReadyRequest(HttpRequest request, List<Guid> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue)
         {
             this.request = request;
@@ -81,7 +82,7 @@ namespace SnowplowTracker.Requests
 
         private void AddToResultQueue(HttpResponseMessage response)
         {
-            var success = oversize ? true : response.IsSuccessStatusCode;
+            var success = oversize || response.IsSuccessStatusCode;
             resultQueue.Enqueue(new RequestResult(success, rowIds));
         }
     }

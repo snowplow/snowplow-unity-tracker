@@ -1,6 +1,8 @@
 # Unity Analytics for Snowplow
 
-[![Release][release-image]][releases] [![License][license-image]][license]
+[![Build Status][travis-image]][travis]
+[![Release][release-image]][releases]
+[![License][license-image]][license]
 
 ## Overview
 
@@ -10,6 +12,12 @@ With this tracker you can collect event data from your Unity-based applications,
 
 ## Quickstart
 
+### Requirements
+
+* SnowplowTracker requires Unity 2018.1+ and .NET Standard 2.0 Api Compatibility Level. 
+* SnowplowTracker supports both Mono and IL2CPP scripting backends.
+* SnowplowTracker.Demo and SnowplowTracker.Tests are Unity 2018.4.13f1 (LTS) projects.
+
 ### Building
 
 Assuming git, **[Vagrant][vagrant-install]** and **[VirtualBox][virtualbox-install]** installed:
@@ -17,8 +25,6 @@ Assuming git, **[Vagrant][vagrant-install]** and **[VirtualBox][virtualbox-insta
 ```bash
  host$ git clone https://github.com/snowplow/snowplow-unity-tracker.git
  host$ cd snowplow-unity-tracker
- host$ vagrant up && vagrant ssh
-guest$ cd /vagrant
 ```
 
 ### Development
@@ -33,6 +39,8 @@ To work on the Tracker:
 ### Setting up a Test Endpoint
 
 ```bash
+host$ vagrant up && vagrant ssh
+guest$ cd /vagrant
 guest$ mb &
 guest$ curl -X POST -d @/vagrant/Resources/imposter.json http://localhost:2525/imposters
 ```
@@ -42,9 +50,9 @@ The test collector to use: `http://localhost:4545`
 Now open Mountebank in your browser (on host is fine):
 * **[http://localhost:2525](http://localhost:2525)**
 
-### Running Tests
+### Testing Framework
 
-Currently we have only tested developing from within `MonoDevelop-Unity`.  The IDE that is bundled with the Unity installer for Mac OSX.  However the project *should* open with any C# IDE.
+Requires: Unity 2018.4.13f1 (LTS)
 
 * Open `snowplow-unity-tracker/SnowplowTracker.Tests` in the Unity Editor
 * Build the SnowplowTracker solution (desribed above) if you have made any changes to the Tracker. This will copy the DLLs to Demo and Tests asset folders.
@@ -54,17 +62,19 @@ Currently we have only tested developing from within `MonoDevelop-Unity`.  The I
 
 Please note that all Unit Tests are written with **[NUnit][nunit]**.
 
-### Running the Snowpong Demo Game
+### Running the Snowplow Demo Game
 
-To open the Demo Game simply select the following file solution from Unity, `snowplow-unity-tracker/DemoGame/DemoGame.sln`, you can then build and run it yourself.
-Currently the Demo will only play on your desktop as the layout has not been configured for mobile platforms yet.
+Requires: Unity 2018.4.13f1 (LTS)
+
+To open the Demo Game simply add the following folder within Unity Hub, `snowplow-unity-tracker/SnowplowTracker.Demo`, you can then build and run it yourself.
 
 Tested Platforms:
 
 * Windows
 * Mac OSX
 * Linux
-* iOS (Opens but not playable as of yet)
+* iOS
+* Android
 
 ## Find out more
 
@@ -93,11 +103,14 @@ limitations under the License.
 [vagrant-install]: http://docs.vagrantup.com/v2/installation/index.html
 [virtualbox-install]: https://www.virtualbox.org/wiki/Downloads
 
-[release-image]: http://img.shields.io/badge/release-0.3.0-blue.svg?style=flat
+[release-image]: http://img.shields.io/badge/release-0.4.0-blue.svg?style=flat
 [releases]: https://github.com/snowplow/snowplow-unity-tracker/releases
 
 [license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
 [license]: http://www.apache.org/licenses/LICENSE-2.0
+
+[travis-image]: https://travis-ci.org/snowplow/snowplow-unity-tracker.svg?branch=master
+[travis]: https://travis-ci.org/snowplow/snowplow-unity-tracker
 
 [techdocs-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/techdocs.png
 [setup-image]: https://d3i6fms1cm1j0i.cloudfront.net/github/images/setup.png

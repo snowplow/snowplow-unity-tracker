@@ -42,6 +42,11 @@ namespace SnowplowTracker.Storage
         private readonly LiteDatabase _db;
         private readonly ReaderWriterLockSlim _dbLock = new ReaderWriterLockSlim();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Storage.EventStore"/> class.
+        /// </summary>
+        /// <param name="filename">The location and filename where to save the .db file</param>
+        /// <param name="saveUnityInPersistentDataPath">Will append Application.persistentDataPath onto filename if true</param>
         public EventStore(string filename = "snowplow_events_lite.db", bool saveUnityInPersistentDataPath = true)
         {
             var filePath = filename;

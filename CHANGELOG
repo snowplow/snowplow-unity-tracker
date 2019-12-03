@@ -1,4 +1,17 @@
-Version 0.3.0 (2019-4-08)
+Version 0.4.0 (2019-12-10)
+--------------------------
+Migrate SnowplowTracker to .NET Standard 2.0 (close #22)
+Switch to new Database library for better cross platform support (close #23)
+Expose EventStore Interface for easy extension (close #32)
+Port Snowplow Demo Game to Android/iOS (close #3)
+Migrate test suite to .NET Standard 2.0 (#29)
+Include link.xml and required DLLs in Resources folder for all platforms (close #30)
+Fix Mobile Paths to support Android (close #18)
+Fix Peru version so vagrant up succeeds (close #20)
+Update Copyright notices to 2019 (close #31)
+Automate build using Travis (close #24)
+
+Version 0.3.0 (2019-04-08)
 --------------------------
 Fix paths used in mobile file storage and databases (close #15)
 Fix test method call parameter ambiguities (close #16)
