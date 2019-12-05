@@ -18,7 +18,6 @@
  * License: Apache License Version 2.0
  */
 
-using System;
 using System.Collections.Generic;
 
 namespace SnowplowTracker.Payloads {
@@ -39,7 +38,7 @@ namespace SnowplowTracker.Payloads {
 		/// </summary>
 		/// <returns>The total byte size</returns>
 		public long GetByteSize() {
-			return Utils.GetUTF8Length(ToString ());
+			return Utils.GetUTF8Length(ToString());
 		}
 
 		/// <summary>

@@ -22,8 +22,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 using SnowplowTracker.Payloads;
+using UnityEngine;
 using LiteDB;
 
 namespace SnowplowTracker.Storage
@@ -42,7 +42,7 @@ namespace SnowplowTracker.Storage
         private readonly LiteDatabase _db;
         private readonly ReaderWriterLockSlim _dbLock = new ReaderWriterLockSlim();
 
-        public EventStore(string filename = "snowplow_events_lite.db")
+        public EventStore(string filename = "snowplow_events_lite.db", bool saveUnityInPersistentDataPath = true)
         {
             var filePath = filename;
             if (saveUnityInPersistentDataPath)
