@@ -6,6 +6,42 @@
     <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
+</command>
+          <workingdir>${TargetDir}</workingdir>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
+</command>
+          <workingdir>${TargetDir}</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
+</command>
+          <workingdir>${TargetDir}</workingdir>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
+</command>
+          <workingdir>${TargetDir}</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>..\..\Resources\UnityEngine.dll</HintPath>
