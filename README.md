@@ -21,6 +21,15 @@ Assuming git, **[Vagrant][vagrant-install]** and **[VirtualBox][virtualbox-insta
 guest$ cd /vagrant
 ```
 
+### Development
+
+To work on the Tracker:
+
+* Open the following file in your IDE of choice (Visual Studio, Visual Studio for Mac or JetBrains Rider): `snowplow-unity-tracker/SnowplowTracker/SnowplowTracker.sln`
+* This solution file will open the `SnowplowTracker` and `UnityJSON` libraries in your editor.
+* Build files will output to bin/Debug or bin/Release depending on your configuration.
+* Built DLLs will also be copied on successful builds to the Demo and Test projects Assets folders.
+
 ### Setting up a Test Endpoint
 
 ```bash
@@ -33,14 +42,15 @@ The test collector to use: `http://localhost:4545`
 Now open Mountebank in your browser (on host is fine):
 * **[http://localhost:2525](http://localhost:2525)**
 
-### Development
+### Running Tests
 
 Currently we have only tested developing from within `MonoDevelop-Unity`.  The IDE that is bundled with the Unity installer for Mac OSX.  However the project *should* open with any C# IDE.
 
-To work on the Tracker:
-
-* Open the following file in your IDE of choice: `snowplow-unity-tracker/SnowplowTracker/SnowplowTracker.sln`
-* This solution file will open the `SnowplowTracker`, `SnowplowTrackerTests`, `UnityHTTP` and `UnityJSON` libraries in your editor.
+* Open `snowplow-unity-tracker/SnowplowTracker.Tests` in the Unity Editor
+* Build the SnowplowTracker solution (desribed above) if you have made any changes to the Tracker. This will copy the DLLs to Demo and Tests asset folders.
+* Ensure the Mountebank Test Collector is up and running (desribed above)
+* Open the Test Runner `Window` -> `General` -> `Test Runner` and open `EditMode`
+* Click `Run All` to run all tests
 
 Please note that all Unit Tests are written with **[NUnit][nunit]**.
 
