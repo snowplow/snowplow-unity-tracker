@@ -51,7 +51,7 @@ namespace SnowplowTracker.Emitters
 		/// <param name="byteLimitGet">The byte limit for a GET request</param>
 		/// <param name="byteLimitPost">The byte limit for a POST request</param>
 		public AsyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
-		                     int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000) {
+		                     int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
 			Utils.CheckArgument (!String.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;
 			this.collectorUri = MakeCollectorUri(endpoint, protocol, method);
@@ -60,33 +60,8 @@ namespace SnowplowTracker.Emitters
 			this.sendLimit = sendLimit;
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
-			this.eventStore = new EventStore();
+			this.eventStore = eventStore ?? new EventStore();
 		}
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SnowplowTracker.Emitter"/> class.
-        /// </summary>
-        /// <param name="endpoint">The collector endpoint uri</param>
-        /// <param name="protocol">What protocol to send under</param>
-        /// <param name="method">What method of sending to use</param>
-        /// <param name="sendLimit">The amount of events to pull from the database per sending attempt</param>
-        /// <param name="byteLimitGet">The byte limit for a GET request</param>
-        /// <param name="byteLimitPost">The byte limit for a POST request</param>
-        /// <param name="DatabaseName"> Decides where the litedb database will be located</param>
-        public AsyncEmitter(string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST,
-                             int sendLimit = 500, long byteLimitGet = 52000, long byteLimitPost = 52000, string DatabaseName = "snowplow_events_lite.db")
-        {
-            Utils.CheckArgument(!string.IsNullOrEmpty(endpoint), "Endpoint cannot be null or empty.");
-            this.endpoint = endpoint;
-            collectorUri = MakeCollectorUri(endpoint, protocol, method);
-            httpProtocol = protocol;
-            httpMethod = method;
-            this.sendLimit = sendLimit;
-            this.byteLimitGet = byteLimitGet;
-            this.byteLimitPost = byteLimitPost;
-            Log.Debug("Emitter: Creating new .");
-            eventStore = new EventStore(DatabaseName);
-        }
 
         /// <summary>
         /// Adds an event payload to the database.
