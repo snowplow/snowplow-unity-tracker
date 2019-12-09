@@ -39,7 +39,7 @@ namespace SnowplowTracker.Emitters
 		/// <param name="byteLimitGet">The byte limit for a GET request</param>
 		/// <param name="byteLimitPost">The byte limit for a POST request</param>
 		public SyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
-		                    int sendLimit = 10, long byteLimitGet = 52000, long byteLimitPost = 52000) {
+		                    int sendLimit = 10, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
 			Utils.CheckArgument(!string.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;
 			this.collectorUri = MakeCollectorUri(endpoint, protocol, method);
@@ -48,7 +48,7 @@ namespace SnowplowTracker.Emitters
 			this.sendLimit = sendLimit;
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
-			this.eventStore = new EventStore();
+			this.eventStore = eventStore ?? new EventStore();
 		}
 		
 		/// <summary>

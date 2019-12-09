@@ -43,7 +43,7 @@ namespace SnowplowTracker.Emitters
         protected int sendLimit;
         protected long byteLimitGet;
         protected long byteLimitPost;
-        protected EventStore eventStore;
+        protected IStore eventStore;
 
         /// <summary>
         /// Adds an event payload to the database.
@@ -387,7 +387,7 @@ namespace SnowplowTracker.Emitters
         /// Gets the event store.
         /// </summary>
         /// <returns>The event store.</returns>
-        public EventStore GetEventStore()
+        public IStore GetEventStore()
         {
             return eventStore;
         }

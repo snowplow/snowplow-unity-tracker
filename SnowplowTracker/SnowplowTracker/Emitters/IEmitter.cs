@@ -133,6 +133,6 @@ namespace SnowplowTracker.Emitters {
 		/// Gets the event store.
 		/// </summary>
 		/// <returns>The event store.</returns>
-		EventStore GetEventStore();
+		IStore GetEventStore();
 	}
 }
