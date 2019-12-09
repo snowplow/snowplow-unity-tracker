@@ -1,0 +1,4 @@
+language: csharp
+os: osx
+solution: SnowplowTracker
+mono: 6.4.0
