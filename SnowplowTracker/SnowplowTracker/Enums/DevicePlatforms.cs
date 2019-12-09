@@ -13,8 +13,8 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  * 
- * Authors: Joshua Beemster
- * Copyright: Copyright (c) 2015 Snowplow Analytics Ltd
+ * Authors: Joshua Beemster, Paul Boocock
+ * Copyright: Copyright (c) 2015-2019 Snowplow Analytics Ltd
  * License: Apache License Version 2.0
  */
 
