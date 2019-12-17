@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using SnowplowTracker.Events;
+using SnowplowTracker.Payloads;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,9 +37,19 @@ public class GameplayManager : MonoBehaviour
     private void Update()
     {
         var cubes = GameObject.FindGameObjectsWithTag("Cube");
-        if (cubes.Length == 0)
+        if (cubes.Length == 0 && _stopwatch.IsRunning)
         {
             _stopwatch.Stop();
+            TrackerManager.SnowplowTracker.Track(
+                new Unstructured().SetEventData(new SelfDescribingJson(
+                    "iglu:com.snowplowanalytics.snowplow/timing/jsonschema/1-0-0",
+                    new {
+                        category = "Gameplay",
+                        variable = "TimeToComplete",
+                        timing = _stopwatch.Elapsed.TotalSeconds
+                    }
+                ))
+            );
             uiManager.LoadEndScene(_stopwatch.Elapsed);
         }
     }

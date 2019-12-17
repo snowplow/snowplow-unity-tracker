@@ -47,16 +47,8 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadSceneAsync("EndScene").completed += (x) => {
             TrackerManager.SnowplowTracker.Track(
                 new ScreenView()
-                    .SetId("GameplayScene")
+                    .SetId("EndScene")
                     .SetName("EndGame")
-                    .SetCustomContext(TrackerManager.GetExampleContextList())
-                    .Build());
-            TrackerManager.SnowplowTracker.Track(
-                new Structured()
-                    .SetCategory("UnityDemo")
-                    .SetAction("Gameplay")
-                    .SetLabel("End")
-                    .SetValue(timeToComplete.TotalSeconds)
                     .SetCustomContext(TrackerManager.GetExampleContextList())
                     .Build());
         };
