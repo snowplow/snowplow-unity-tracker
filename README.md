@@ -1,5 +1,6 @@
 # Unity Analytics for Snowplow
 
+[![early-release]][tracker-classificiation]
 [![Build Status][travis-image]][travis]
 [![Release][release-image]][releases]
 [![License][license-image]][license]
@@ -96,18 +97,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[snowplow]: http://snowplowanalytics.com
+[snowplow]: https://snowplowanalytics.com
 [unity]: https://unity3d.com/
-[nunit]: http://www.nunit.org/
+[nunit]: https://nunit.org/
 
-[vagrant-install]: http://docs.vagrantup.com/v2/installation/index.html
+[vagrant-install]: https://docs.vagrantup.com/v2/installation
 [virtualbox-install]: https://www.virtualbox.org/wiki/Downloads
 
-[release-image]: http://img.shields.io/badge/release-0.4.0-blue.svg?style=flat
+[release-image]: https://img.shields.io/badge/release-0.4.0-blue.svg?style=flat
 [releases]: https://github.com/snowplow/snowplow-unity-tracker/releases
 
-[license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
-[license]: http://www.apache.org/licenses/LICENSE-2.0
+[license-image]: https://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
+[license]: https://www.apache.org/licenses/LICENSE-2.0
 
 [travis-image]: https://travis-ci.org/snowplow/snowplow-unity-tracker.svg?branch=master
 [travis]: https://travis-ci.org/snowplow/snowplow-unity-tracker
@@ -121,3 +122,6 @@ limitations under the License.
 [setup]: https://github.com/snowplow/snowplow/wiki/Unity-Tracker-Setup
 [roadmap]: https://github.com/snowplow/snowplow/wiki/Product-roadmap
 [contributing]: https://github.com/snowplow/snowplow/wiki/Contributing
+
+[tracker-classificiation]: https://github.com/snowplow/snowplow/wiki/Tracker-Maintenance-Classification
+[early-release]: https://img.shields.io/static/v1?style=flat&label=Snowplow&message=Early%20Release&color=014477&labelColor=9ba0aa&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAeFBMVEVMaXGXANeYANeXANZbAJmXANeUANSQAM+XANeMAMpaAJhZAJeZANiXANaXANaOAM2WANVnAKWXANZ9ALtmAKVaAJmXANZaAJlXAJZdAJxaAJlZAJdbAJlbAJmQAM+UANKZANhhAJ+EAL+BAL9oAKZnAKVjAKF1ALNBd8J1AAAAKHRSTlMAa1hWXyteBTQJIEwRgUh2JjJon21wcBgNfmc+JlOBQjwezWF2l5dXzkW3/wAAAHpJREFUeNokhQOCA1EAxTL85hi7dXv/E5YPCYBq5DeN4pcqV1XbtW/xTVMIMAZE0cBHEaZhBmIQwCFofeprPUHqjmD/+7peztd62dWQRkvrQayXkn01f/gWp2CrxfjY7rcZ5V7DEMDQgmEozFpZqLUYDsNwOqbnMLwPAJEwCopZxKttAAAAAElFTkSuQmCC 
