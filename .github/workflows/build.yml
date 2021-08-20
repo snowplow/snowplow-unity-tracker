@@ -1,0 +1,76 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Build SnowplowTracker
+        working-directory: SnowplowTracker
+        run: |
+          dotnet build
+
+      - name: Insert build files into Unity projects
+        working-directory: SnowplowTracker/SnowplowTracker/bin/Debug/netstandard2.0
+        run: |
+          find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
+          find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
+
+      # Cache
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Setup Tests
+        run: |
+          npm install -g mountebank
+          mb &
+          sleep 5
+          curl -X POST -d @Resources/imposter.json http://localhost:2525/imposters
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: SnowplowTracker.Tests
+          useHostNetwork: true
+          testMode: editmode
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results
+          path: artifacts
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: SnowplowTracker.Demo
+          targetPlatform: StandaloneLinux64
+          versioning: None
+          allowDirtyBuild: true
+
+      # Output
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Build
+          path: build
