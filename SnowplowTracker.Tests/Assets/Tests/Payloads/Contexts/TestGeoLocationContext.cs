@@ -20,10 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SnowplowTracker;
 using SnowplowTracker.Payloads.Contexts;
-using UnityJSON;
 
 namespace SnowplowTrackerTests.Payloads.Contexts
 {
@@ -44,7 +44,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual(-12.6, dict[Constants.GEO_LONG]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/geolocation_context/jsonschema/1-1-0", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"latitude\":123.564, \"longitude\":-12.6}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/geolocation_context/jsonschema/1-1-0\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"data\":{\"latitude\":123.564, \"longitude\":-12.6}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/geolocation_context/jsonschema/1-1-0\"}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]
@@ -74,7 +74,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual(1234567890000, dict[Constants.GEO_TIMESTAMP]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/geolocation_context/jsonschema/1-1-0", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"latitude\":123.564, \"latitudeLongitudeAccuracy\":5.6, \"altitudeAccuracy\":2.1, \"longitude\":-12.6, \"timestamp\":1234567890000, \"bearing\":3.2, \"speed\":100.2, \"altitude\":5.5}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/geolocation_context/jsonschema/1-1-0\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/geolocation_context/jsonschema/1-1-0\", \"data\":{\"latitude\":123.564,\"longitude\":-12.6,\"latitudeLongitudeAccuracy\":5.6,\"altitude\":5.5,\"altitudeAccuracy\":2.1,\"bearing\":3.2,\"speed\":100.2,\"timestamp\":1234567890000}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]

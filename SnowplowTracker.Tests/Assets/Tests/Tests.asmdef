@@ -14,7 +14,7 @@
     "precompiledReferences": [
         "nunit.framework.dll",
         "SnowplowTracker.dll",
-        "UnityJSON.dll"
+        "Newtonsoft.Json.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

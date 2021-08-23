@@ -18,7 +18,6 @@
  * License: Apache License Version 2.0
  */
 
-using System.Threading;
 using System.Collections.Generic;
 using NUnit.Framework;
 using SnowplowTracker;

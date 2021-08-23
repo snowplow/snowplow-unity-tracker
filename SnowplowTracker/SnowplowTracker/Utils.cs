@@ -24,8 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
-using UnityJSON;
-using UnityEngine;
+using Newtonsoft.Json;
 
 namespace SnowplowTracker
 {
@@ -55,7 +54,7 @@ namespace SnowplowTracker
         /// <returns>the dictionary as a JSON String</returns>
         public static string DictToJSONString(IDictionary dict)
         {
-            string result = JSON.Serialize(dict);
+            string result = JsonConvert.SerializeObject(dict);
             if (result == null)
             {
                 Log.Error("Utils: Error serializing dictionary to JSON string.");
@@ -69,7 +68,7 @@ namespace SnowplowTracker
         /// <returns>the dictionary from the JSON String</returns>
         public static Dictionary<string, object> JSONStringToDict(string jsonString)
         {
-            var result = JSON.Deserialize<Dictionary<string, object>>(jsonString);
+            var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
             if (result == null)
             {
                 Log.Error("Utils: Error deserializing JSON string to dictionary.");

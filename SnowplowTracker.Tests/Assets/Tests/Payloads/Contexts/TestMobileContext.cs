@@ -24,7 +24,7 @@ using NUnit.Framework;
 using SnowplowTracker;
 using SnowplowTracker.Payloads.Contexts;
 using SnowplowTracker.Enums;
-using UnityJSON;
+using Newtonsoft.Json;
 
 namespace SnowplowTrackerTests.Payloads.Contexts
 {
@@ -47,7 +47,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual("iPhone 6S+", dict[Constants.PLAT_DEVICE_MODEL]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"osVersion\":\"9.0\", \"deviceManufacturer\":\"Apple\", \"deviceModel\":\"iPhone 6S+\", \"osType\":\"iOS\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1\", \"data\":{\"osType\":\"iOS\",\"osVersion\":\"9.0\",\"deviceManufacturer\":\"Apple\",\"deviceModel\":\"iPhone 6S+\"}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]
@@ -83,7 +83,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual("androididfa", dict[Constants.MOBILE_ANDROID_IDFA]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"deviceManufacturer\":\"Apple\", \"appleIdfa\":\"appleidfa\", \"networkTechnology\":\"LTE\", \"appleIdfv\":\"appleidfv\", \"deviceModel\":\"iPhone 6S+\", \"androidIdfa\":\"androididfa\", \"osVersion\":\"9.0\", \"carrier\":\"FREE\", \"osType\":\"iOS\", \"openIdfa\":\"openidfa\", \"networkType\":\"mobile\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-1\", \"data\":{\"osType\":\"iOS\",\"osVersion\":\"9.0\",\"deviceManufacturer\":\"Apple\",\"deviceModel\":\"iPhone 6S+\",\"carrier\":\"FREE\",\"networkType\":\"mobile\",\"networkTechnology\":\"LTE\",\"openIdfa\":\"openidfa\",\"appleIdfa\":\"appleidfa\",\"appleIdfv\":\"appleidfv\",\"androidIdfa\":\"androididfa\"}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]

@@ -1,8 +1,6 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityJSON", "UnityJSON\UnityJSON.csproj", "{81FA3211-1938-4812-AAA1-CCD06303BAE8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowplowTracker", "SnowplowTracker\SnowplowTracker.csproj", "{5C0FF511-8A64-4059-A9A9-611ADAA9D36F}"
 EndProject
 Global
@@ -11,10 +9,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{81FA3211-1938-4812-AAA1-CCD06303BAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81FA3211-1938-4812-AAA1-CCD06303BAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81FA3211-1938-4812-AAA1-CCD06303BAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81FA3211-1938-4812-AAA1-CCD06303BAE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C0FF511-8A64-4059-A9A9-611ADAA9D36F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C0FF511-8A64-4059-A9A9-611ADAA9D36F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C0FF511-8A64-4059-A9A9-611ADAA9D36F}.Release|Any CPU.ActiveCfg = Release|Any CPU
