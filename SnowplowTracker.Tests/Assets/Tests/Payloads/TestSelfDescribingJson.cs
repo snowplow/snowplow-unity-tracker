@@ -19,9 +19,9 @@
  */
 
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SnowplowTracker.Payloads;
-using UnityJSON;
 
 namespace SnowplowTrackerTests.Payloads
 {
@@ -39,16 +39,16 @@ namespace SnowplowTrackerTests.Payloads
 
             Assert.NotNull(sdj);
             Assert.AreEqual(70, sdj.GetByteSize());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"demo\":5}, \"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(sdj.ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-0\", \"data\":{\"demo\":5}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(sdj.ToString()));
 
             sdj.SetSchema("iglu:acme.com/demo_app/jsonschema/1-0-1");
 
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"demo\":5}, \"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-1\"}"), JSON.Deserialize<Dictionary<string, object>>(sdj.ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-1\", \"data\":{\"demo\":5}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(sdj.ToString()));
 
             dict.Add("app", "hello");
             sdj.SetData(dict);
 
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"app\":\"hello\", \"demo\":5}, \"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-1\"}"), JSON.Deserialize<Dictionary<string, object>>(sdj.ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-1\", \"data\":{\"demo\":5, \"app\":\"hello\"}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(sdj.ToString()));
         }
 
         [Test()]
@@ -61,13 +61,13 @@ namespace SnowplowTrackerTests.Payloads
 
             Assert.NotNull(sdj);
             Assert.AreEqual(126, sdj.GetByteSize());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"data\":{\"demo\":5}, \"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-0\"}, \"schema\":\"iglu:acme.com/demo/jsonschema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(sdj.ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:acme.com/demo/jsonschema/1-0-0\", \"data\":{\"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-0\", \"data\":{\"demo\":5}}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(sdj.ToString()));
 
             dict.Add("app", "hello");
             data.SetData(dict);
             sdj.SetData(data);
 
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"data\":{\"app\":\"hello\", \"demo\":5}, \"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-0\"}, \"schema\":\"iglu:acme.com/demo/jsonschema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(sdj.ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:acme.com/demo/jsonschema/1-0-0\", \"data\":{\"schema\":\"iglu:acme.com/demo_app/jsonschema/1-0-0\", \"data\":{\"demo\":5, \"app\":\"hello\"}}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(sdj.ToString()));
         }
     }
 }

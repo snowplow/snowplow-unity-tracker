@@ -11,13 +11,13 @@
       <CustomCommands>
         <Command>
           <type>AfterBuild</type>
-          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -and -not -name Newtonsoft.Json.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
 </command>
           <workingdir>${TargetDir}</workingdir>
         </Command>
         <Command>
           <type>AfterBuild</type>
-          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -and -not -name Newtonsoft.Json.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
 </command>
           <workingdir>${TargetDir}</workingdir>
         </Command>
@@ -29,13 +29,13 @@
       <CustomCommands>
         <Command>
           <type>AfterBuild</type>
-          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -and -not -name Newtonsoft.Json.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
 </command>
           <workingdir>${TargetDir}</workingdir>
         </Command>
         <Command>
           <type>AfterBuild</type>
-          <command>find . -name \*.dll -and -not -name UnityEngine.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
+          <command>find . -name \*.dll -and -not -name UnityEngine.dll -and -not -name Newtonsoft.Json.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
 </command>
           <workingdir>${TargetDir}</workingdir>
         </Command>
@@ -46,9 +46,11 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\Resources\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Resources\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UnityJSON\UnityJSON.csproj" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
   </ItemGroup>
 </Project>

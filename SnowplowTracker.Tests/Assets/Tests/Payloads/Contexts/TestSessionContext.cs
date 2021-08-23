@@ -22,10 +22,9 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using SnowplowTracker;
-using SnowplowTracker.Payloads;
 using SnowplowTracker.Payloads.Contexts;
 using SnowplowTracker.Enums;
-using UnityJSON;
+using Newtonsoft.Json;
 
 namespace SnowplowTrackerTests.Payloads.Contexts
 {
@@ -49,7 +48,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual("LITEDB", dict[Constants.SESSION_STORAGE]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-1", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"sessionIndex\":30, \"sessionId\":\"sessionid\", \"userId\":\"userid\", \"storageMechanism\":\"LITEDB\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-1\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-1\", \"data\":{\"userId\": \"userid\", \"sessionId\": \"sessionid\", \"sessionIndex\": 30, \"previousSessionId\": null, \"storageMechanism\": \"LITEDB\"}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]
@@ -68,7 +67,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual("firstid", dict[Constants.SESSION_FIRST_ID]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-1", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"sessionIndex\":30, \"sessionId\":\"sessionid\", \"firstEventId\":\"firstid\", \"userId\":\"userid\", \"storageMechanism\":\"LITEDB\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-1\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-1\",\"data\": {\"userId\":\"userid\",\"sessionId\":\"sessionid\",\"sessionIndex\": 30,\"previousSessionId\":null,\"storageMechanism\":\"LITEDB\",\"firstEventId\":\"firstid\"}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]

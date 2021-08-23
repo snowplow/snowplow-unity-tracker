@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using SnowplowTracker.Payloads.Contexts;
-using UnityJSON;
+using Newtonsoft.Json;
 
 namespace SnowplowTrackerTests.Payloads.Contexts
 {
@@ -39,7 +39,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
 
             Assert.AreEqual(0, context.GetData().Count);
             Assert.AreEqual("iglu:com.acme/custom_events/jsonchema/1-0-0", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{}, \"schema\":\"iglu:com.acme/custom_events/jsonchema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"data\":{}, \"schema\":\"iglu:com.acme/custom_events/jsonchema/1-0-0\"}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]
@@ -53,7 +53,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
 
             Assert.AreEqual(1, context.GetData().Count);
             Assert.AreEqual("iglu:com.acme/custom_events/jsonchema/1-0-0", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"demo\":\"context\"}, \"schema\":\"iglu:com.acme/custom_events/jsonchema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"data\":{\"demo\":\"context\"}, \"schema\":\"iglu:com.acme/custom_events/jsonchema/1-0-0\"}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]

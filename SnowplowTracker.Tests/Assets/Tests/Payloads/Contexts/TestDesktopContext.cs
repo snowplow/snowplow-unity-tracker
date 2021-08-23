@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using SnowplowTracker;
 using SnowplowTracker.Payloads.Contexts;
-using UnityJSON;
+using Newtonsoft.Json;
 
 namespace SnowplowTrackerTests.Payloads.Contexts
 {
@@ -44,7 +44,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual("10.10.5", dict[Constants.PLAT_OS_VERSION]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/desktop_context/jsonschema/1-0-0", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"osVersion\":\"10.10.5\", \"osType\":\"OS-X\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/desktop_context/jsonschema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/desktop_context/jsonschema/1-0-0\", \"data\":{\"osType\":\"OS-X\", \"osVersion\":\"10.10.5\"}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]
@@ -72,7 +72,7 @@ namespace SnowplowTrackerTests.Payloads.Contexts
             Assert.AreEqual(4, dict[Constants.DESKTOP_PROC_COUNT]);
 
             Assert.AreEqual("iglu:com.snowplowanalytics.snowplow/desktop_context/jsonschema/1-0-0", context.GetSchema());
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"osVersion\":\"10.10.5\", \"osServicePack\":\"Yosemite\", \"deviceManufacturer\":\"Apple\", \"deviceProcessorCount\":4, \"osIs64Bit\":true, \"deviceModel\":\"Macbook Pro\", \"osType\":\"OS-X\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/desktop_context/jsonschema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(context.GetJson().ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/desktop_context/jsonschema/1-0-0\", \"data\":{\"osType\":\"OS-X\",\"osVersion\":\"10.10.5\",\"osServicePack\":\"Yosemite\",\"osIs64Bit\":true,\"deviceManufacturer\":\"Apple\",\"deviceModel\":\"Macbook Pro\",\"deviceProcessorCount\":4}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(context.GetJson().ToString()));
         }
 
         [Test()]

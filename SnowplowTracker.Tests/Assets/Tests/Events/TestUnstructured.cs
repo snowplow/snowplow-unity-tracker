@@ -20,11 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SnowplowTracker;
 using SnowplowTracker.Events;
 using SnowplowTracker.Payloads;
-using UnityJSON;
 
 namespace SnowplowTrackerTests.Events
 {
@@ -41,7 +41,7 @@ namespace SnowplowTrackerTests.Events
             Dictionary<string, object> payload = ue.GetPayload().GetDictionary();
             Assert.AreEqual(4, payload.Count);
             Assert.AreEqual("ue", payload[Constants.EVENT]);
-            CollectionAssert.AreEquivalent(JSON.Deserialize<Dictionary<string, object>>("{\"data\":{\"data\":{\"demo\":\"app\"}, \"schema\":\"iglu:acme.com/demo/jsonschema/1-0-0\"}, \"schema\":\"iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0\"}"), JSON.Deserialize<Dictionary<string, object>>(payload[Constants.UNSTRUCTURED].ToString()));
+            CollectionAssert.AreEquivalent(JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"schema\":\"iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0\", \"data\":{\"schema\":\"iglu:acme.com/demo/jsonschema/1-0-0\", \"data\":{\"demo\":\"app\"}}}"), JsonConvert.DeserializeObject<Dictionary<string, object>>(payload[Constants.UNSTRUCTURED].ToString()));
         }
 
         [Test]
