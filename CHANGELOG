@@ -1,20 +1,30 @@
+Version 0.5.0 (2021-08-23)
+--------------------------
+Replace UnityJSON with Newtonsoft.Json (#41)
+Add Test and Build GitHub Action (#33)
+Add Unity Activation Action (#44)
+Update SnowplowTracker.Tests to Unity 2020.3.16f1 (#43)
+Update SnowplowTracker.Demo to Unity 2020.3.16f1 (#42)
+Include at least one example of Unstructured Event in demo (#35)
+Demo game has missing Scenes in Build settings (#34)
+
 Version 0.4.0 (2019-12-10)
 --------------------------
-Migrate SnowplowTracker to .NET Standard 2.0 (close #22)
-Switch to new Database library for better cross platform support (close #23)
-Expose EventStore Interface for easy extension (close #32)
-Port Snowplow Demo Game to Android/iOS (close #3)
+Migrate SnowplowTracker to .NET Standard 2.0 (#22)
+Switch to new Database library for better cross platform support (#23)
+Expose EventStore Interface for easy extension (#32)
+Port Snowplow Demo Game to Android/iOS (#3)
 Migrate test suite to .NET Standard 2.0 (#29)
-Include link.xml and required DLLs in Resources folder for all platforms (close #30)
-Fix Mobile Paths to support Android (close #18)
-Fix Peru version so vagrant up succeeds (close #20)
-Update Copyright notices to 2019 (close #31)
-Automate build using Travis (close #24)
+Include link.xml and required DLLs in Resources folder for all platforms (#30)
+Fix Mobile Paths to support Android (#18)
+Fix Peru version so vagrant up succeeds (#20)
+Update Copyright notices to 2019 (#31)
+Automate build using Travis (#24)
 
 Version 0.3.0 (2019-04-08)
 --------------------------
-Fix paths used in mobile file storage and databases (close #15)
-Fix test method call parameter ambiguities (close #16)
+Fix paths used in mobile file storage and databases (#15)
+Fix test method call parameter ambiguities (#16)
 
 Version 0.2.0 (2019-2-28)
 --------------------------
