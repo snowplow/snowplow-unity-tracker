@@ -2,7 +2,7 @@
  * AsyncEmitter.cs
  * SnowplowTracker.Emitters
  * 
- * Copyright (c) 2015 Snowplow Analytics Ltd. All rights reserved.
+ * Copyright (c) 2015-2022 Snowplow Analytics Ltd. All rights reserved.
  *
  * This program is licensed to you under the Apache License Version 2.0,
  * and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -12,10 +12,6 @@
  * software distributed under the Apache License Version 2.0 is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
- * 
- * Authors: Joshua Beemster, Paul Boocock
- * Copyright: Copyright (c) 2015-2019 Snowplow Analytics Ltd
- * License: Apache License Version 2.0
  */
 
 using System.Collections.Generic;
