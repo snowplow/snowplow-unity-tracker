@@ -18,7 +18,7 @@ With this tracker you can collect event data from your Unity-based applications,
 * SnowplowTracker requires Unity 2018.1+ and .NET Standard 2.0 Api Compatibility Level.
 * SnowplowTracker requires Newtonsoft.Json. This is [bundled with Unity 2020.1+][unity-newtonsoftjson] or [Newtonsoft.Json-for-Unity][newtonsoftjson-for-unity] can be used for earlier versions.
 * SnowplowTracker supports both Mono and IL2CPP scripting backends.
-* SnowplowTracker.Demo and SnowplowTracker.Tests are Unity 2020.3.16f1 (LTS) projects.
+* SnowplowTracker.Demo and SnowplowTracker.Tests are Unity 2021.3.1f1 (LTS) projects.
 
 ### Installation
 
@@ -68,7 +68,7 @@ Now open Mountebank in your browser (on host is fine):
 
 ### Testing Framework
 
-Requires: Unity 2018.4.13f1 (LTS)
+Requires: Unity 2021.3.1f1 (LTS)
 
 * Open `snowplow-unity-tracker/SnowplowTracker.Tests` in the Unity Editor
 * Build the SnowplowTracker solution (desribed above) if you have made any changes to the Tracker. This will copy the DLLs to Demo and Tests asset folders.
@@ -80,7 +80,7 @@ Please note that all Unit Tests are written with **[NUnit][nunit]**.
 
 ### Running the Snowplow Demo Game
 
-Requires: Unity 2018.4.13f1 (LTS)
+Requires: Unity 2021.3.1f1 (LTS)
 
 To open the Demo Game simply add the following folder within Unity Hub, `snowplow-unity-tracker/SnowplowTracker.Demo`, you can then build and run it yourself.
 
