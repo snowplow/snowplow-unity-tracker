@@ -142,7 +142,7 @@ namespace SnowplowTracker.Emitters
 			while (sending) {
 				// Wait for something to be sent!
 				lock (emitLock) {
-					while (eventStore.GetEventCount() == 0) {
+					while (sending && eventStore.GetEventCount() == 0) {
 						Monitor.Wait(emitLock);
 					}
 				}
