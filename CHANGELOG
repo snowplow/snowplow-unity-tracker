@@ -1,3 +1,10 @@
+Version 0.6.0 (2022-10-28)
+--------------------------
+Update Newtonsoft.Json.dll to 13.0.1 (#53)
+Update SnowplowTracker.Tests to Unity 2021.3.12f1 (#55)
+Update SnowplowTracker.Demo to Unity 2021.3.12f1 (#54)
+Update versions in Github actions (#57)
+
 Version 0.5.1 (2022-05-24)
 --------------------------
 Fix closing threads in AsyncEmitter when exitting app (#46)
