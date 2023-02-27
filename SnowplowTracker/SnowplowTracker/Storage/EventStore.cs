@@ -55,17 +55,17 @@ namespace SnowplowTracker.Storage
             {
                 _dbLock.EnterWriteLock();
                 //Exclusive mode required for iOS
-                FileMode fileMode = Application.platform == RuntimePlatform.IPhonePlayer ||
+                ConnectionType connectionType = Application.platform == RuntimePlatform.IPhonePlayer ||
                     Application.platform == RuntimePlatform.OSXPlayer
-                    ? FileMode.Exclusive
-                    : FileMode.Shared;
+                    ? ConnectionType.Direct
+                    : ConnectionType.Shared;
 
-                Log.Debug($"FileMode: {fileMode}");
+                Log.Debug($"ConnectionType: {connectionType}");
 
                 _db = new LiteDatabase(
                         new ConnectionString(filePath)
                         {
-                            Mode = fileMode
+                            Connection = connectionType
                         });
 
                 var col = _db.GetCollection<Event>(COLLECTION_NAME);
