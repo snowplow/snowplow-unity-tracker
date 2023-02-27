@@ -27,6 +27,7 @@ using SnowplowTracker.Emitters;
 using SnowplowTracker.Enums;
 using SnowplowTracker.Events;
 using SnowplowTracker.Payloads;
+using SnowplowTracker.Payloads.Contexts;
 
 namespace SnowplowTrackerTests
 {
@@ -127,6 +128,22 @@ namespace SnowplowTrackerTests
                 Assert.AreEqual("url", dict[Constants.PAGE_URL]);
                 Assert.AreEqual("ref", dict[Constants.PAGE_REFR]);
             }
+        }
+
+        [Test()]
+        public void TestTrackingEventsDoesntChangeContextsArray()
+        {
+            IEmitter e1 = new BaseEmitter();
+            Session session = new Session(null);
+            Tracker t = new Tracker(e1, "aNamespace", "aAppId", null, session);
+            t.StartEventTracking();
+
+            List<IContext> contexts = new List<IContext>();
+            contexts.Add(new DesktopContext().SetOsType("OS-X").SetOsVersion("10.10.5").SetOsServicePack("Yosemite").SetOsIs64Bit(true).SetDeviceManufacturer("Apple").SetDeviceModel("Macbook Pro").SetDeviceProcessorCount(4).Build());
+
+            t.Track(new PageView().SetPageTitle("title").SetPageUrl("url").SetReferrer("ref").SetTimestamp(1234567890).SetEventId("event-id-custom").SetCustomContext(contexts).Build());
+
+            Assert.AreEqual(1, contexts.Count);
         }
     }
 }
