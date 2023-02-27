@@ -201,6 +201,7 @@ namespace SnowplowTracker
             // Add the session context if available
             if (session != null)
             {
+                contexts = new List<IContext>(contexts);
                 contexts.Add(session.GetSessionContext(eventId));
             }
 
