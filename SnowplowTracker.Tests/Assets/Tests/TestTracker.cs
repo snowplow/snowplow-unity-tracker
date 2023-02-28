@@ -2,7 +2,7 @@
  * TestTracker.cs
  * SnowplowTrackerTests
  * 
- * Copyright (c) 2015-2022 Snowplow Analytics Ltd. All rights reserved.
+ * Copyright (c) 2015-2023 Snowplow Analytics Ltd. All rights reserved.
  *
  * This program is licensed to you under the Apache License Version 2.0,
  * and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -14,7 +14,7 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  * 
  * Authors: Joshua Beemster
- * Copyright: Copyright (c) 2015-2022 Snowplow Analytics Ltd
+ * Copyright: Copyright (c) 2015-2023 Snowplow Analytics Ltd
  * License: Apache License Version 2.0
  */
 
@@ -27,6 +27,7 @@ using SnowplowTracker.Emitters;
 using SnowplowTracker.Enums;
 using SnowplowTracker.Events;
 using SnowplowTracker.Payloads;
+using SnowplowTracker.Payloads.Contexts;
 
 namespace SnowplowTrackerTests
 {
@@ -127,6 +128,22 @@ namespace SnowplowTrackerTests
                 Assert.AreEqual("url", dict[Constants.PAGE_URL]);
                 Assert.AreEqual("ref", dict[Constants.PAGE_REFR]);
             }
+        }
+
+        [Test()]
+        public void TestTrackingEventsDoesntChangeContextsArray()
+        {
+            IEmitter e1 = new BaseEmitter();
+            Session session = new Session(null);
+            Tracker t = new Tracker(e1, "aNamespace", "aAppId", null, session);
+            t.StartEventTracking();
+
+            List<IContext> contexts = new List<IContext>();
+            contexts.Add(new DesktopContext().SetOsType("OS-X").SetOsVersion("10.10.5").SetOsServicePack("Yosemite").SetOsIs64Bit(true).SetDeviceManufacturer("Apple").SetDeviceModel("Macbook Pro").SetDeviceProcessorCount(4).Build());
+
+            t.Track(new PageView().SetPageTitle("title").SetPageUrl("url").SetReferrer("ref").SetTimestamp(1234567890).SetEventId("event-id-custom").SetCustomContext(contexts).Build());
+
+            Assert.AreEqual(1, contexts.Count);
         }
     }
 }

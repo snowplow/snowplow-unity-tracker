@@ -1,3 +1,9 @@
+Version 0.6.1 (2023-02-28)
+--------------------------
+Copy list of context entities when adding session to prevent modifying users reference (#60)
+Upgrade LiteDB dependency from to 5.0.13
+Update year in copyright headers to 2023
+
 Version 0.6.0 (2022-10-28)
 --------------------------
 Update Newtonsoft.Json.dll to 13.0.1 (#53)

@@ -2,7 +2,7 @@
  * EventStore.cs
  * SnowplowTracker.Storage
  * 
- * Copyright (c) 2015-2022 Snowplow Analytics Ltd. All rights reserved.
+ * Copyright (c) 2015-2023 Snowplow Analytics Ltd. All rights reserved.
  *
  * This program is licensed to you under the Apache License Version 2.0,
  * and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -55,17 +55,17 @@ namespace SnowplowTracker.Storage
             {
                 _dbLock.EnterWriteLock();
                 //Exclusive mode required for iOS
-                FileMode fileMode = Application.platform == RuntimePlatform.IPhonePlayer ||
+                ConnectionType connectionType = Application.platform == RuntimePlatform.IPhonePlayer ||
                     Application.platform == RuntimePlatform.OSXPlayer
-                    ? FileMode.Exclusive
-                    : FileMode.Shared;
+                    ? ConnectionType.Direct
+                    : ConnectionType.Shared;
 
-                Log.Debug($"FileMode: {fileMode}");
+                Log.Debug($"ConnectionType: {connectionType}");
 
                 _db = new LiteDatabase(
                         new ConnectionString(filePath)
                         {
-                            Mode = fileMode
+                            Connection = connectionType
                         });
 
                 var col = _db.GetCollection<Event>(COLLECTION_NAME);
