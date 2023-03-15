@@ -1,5 +1,5 @@
 /*
- * GetRequest.cs
+ * ReadyRequest.cs
  * SnowplowTracker.Requests
  * 
  * Copyright (c) 2015-2023 Snowplow Analytics Ltd. All rights reserved.
@@ -20,6 +20,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using SnowplowTracker.Collections;
+using UnityEngine.Networking;
 
 namespace SnowplowTracker.Requests
 {
@@ -74,6 +75,52 @@ namespace SnowplowTracker.Requests
             { 
                 AddToResultQueue(new HttpResponseMessage(HttpStatusCode.BadRequest));
             }
+        }
+
+        public async Task SendAsync()
+        {
+            var content = await (request.Content?.ReadAsStringAsync() ?? Task.FromResult(""));
+            var webRequest = GetUnityWebRequest(request.Method.ToString(), request.CollectorUri, content);
+
+            try {
+                await webRequest.SendWebRequest();
+                var response = CreateHttpResponseMessage(webRequest);
+                AddToResultQueue(response);
+            }
+            catch (Exception) {
+                AddToResultQueue(new HttpResponseMessage(HttpStatusCode.BadRequest));
+            }
+
+            webRequest.Dispose();
+        }
+
+        private UnityWebRequest GetUnityWebRequest(string method, Uri endpoint, string content = "")
+        {
+            var requestUri = endpoint;
+            var webRequest = UnityWebRequest.Get(requestUri);
+            webRequest.method = method;
+
+            webRequest.disposeUploadHandlerOnDispose = true;
+            webRequest.disposeDownloadHandlerOnDispose = true;
+
+            if (!string.IsNullOrEmpty(content)){
+                var data = new System.Text.UTF8Encoding().GetBytes(content);
+                webRequest.uploadHandler = new UploadHandlerRaw(data);
+                webRequest.SetRequestHeader("Content-Type", "application/json");
+            }
+
+            return webRequest;
+        }
+
+        private HttpResponseMessage CreateHttpResponseMessage(UnityWebRequest webRequest)
+        {
+            var response = new HttpResponseMessage();
+            var responseContent = webRequest.downloadHandler?.text;
+
+            response.Content = new StringContent(responseContent);
+            response.StatusCode = (HttpStatusCode)webRequest.responseCode;
+
+            return response;
         }
 
         private void AddToResultQueue(HttpResponseMessage response)
