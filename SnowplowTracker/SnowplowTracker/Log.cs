@@ -29,7 +29,7 @@ namespace SnowplowTracker {
 		/// <param name="message">Message to be logged.</param>
 		public static void Error(string message) {
 			if (logging && level >= 1) {
-#if UNITY_EDITOR
+#if RELEASE
 				UnityEngine.Debug.LogError(message);
 #else
 				Console.Error.WriteLine(message);
@@ -43,7 +43,7 @@ namespace SnowplowTracker {
 		/// <param name="message">Message to be logged.</param>
 		public static void Debug(string message) {
 			if (logging && level >= 2) {
-#if UNITY_EDITOR
+#if RELEASE
 				UnityEngine.Debug.Log(message);
 #else
 				Console.WriteLine(message);
@@ -57,7 +57,7 @@ namespace SnowplowTracker {
 		/// <param name="message">Message to be logged.</param>
 		public static void Verbose(string message) {
 			if (logging && level >= 3) {
-#if UNITY_EDITOR
+#if RELEASE
 				UnityEngine.Debug.Log(message);
 #else
 				Console.WriteLine(message);
