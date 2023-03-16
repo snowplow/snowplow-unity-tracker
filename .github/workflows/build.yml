@@ -17,7 +17,7 @@ jobs:
       - name: Build SnowplowTracker
         working-directory: SnowplowTracker
         run: |
-          dotnet build
+          dotnet build --configuration Release
 
       - name: Insert build files into Unity projects
         working-directory: SnowplowTracker/SnowplowTracker/bin/Debug/netstandard2.0
