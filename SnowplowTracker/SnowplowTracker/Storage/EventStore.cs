@@ -65,7 +65,8 @@ namespace SnowplowTracker.Storage
                 _db = new LiteDatabase(
                         new ConnectionString(filePath)
                         {
-                            Connection = connectionType
+                            Connection = connectionType,
+                            Upgrade = true
                         });
 
                 var col = _db.GetCollection<Event>(COLLECTION_NAME);
