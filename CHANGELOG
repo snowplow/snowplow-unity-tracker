@@ -1,3 +1,7 @@
+Version 0.6.3 (2023-03-23)
+--------------------------
+Fix exception on Android caused by opening a shared connection to the event storage database (#71)
+
 Version 0.6.2 (2023-03-21)
 --------------------------
 Fix upgrading storage database from previous versions of LiteDB (#70)
