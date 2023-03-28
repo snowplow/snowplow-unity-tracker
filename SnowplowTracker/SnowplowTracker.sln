@@ -16,6 +16,6 @@ Global
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		description = Add analytics to your Unity Applications and Games with the Snowplow event tracker for Unity 2018.1+.
-		version = 0.6.1
+		version = 0.6.3
 	EndGlobalSection
 EndGlobal

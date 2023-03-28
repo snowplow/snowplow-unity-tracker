@@ -54,9 +54,11 @@ namespace SnowplowTracker.Storage
             try
             {
                 _dbLock.EnterWriteLock();
-                //Exclusive mode required for iOS and WebGL
+                //Exclusive mode required for iOS, Android and WebGL
                 ConnectionType connectionType = Application.platform == RuntimePlatform.IPhonePlayer ||
-                    Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.WebGLPlayer
+                    Application.platform == RuntimePlatform.OSXPlayer ||
+                    Application.platform == RuntimePlatform.Android ||
+                    Application.platform == RuntimePlatform.WebGLPlayer
                     ? ConnectionType.Direct
                     : ConnectionType.Shared;
 
@@ -65,7 +67,8 @@ namespace SnowplowTracker.Storage
                 _db = new LiteDatabase(
                         new ConnectionString(filePath)
                         {
-                            Connection = connectionType
+                            Connection = connectionType,
+                            Upgrade = true
                         });
 
                 var col = _db.GetCollection<Event>(COLLECTION_NAME);
