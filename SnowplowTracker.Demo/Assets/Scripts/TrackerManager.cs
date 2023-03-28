@@ -29,7 +29,9 @@ public class TrackerManager : MonoBehaviour
     /// <typeparam name="Tracker"></typeparam>
     /// <returns></returns>
     private static readonly Lazy<Tracker> _snowplowTracker = new Lazy<Tracker>(() => {
-        IEmitter emitter = new AsyncEmitter(_collectorUrl, HttpProtocol.HTTPS, HttpMethod.POST);
+        IEmitter emitter = Application.platform == RuntimePlatform.WebGLPlayer 
+                ? new WebGlEmitter(_collectorUrl, HttpProtocol.HTTPS, HttpMethod.POST) 
+                : new AsyncEmitter(_collectorUrl, HttpProtocol.HTTPS, HttpMethod.POST);
         var tracker = new Tracker(emitter, "SnowplowUnityTrackerNamespace", "SnowplowUnityTracker-AppId", GetSubject(), new Session(null));
         tracker.StartEventTracking();
         return tracker;
