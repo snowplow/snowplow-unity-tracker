@@ -20,6 +20,7 @@ using SnowplowTracker.Enums;
 using SnowplowTracker.Requests;
 using SnowplowTracker.Storage;
 using System;
+using UnityEngine;
 
 namespace SnowplowTracker.Emitters
 {
@@ -45,7 +46,11 @@ namespace SnowplowTracker.Emitters
 			this.sendLimit = sendLimit;
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
-			this.eventStore = eventStore ?? new EventStore();
+			this.eventStore = eventStore ?? (
+                Application.platform == RuntimePlatform.tvOS ?
+                (IStore) new InMemoryEventStore() :
+                (IStore) new EventStore()
+            );
 		}
 		
 		/// <summary>
