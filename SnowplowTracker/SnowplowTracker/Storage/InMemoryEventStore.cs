@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
@@ -24,8 +23,8 @@ namespace SnowplowTracker.Storage
     /// <summary>
     ///  Buffers events (as TrackerPayloads) in memory before they are sent by the emitter.
     /// </summary>
-	public class InMemoryEventStore : IStore
-	{
+    public class InMemoryEventStore : IStore
+    {
         private Dictionary<Guid, TrackerPayload> eventQueue = new Dictionary<Guid, TrackerPayload>();
         private int bufferCapacity;
 
@@ -36,10 +35,10 @@ namespace SnowplowTracker.Storage
         /// Maximum number of unsent events to hold in memory.
         /// When crossed, new events won't be added to the store and will be discarded.
         /// </param>
-		public InMemoryEventStore(int bufferCapacity = 10000)
-		{
+        public InMemoryEventStore(int bufferCapacity = 10000)
+        {
             this.bufferCapacity = bufferCapacity;
-		}
+        }
 
         /// <summary>
         /// Adds an event payload to the store.
