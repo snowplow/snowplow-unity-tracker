@@ -14,6 +14,7 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using SnowplowTracker.Enums;
@@ -54,10 +55,9 @@ namespace SnowplowTracker
             this.foregroundTimeout = foregroundTimeout * 1000;
             this.backgroundTimeout = backgroundTimeout * 1000;
             this.checkInterval = checkInterval;
+            this.SessionPath = sessionPath;
 
-            SessionPath = $"{Application.persistentDataPath }/{sessionPath ?? SESSION_DEFAULT_PATH}";
-
-            Dictionary<string, object> maybeSessionDict = Utils.ReadDictionaryFromFile(SessionPath);
+            Dictionary<string, object> maybeSessionDict = ReadSessionDictionary();
             if (maybeSessionDict == null)
             {
                 this.userId = Utils.GetGUID();
@@ -79,14 +79,14 @@ namespace SnowplowTracker
                 }
                 if (maybeSessionDict.TryGetValue(Constants.SESSION_INDEX, out var sessionIndex))
                 {
-                    this.sessionIndex = (int)sessionIndex;
+                    this.sessionIndex = Convert.ToInt32(sessionIndex);
                 }
             }
 
             UpdateSession();
             UpdateAccessedLast();
             UpdateSessionDict();
-            Utils.WriteDictionaryToFile(SessionPath, sessionContext.GetData());
+            WriteSessionDictionary(sessionContext.GetData());
         }
 
         // --- Public
@@ -223,7 +223,7 @@ namespace SnowplowTracker
                 UpdateSession();
                 UpdateAccessedLast();
                 UpdateSessionDict();
-                Utils.WriteDictionaryToFile(SessionPath, sessionContext.GetData());
+                WriteSessionDictionary(sessionContext.GetData());
             }
 
             sessionCheckTimer.Change(checkInterval * 1000, Timeout.Infinite);
@@ -261,6 +261,46 @@ namespace SnowplowTracker
                     .SetStorageMechanism(sessionStorage)
                     .Build();
             sessionContext = newSessionContext;
+        }
+
+        private bool WriteSessionDictionary(Dictionary<string, object> dictionary)
+        {
+            if (IsUsingPlayerProfsSessionStorage())
+            {
+                return Utils.WriteDictionaryToPlayerPrefs(GetSessionPath(), dictionary);
+            } else
+            {
+                return Utils.WriteDictionaryToFile(GetSessionPath(), dictionary);
+            }
+        }
+
+        private Dictionary<string, object> ReadSessionDictionary()
+        {
+            if (IsUsingPlayerProfsSessionStorage())
+            {
+                return Utils.ReadDictionaryFromPlayerPrefs(GetSessionPath());
+            }
+            else
+            {
+                return Utils.ReadDictionaryFromFile(GetSessionPath());
+            }
+        }
+
+        private bool IsUsingPlayerProfsSessionStorage()
+        {
+            return Application.platform == RuntimePlatform.tvOS || Application.platform == RuntimePlatform.WebGLPlayer;
+        }
+
+        private string GetSessionPath()
+        {
+            if (IsUsingPlayerProfsSessionStorage())
+            {
+                return SessionPath ?? SESSION_DEFAULT_PATH;
+            }
+            else
+            {
+                return $"{Application.persistentDataPath}/{SessionPath ?? SESSION_DEFAULT_PATH}";
+            }
         }
     }
 }

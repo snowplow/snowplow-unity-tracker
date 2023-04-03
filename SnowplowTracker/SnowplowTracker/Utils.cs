@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace SnowplowTracker
 {
@@ -204,6 +205,46 @@ namespace SnowplowTracker
             catch (Exception e)
             {
                 Log.Error("Utils: Error reading dictionary from file: " + e.StackTrace);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Writes the dictionary to player prefs.
+        /// </summary>
+        /// <returns><c>true</c>, if dictionary was written to player prefs, <c>false</c> otherwise.</returns>
+        /// <param name="path">Path.</param>
+        /// <param name="dictionary">Dictionary.</param>
+        public static bool WriteDictionaryToPlayerPrefs(string keyName, Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                PlayerPrefs.SetString(keyName, DictToJSONString(dictionary));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Utils: Error writing dictionary to player prefs: " + e.StackTrace);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Reads the dictionary from player prefs.
+        /// </summary>
+        /// <returns>The dictionary from player prefs.</returns>
+        /// <param name="path">Path.</param>
+        public static Dictionary<string, object> ReadDictionaryFromPlayerPrefs(string keyName)
+        {
+            try
+            {
+                string json = PlayerPrefs.GetString(keyName, "");
+                if (json == "") { return null; }
+                return JSONStringToDict(json);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Utils: Error reading dictionary from player prefs: " + e.StackTrace);
                 return null;
             }
         }
