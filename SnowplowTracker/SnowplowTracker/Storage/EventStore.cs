@@ -54,10 +54,11 @@ namespace SnowplowTracker.Storage
             try
             {
                 _dbLock.EnterWriteLock();
-                //Exclusive mode required for iOS
+                //Exclusive mode required for iOS, Android and WebGL
                 ConnectionType connectionType = Application.platform == RuntimePlatform.IPhonePlayer ||
                     Application.platform == RuntimePlatform.OSXPlayer ||
-                    Application.platform == RuntimePlatform.Android
+                    Application.platform == RuntimePlatform.Android ||
+                    Application.platform == RuntimePlatform.WebGLPlayer
                     ? ConnectionType.Direct
                     : ConnectionType.Shared;
 

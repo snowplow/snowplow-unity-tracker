@@ -123,6 +123,20 @@ namespace SnowplowTrackerTests
         }
 
         [Test()]
+        public void TestSaveAndReadDictionaryToPlayerPrefs()
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data.Add("hello", "world");
+            data.Add("number", 2);
+            string path = "data.dict";
+
+            Utils.WriteDictionaryToPlayerPrefs(path, data);
+            Dictionary<string, object> retrieved = Utils.ReadDictionaryFromPlayerPrefs(path);
+
+            Assert.AreEqual(data, retrieved);
+        }
+
+        [Test()]
         public void TestIsTimeInRange()
         {
             long startTime = 1443513030000;

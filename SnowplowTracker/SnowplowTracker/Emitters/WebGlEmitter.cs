@@ -1,5 +1,5 @@
-/*
- * AsyncEmitter.cs
+﻿/*
+ * WebGlEmitter.cs
  * SnowplowTracker.Emitters
  * 
  * Copyright (c) 2015-2023 Snowplow Analytics Ltd. All rights reserved.
@@ -20,14 +20,13 @@ using SnowplowTracker.Enums;
 using SnowplowTracker.Requests;
 using SnowplowTracker.Storage;
 using System;
-using UnityEngine;
 
 namespace SnowplowTracker.Emitters
 {
-    public class SyncEmitter : AbstractEmitter {
+    public class WebGlEmitter : AbstractEmitter {
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SnowplowTracker.Emitters.SyncEmitter"/> class.
+        /// Initializes a new instance of the <see cref="SnowplowTracker.Emitters.WebGlEmitter"/> class.
         /// </summary>
         /// <param name="endpoint">The collector endpoint uri</param>
         /// <param name="protocol">What protocol to send under</param>
@@ -36,8 +35,8 @@ namespace SnowplowTracker.Emitters
         /// <param name="byteLimitGet">The byte limit for a GET request</param>
         /// <param name="byteLimitPost">The byte limit for a POST request</param>
         /// <param name="eventStore">Will default to new EventStore()</param>
-        public SyncEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
-		                    int sendLimit = 10, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
+        public WebGlEmitter (string endpoint, HttpProtocol protocol = HttpProtocol.HTTP, HttpMethod method = HttpMethod.POST, 
+		                    int sendLimit = 1, long byteLimitGet = 52000, long byteLimitPost = 52000, IStore eventStore = null) {
 			Utils.CheckArgument(!string.IsNullOrEmpty (endpoint), "Endpoint cannot be null or empty.");
 			this.endpoint = endpoint;
 			this.collectorUri = MakeCollectorUri(endpoint, protocol, method);
@@ -46,11 +45,7 @@ namespace SnowplowTracker.Emitters
 			this.sendLimit = sendLimit;
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
-			this.eventStore = eventStore ?? (
-                Application.platform == RuntimePlatform.tvOS ?
-                (IStore) new InMemoryEventStore() :
-                (IStore) new EventStore()
-            );
+			this.eventStore = eventStore ?? new EventStore();
 		}
 		
 		/// <summary>
@@ -84,13 +79,13 @@ namespace SnowplowTracker.Emitters
 		/// <summary>
 		/// Will send events until either everything fails or the database is empty.
 		/// </summary>
-		private void EmitLoop() {
+		private async void EmitLoop() {
 			Log.Debug("Emitter: EmitLoop starting...");
 			while (eventStore.GetEventCount() != 0) {
 				List<EventRow> events = eventStore.GetEvents(sendLimit);
 				if (events.Count != 0) {
 					Log.Debug("Emitter: Event count: " + events.Count);
-					List<RequestResult> results = SendRequests(events);
+					List<RequestResult> results = await SendRequestsAsync(events);
 					events = null;
 					
 					int success = 0;

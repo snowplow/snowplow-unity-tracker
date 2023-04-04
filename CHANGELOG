@@ -1,3 +1,9 @@
+Version 0.7.0 (2023-04-04)
+--------------------------
+Add support for WebGL (#2) (thanks to @bawahakim)
+Add in memory event store and enable it on tvOS by default (#74)
+Store session in PlayerPrefs on Web and tvOS (#76)
+
 Version 0.6.3 (2023-03-23)
 --------------------------
 Fix exception on Android caused by opening a shared connection to the event storage database (#71)
