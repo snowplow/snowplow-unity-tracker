@@ -19,6 +19,7 @@ using SnowplowTracker.Payloads;
 
 namespace SnowplowTracker.Events
 {
+	[Obsolete("Use the MobileScreenView instead", false)]
     public class ScreenView : AbstractEvent<ScreenView> {
 		
 		private string name;

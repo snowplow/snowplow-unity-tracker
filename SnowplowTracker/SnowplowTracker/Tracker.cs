@@ -167,10 +167,15 @@ namespace SnowplowTracker
                 unstruct.SetBase64Encode(this.base64Encoded);
                 AddTrackerPayload((TrackerPayload)unstruct.GetPayload(), contexts, eventId);
             }
-            else if (eType == typeof(Timing) || eType == typeof(ScreenView))
+            else if (eType == typeof(SelfDescribing))
             {
-                this.ProcessEvent(new Unstructured()
-                           .SetEventData((SelfDescribingJson)newEvent.GetPayload())
+                SelfDescribing selfDescribing = (SelfDescribing)newEvent;
+                selfDescribing.SetBase64Encode(this.base64Encoded);
+                AddTrackerPayload((TrackerPayload)selfDescribing.GetPayload(), contexts, eventId);
+            }
+            else if (eType == typeof(Timing) || eType == typeof(ScreenView) || eType == typeof(MobileScreenView))
+            {
+                this.ProcessEvent(new SelfDescribing((SelfDescribingJson)newEvent.GetPayload())
                            .SetCustomContext(newEvent.GetContexts())
                            .SetTimestamp(newEvent.GetTimestamp())
                            .SetEventId(newEvent.GetEventId())

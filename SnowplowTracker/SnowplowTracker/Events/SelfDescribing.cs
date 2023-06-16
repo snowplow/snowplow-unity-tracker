@@ -19,27 +19,48 @@ using SnowplowTracker.Payloads;
 
 namespace SnowplowTracker.Events
 {
-    [Obsolete("Use SelfDescribing instead", false)]
-    public class Unstructured : AbstractEvent<Unstructured> {
+    /// <summary>
+	/// A self-describing event.
+	/// </summary>
+    public class SelfDescribing : AbstractEvent<SelfDescribing> {
 		
 		private SelfDescribingJson eventData;
 		private bool base64Encode = false;
 
 		/// <summary>
-		/// Sets the event data.
+		/// Create a self-describing event using a SelfDescribingJson object.
 		/// </summary>
-		/// <returns>The event data.</returns>
-		/// <param name="eventData">Event data.</param>
-		public Unstructured SetEventData(SelfDescribingJson eventData) {
+		/// <param name="eventData">A SelfDescribingJson instance with the schema and data.</param>
+		public SelfDescribing(SelfDescribingJson eventData)
+		{
+			SetEventData(eventData);
+		}
+
+		/// <summary>
+		/// Create a self-describing event with a given event schema and data.
+		/// </summary>
+		/// <param name="schema">A schema URI against which the data is validated.</param>
+		/// <param name="data">A data object containing the event properties.</param>
+        public SelfDescribing(String schema, Object data)
+        {
+            SetEventData(new SelfDescribingJson(schema, data));
+        }
+
+        /// <summary>
+        /// Sets the event data.
+        /// </summary>
+        /// <returns>The event.</returns>
+        /// <param name="eventData">Event data.</param>
+        public SelfDescribing SetEventData(SelfDescribingJson eventData) {
 			this.eventData = eventData;
 			return this;
 		}
 		
-		public override Unstructured Self() {
+		public override SelfDescribing Self() {
 			return this;
 		}
 		
-		public override Unstructured Build() {
+		public override SelfDescribing Build() {
 			Utils.CheckArgument (eventData != null, "EventData cannot be null.");
 			return this;
 		}
