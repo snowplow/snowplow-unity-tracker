@@ -1,3 +1,9 @@
+Version 0.8.0 (2023-06-16)
+--------------------------
+Rename Unstructured event type to SelfDescribing (#62)
+Add mobile screen view event (#80)
+Update Unity Editor version to 2022.3.2f1
+
 Version 0.7.0 (2023-04-04)
 --------------------------
 Add support for WebGL (#2) (thanks to @bawahakim)
