@@ -27,9 +27,7 @@ public class UIManager : MonoBehaviour
     {           
         SceneManager.LoadSceneAsync("GameplayScene").completed += (x) => {
             TrackerManager.SnowplowTracker.Track(
-                new ScreenView()
-                    .SetId("GameplayScene")
-                    .SetName(restart ? "RestartGame" : "StartGame")
+                new MobileScreenView(restart ? "RestartGame" : "StartGame")
                     .SetCustomContext(TrackerManager.GetExampleContextList())
                     .Build());
         };
@@ -46,9 +44,7 @@ public class UIManager : MonoBehaviour
 
         SceneManager.LoadSceneAsync("EndScene").completed += (x) => {
             TrackerManager.SnowplowTracker.Track(
-                new ScreenView()
-                    .SetId("EndScene")
-                    .SetName("EndGame")
+                new MobileScreenView("EndGame")
                     .SetCustomContext(TrackerManager.GetExampleContextList())
                     .Build());
         };
