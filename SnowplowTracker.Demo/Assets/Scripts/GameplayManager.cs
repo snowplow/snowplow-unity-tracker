@@ -41,14 +41,14 @@ public class GameplayManager : MonoBehaviour
         {
             _stopwatch.Stop();
             TrackerManager.SnowplowTracker.Track(
-                new Unstructured().SetEventData(new SelfDescribingJson(
+                new SelfDescribing(
                     "iglu:com.snowplowanalytics.snowplow/timing/jsonschema/1-0-0",
                     new {
                         category = "Gameplay",
                         variable = "TimeToComplete",
                         timing = _stopwatch.Elapsed.TotalSeconds
                     }
-                ))
+                )
             );
             uiManager.LoadEndScene(_stopwatch.Elapsed);
         }
