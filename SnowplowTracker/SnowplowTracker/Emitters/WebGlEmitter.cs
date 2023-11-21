@@ -25,6 +25,8 @@ namespace SnowplowTracker.Emitters
 {
     public class WebGlEmitter : AbstractEmitter {
 
+	    private bool _isEmitLoopRunning = false;
+	    
         /// <summary>
         /// Initializes a new instance of the <see cref="SnowplowTracker.Emitters.WebGlEmitter"/> class.
         /// </summary>
@@ -80,43 +82,66 @@ namespace SnowplowTracker.Emitters
 		/// Will send events until either everything fails or the database is empty.
 		/// </summary>
 		private async void EmitLoop() {
+			
+			if (_isEmitLoopRunning)
+			{
+				return;
+			}
+			
 			Log.Debug("Emitter: EmitLoop starting...");
-			while (eventStore.GetEventCount() != 0) {
-				List<EventRow> events = eventStore.GetEvents(sendLimit);
-				if (events.Count != 0) {
-					Log.Debug("Emitter: Event count: " + events.Count);
-					List<RequestResult> results = await SendRequestsAsync(events);
-					events = null;
-					
-					int success = 0;
-					int failure = 0;
-					
-					List<Guid> eventsToDelete = new List<Guid>();
-					
-					foreach (RequestResult result in results) {
-						if (result.success) {
-							eventsToDelete.AddRange(result.rowIds);
-							success += result.rowIds.Count;
-						} else {
-							failure += result.rowIds.Count;
+
+			try
+			{
+				while (eventStore.GetEventCount() != 0)
+				{
+					List<EventRow> events = eventStore.GetEvents(sendLimit);
+					if (events.Count != 0)
+					{
+						Log.Debug("Emitter: Event count: " + events.Count);
+						List<RequestResult> results = await SendRequestsAsync(events);
+						events = null;
+
+						int success = 0;
+						int failure = 0;
+
+						List<Guid> eventsToDelete = new List<Guid>();
+
+						foreach (RequestResult result in results)
+						{
+							if (result.success)
+							{
+								eventsToDelete.AddRange(result.rowIds);
+								success += result.rowIds.Count;
+							}
+							else
+							{
+								failure += result.rowIds.Count;
+							}
 						}
-					}
-					
-					eventStore.DeleteEvents(eventsToDelete);
-					
-					Log.Debug("Emitter: event sending results.");
-					Log.Debug(" + Successful: " + success);
-					Log.Debug(" + Failure: " + failure);
-					
-					if (failure > 0 && success == 0) {
-						Log.Error("Emitter: All events failed to send; exiting loop.");
-						break;
-					} else {
-						Log.Debug("Emitter: All events sent successfully, checking for more...");
+
+						eventStore.DeleteEvents(eventsToDelete);
+
+						Log.Debug("Emitter: event sending results.");
+						Log.Debug(" + Successful: " + success);
+						Log.Debug(" + Failure: " + failure);
+
+						if (failure > 0 && success == 0)
+						{
+							Log.Error("Emitter: All events failed to send; exiting loop.");
+							break;
+						}
+						else
+						{
+							Log.Debug("Emitter: All events sent successfully, checking for more...");
+						}
 					}
 				}
 			}
-			Log.Debug("Emitter: EmitLoop ended.");
+			finally
+			{
+				_isEmitLoopRunning = false;
+				Log.Debug("Emitter: EmitLoop ended.");
+			}
 		}
 		
 		// --- Helpers
