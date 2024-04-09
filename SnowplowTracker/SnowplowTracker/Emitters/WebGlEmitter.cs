@@ -87,9 +87,9 @@ namespace SnowplowTracker.Emitters
 			{
 				return;
 			}
-			
-			Log.Debug("Emitter: EmitLoop starting...");
 
+			_isEmitLoopRunning = true;
+			Log.Debug("Emitter: EmitLoop starting...");
 			try
 			{
 				while (eventStore.GetEventCount() != 0)
