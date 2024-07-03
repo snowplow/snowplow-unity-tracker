@@ -1,3 +1,7 @@
+Version 0.8.1 (2024-07-04)
+--------------------------
+Upgrade LiteDB dependency to version 5.0.20
+
 Version 0.8.0 (2023-06-16)
 --------------------------
 Rename Unstructured event type to SelfDescribing (#62)
