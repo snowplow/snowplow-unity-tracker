@@ -25,6 +25,7 @@ using SnowplowTracker.Events;
 using SnowplowTracker.Payloads.Contexts;
 using SnowplowTracker.Enums;
 using SnowplowTracker.Emitters;
+using SnowplowTracker.Storage;
 
 namespace SnowplowTrackerTests
 {

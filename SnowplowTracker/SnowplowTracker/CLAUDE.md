@@ -113,7 +113,9 @@ public T SetOsType(string osType) {
 ### Platform-Specific Storage
 ```csharp
 // tvOS: No file system access
-if (Application.platform == RuntimePlatform.tvOS)
+// Android 32-bit: LiteDB crashes (unaligned 64-bit ops)
+if (Application.platform == RuntimePlatform.tvOS ||
+    (Application.platform == RuntimePlatform.Android && IntPtr.Size == 4))
     return new InMemoryEventStore();
 // Others: LiteDB file storage
 return new EventStore("snowplow_events_lite.db");
