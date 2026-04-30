@@ -169,8 +169,9 @@ if (result.IsSuccessful()) {
 ### Platform-Based Storage
 ```csharp
 this.eventStore = eventStore ?? (
-    Application.platform == RuntimePlatform.tvOS ?
-    new InMemoryEventStore() : // tvOS: memory only
+    Application.platform == RuntimePlatform.tvOS ||
+    (Application.platform == RuntimePlatform.Android && IntPtr.Size == 4) ?
+    new InMemoryEventStore() : // tvOS + 32-bit Android: memory only
     new EventStore()            // Others: LiteDB
 );
 ```
@@ -284,10 +285,15 @@ public class TestEmitter : IEmitter {
 
 ## Platform-Specific Considerations
 
-### iOS/Android
+### iOS/Android (64-bit)
 - Use AsyncEmitter
 - File-based storage (EventStore)
 - Background thread processing
+
+### Android (32-bit / armeabi-v7a)
+- Automatically falls back to InMemoryEventStore
+- LiteDB crashes on 32-bit processes (litedb-org/LiteDB#1759)
+- Events are not persisted across app kills
 
 ### WebGL
 - Use WebGlEmitter
