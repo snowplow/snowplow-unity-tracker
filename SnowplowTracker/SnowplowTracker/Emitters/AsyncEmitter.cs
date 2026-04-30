@@ -59,7 +59,8 @@ namespace SnowplowTracker.Emitters
 			this.byteLimitGet = byteLimitGet;
 			this.byteLimitPost = byteLimitPost;
 			this.eventStore = eventStore ?? (
-				Application.platform == RuntimePlatform.tvOS ?
+				Application.platform == RuntimePlatform.tvOS ||
+				(Application.platform == RuntimePlatform.Android && IntPtr.Size == 4) ?
 				(IStore) new InMemoryEventStore() :
                 (IStore) new EventStore()
 			);

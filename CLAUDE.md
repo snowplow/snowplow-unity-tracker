@@ -253,7 +253,8 @@ snowplow-unity-tracker/
 - **EcommerceTransaction**: Purchase events
 
 ### Platform Considerations
-- **iOS/Android**: Use AsyncEmitter with EventStore
+- **iOS/Android (64-bit)**: Use AsyncEmitter with EventStore
+- **Android (32-bit / armeabi-v7a)**: Automatically uses InMemoryEventStore (LiteDB crashes on 32-bit processes due to unaligned memory access — see litedb-org/LiteDB#1759). Events are not persisted across app kills.
 - **WebGL**: Use WebGlEmitter for browser compatibility
 - **tvOS**: Use InMemoryEventStore (no file system)
 - **Desktop**: Full feature support with all emitters
