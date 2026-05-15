@@ -20,6 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using SnowplowTrackerTests.TestHelpers;
 using SnowplowTracker;
@@ -28,6 +32,9 @@ using SnowplowTracker.Enums;
 using SnowplowTracker.Events;
 using SnowplowTracker.Payloads;
 using SnowplowTracker.Payloads.Contexts;
+using SnowplowTracker.Requests;
+using SnowplowTracker.Collections;
+using UnityEngine.Networking;
 
 namespace SnowplowTrackerTests
 {
@@ -144,6 +151,208 @@ namespace SnowplowTrackerTests
             t.Track(new PageView().SetPageTitle("title").SetPageUrl("url").SetReferrer("ref").SetTimestamp(1234567890).SetEventId("event-id-custom").SetCustomContext(contexts).Build());
 
             Assert.AreEqual(1, contexts.Count);
+        }
+
+        [Test()]
+        public void TestUserAnonymisationSuppressesPiiKeys()
+        {
+            var subject = new Subject();
+            subject.SetUserId("user123");
+            subject.SetDomainUserId("duid123");
+            subject.SetNetworkUserId("nuid123");
+            subject.SetIpAddress("1.2.3.4");
+            subject.SetTimezone("UTC");
+
+            IEmitter e1 = new BaseEmitter();
+            Tracker t = new Tracker(e1, "ns", "app", subject, userAnonymisation: true);
+            t.StartEventTracking();
+
+            t.Track(new PageView().SetPageUrl("url").Build());
+
+            BaseEmitter be = (BaseEmitter)e1;
+            Assert.AreEqual(1, be.payloads.Count);
+            Dictionary<string, object> dict = be.payloads[0].GetDictionary();
+            Assert.IsFalse(dict.ContainsKey(Constants.UID));
+            Assert.IsFalse(dict.ContainsKey(Constants.DOMAIN_UID));
+            Assert.IsFalse(dict.ContainsKey(Constants.NETWORK_UID));
+            Assert.IsFalse(dict.ContainsKey(Constants.IP_ADDRESS));
+            Assert.IsTrue(dict.ContainsKey(Constants.TIMEZONE));
+        }
+
+        [Test()]
+        public void TestUserAnonymisationSessionContext()
+        {
+            Session session = new Session(null);
+            SessionContext ctx = session.GetSessionContext("event-1", userAnonymisation: true);
+            Dictionary<string, object> data = ctx.GetData();
+            Assert.AreEqual(Constants.SESSION_ANONYMOUS_USER_ID, data[Constants.SESSION_USER_ID]);
+            Assert.IsNull(data[Constants.SESSION_PREVIOUS_ID]);
+        }
+
+        [Test()]
+        public void TestSetUserAnonymisationRotatesSession()
+        {
+            IEmitter e1 = new BaseEmitter();
+            Session session = new Session(null);
+            Tracker t = new Tracker(e1, "ns", "app", null, session);
+            t.StartEventTracking();
+
+            SessionContext ctx1 = session.GetSessionContext("e1");
+            string firstSessionId = (string)ctx1.GetData()[Constants.SESSION_ID];
+
+            t.SetUserAnonymisation(true);
+
+            SessionContext ctx2 = session.GetSessionContext("e2");
+            string newSessionId = (string)ctx2.GetData()[Constants.SESSION_ID];
+
+            Assert.AreNotEqual(firstSessionId, newSessionId);
+        }
+
+        [Test()]
+        public void TestServerAnonymisationHeader()
+        {
+            var request = new ReadyRequest(
+                new HttpRequest(HttpMethod.POST, new Uri("https://example.com/tp2")),
+                new System.Collections.Generic.List<Guid>(),
+                false,
+                new SnowplowTracker.Collections.ConcurrentQueue<RequestResult>(),
+                serverAnonymisation: true
+            );
+            UnityWebRequest webRequest = request.GetUnityWebRequest("POST", new Uri("https://example.com/tp2"), "{}");
+            Assert.AreEqual("*", webRequest.GetRequestHeader("SP-Anonymous"));
+            webRequest.Dispose();
+        }
+
+        [Test()]
+        public void TestUserAnonymisationToggleRestoresFull()
+        {
+            var subject = new Subject();
+            subject.SetUserId("user123");
+
+            IEmitter e1 = new BaseEmitter();
+            Tracker t = new Tracker(e1, "ns", "app", subject);
+            t.StartEventTracking();
+
+            t.Track(new PageView().SetPageUrl("url").Build());
+            Assert.IsTrue(((BaseEmitter)e1).payloads[0].GetDictionary().ContainsKey(Constants.UID));
+
+            t.SetUserAnonymisation(true);
+            t.Track(new PageView().SetPageUrl("url").Build());
+            Assert.IsFalse(((BaseEmitter)e1).payloads[1].GetDictionary().ContainsKey(Constants.UID));
+
+            t.SetUserAnonymisation(false);
+            t.Track(new PageView().SetPageUrl("url").Build());
+            Assert.IsTrue(((BaseEmitter)e1).payloads[2].GetDictionary().ContainsKey(Constants.UID));
+        }
+
+        [Test()]
+        public void TestUserAnonymisationAppliedAtTrackTime()
+        {
+            var subject = new Subject();
+            subject.SetUserId("user123");
+
+            IEmitter e1 = new BaseEmitter();
+            Tracker t = new Tracker(e1, "ns", "app", subject, userAnonymisation: true);
+            t.StartEventTracking();
+
+            t.Track(new PageView().SetPageUrl("url").Build());
+            Assert.IsFalse(((BaseEmitter)e1).payloads[0].GetDictionary().ContainsKey(Constants.UID));
+
+            t.SetUserAnonymisation(false);
+
+            // Already-stored event retains masked payload
+            Assert.IsFalse(((BaseEmitter)e1).payloads[0].GetDictionary().ContainsKey(Constants.UID));
+        }
+
+        [Test()]
+        public void TestServerAnonymisationToggleAffectsHeader()
+        {
+            var requestWithAnon = new ReadyRequest(
+                new HttpRequest(HttpMethod.POST, new Uri("https://example.com/tp2")),
+                new System.Collections.Generic.List<Guid>(),
+                false,
+                new SnowplowTracker.Collections.ConcurrentQueue<RequestResult>(),
+                serverAnonymisation: true
+            );
+            UnityWebRequest webRequestWithAnon = requestWithAnon.GetUnityWebRequest("POST", new Uri("https://example.com/tp2"), "{}");
+            Assert.AreEqual("*", webRequestWithAnon.GetRequestHeader("SP-Anonymous"));
+            webRequestWithAnon.Dispose();
+
+            var requestWithoutAnon = new ReadyRequest(
+                new HttpRequest(HttpMethod.POST, new Uri("https://example.com/tp2")),
+                new System.Collections.Generic.List<Guid>(),
+                false,
+                new SnowplowTracker.Collections.ConcurrentQueue<RequestResult>(),
+                serverAnonymisation: false
+            );
+            UnityWebRequest webRequestWithoutAnon = requestWithoutAnon.GetUnityWebRequest("POST", new Uri("https://example.com/tp2"), "{}");
+            Assert.IsNull(webRequestWithoutAnon.GetRequestHeader("SP-Anonymous"));
+            webRequestWithoutAnon.Dispose();
+        }
+
+        [Test()]
+        public void TestSyncPostWithServerAnonymisationAddsHeader()
+        {
+            var handler = new MockHttpMessageHandler();
+            var httpClient = new System.Net.Http.HttpClient(handler);
+            var request = new ReadyRequest(
+                new HttpRequest(SnowplowTracker.Enums.HttpMethod.POST, new Uri("https://example.com/tp2"), new System.Net.Http.StringContent("{}")),
+                new List<Guid>(),
+                false,
+                new SnowplowTracker.Collections.ConcurrentQueue<RequestResult>(),
+                serverAnonymisation: true,
+                httpClient: httpClient
+            );
+            request.Send();
+            Assert.IsNotNull(handler.LastRequest);
+            Assert.AreEqual("*", handler.LastRequest.Headers.GetValues("SP-Anonymous").First());
+        }
+
+        [Test()]
+        public void TestSyncPostWithoutServerAnonymisationOmitsHeader()
+        {
+            var handler = new MockHttpMessageHandler();
+            var httpClient = new System.Net.Http.HttpClient(handler);
+            var request = new ReadyRequest(
+                new HttpRequest(SnowplowTracker.Enums.HttpMethod.POST, new Uri("https://example.com/tp2"), new System.Net.Http.StringContent("{}")),
+                new List<Guid>(),
+                false,
+                new SnowplowTracker.Collections.ConcurrentQueue<RequestResult>(),
+                serverAnonymisation: false,
+                httpClient: httpClient
+            );
+            request.Send();
+            Assert.IsNotNull(handler.LastRequest);
+            Assert.IsFalse(handler.LastRequest.Headers.Contains("SP-Anonymous"));
+        }
+
+        [Test()]
+        public void TestSyncGetWithServerAnonymisationAddsHeader()
+        {
+            var handler = new MockHttpMessageHandler();
+            var httpClient = new System.Net.Http.HttpClient(handler);
+            var request = new ReadyRequest(
+                new HttpRequest(SnowplowTracker.Enums.HttpMethod.GET, new Uri("https://example.com/i?e=pv")),
+                new List<Guid>(),
+                false,
+                new SnowplowTracker.Collections.ConcurrentQueue<RequestResult>(),
+                serverAnonymisation: true,
+                httpClient: httpClient
+            );
+            request.Send();
+            Assert.IsNotNull(handler.LastRequest);
+            Assert.AreEqual("*", handler.LastRequest.Headers.GetValues("SP-Anonymous").First());
+        }
+    }
+
+    internal class MockHttpMessageHandler : System.Net.Http.HttpMessageHandler
+    {
+        public System.Net.Http.HttpRequestMessage LastRequest { get; private set; }
+
+        protected override Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            LastRequest = request;
+            return Task.FromResult(new System.Net.Http.HttpResponseMessage(HttpStatusCode.OK));
         }
     }
 }

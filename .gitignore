@@ -35,3 +35,47 @@ TestResult.xml
 
 # MacOS
 *.DS_Store
+
+
+ShaderCache/
+Artifacts/
+Library/
+*.asset
+*.meta
+scratch/
+docs/
+build-output/
+
+# Unity editor user settings
+UserSettings/
+EditorUserSettings.asset
+
+# Unity generated project files
+*.sln
+*.csproj.user
+*.lscache
+**/ProjectSettings/Packages/
+**/ProjectSettings/SceneTemplateSettings.json
+
+# Unity lighting data
+*.lighting
+*.lighting.meta
+CLAUDE.md.meta
+
+# Logs
+Logs/
+*.log
+mono_crash.*.json
+
+# Unity packages cache
+**/Packages/packages-lock.json
+UserSettings/
+
+# Build artifacts
+*.unitypackage
+*.unitypackage.zip
+
+# Unity treating the library project as a Unity project
+SnowplowTracker/ProjectSettings/
+SnowplowTracker/UserSettings/
+SnowplowTracker/Packages/

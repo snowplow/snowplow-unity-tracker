@@ -26,15 +26,17 @@ namespace SnowplowTracker.Requests
 {
     public class ReadyRequest
     {
-        private static readonly HttpClient client = new HttpClient
+        private static readonly HttpClient defaultClient = new HttpClient
         {
             Timeout = TimeSpan.FromSeconds(10)
         };
 
+        private readonly HttpClient client;
         private readonly HttpRequest request;
         private readonly List<Guid> rowIds;
         private readonly bool oversize;
         private readonly ConcurrentQueue<RequestResult> resultQueue;
+        private readonly bool serverAnonymisation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SnowplowTracker.Requests.ReadyRequest"/> class.
@@ -43,12 +45,16 @@ namespace SnowplowTracker.Requests
         /// <param name="rowIds">Row identifiers.</param>
         /// <param name="oversize">If set to <c>true</c> oversize.</param>
         /// <param name="resultQueue">The queue that sent events will be added to</param>
-        public ReadyRequest(HttpRequest request, List<Guid> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue)
+        /// <param name="serverAnonymisation">If true, adds SP-Anonymous header to requests.</param>
+        /// <param name="httpClient">Optional HttpClient for testing; uses shared default if null.</param>
+        public ReadyRequest(HttpRequest request, List<Guid> rowIds, bool oversize, ConcurrentQueue<RequestResult> resultQueue, bool serverAnonymisation = false, HttpClient httpClient = null)
         {
             this.request = request;
             this.rowIds = rowIds;
             this.oversize = oversize;
             this.resultQueue = resultQueue;
+            this.serverAnonymisation = serverAnonymisation;
+            this.client = httpClient ?? defaultClient;
         }
 
         /// <summary>
@@ -57,22 +63,40 @@ namespace SnowplowTracker.Requests
         public void Send()
         {
             try {
-                Task<HttpResponseMessage> response = null;
+                Task<HttpResponseMessage> responseTask = null;
 
                 switch (request.Method)
                 {
                     case Enums.HttpMethod.POST:
-                        response = client.PostAsync(request.CollectorUri, request.Content);
+                        if (serverAnonymisation)
+                        {
+                            var msg = new HttpRequestMessage(System.Net.Http.HttpMethod.Post, request.CollectorUri) { Content = request.Content };
+                            msg.Headers.Add("SP-Anonymous", "*");
+                            responseTask = client.SendAsync(msg);
+                        }
+                        else
+                        {
+                            responseTask = client.PostAsync(request.CollectorUri, request.Content);
+                        }
                         break;
                     case Enums.HttpMethod.GET:
-                        response = client.GetAsync(request.CollectorUri);
+                        if (serverAnonymisation)
+                        {
+                            var msg = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, request.CollectorUri);
+                            msg.Headers.Add("SP-Anonymous", "*");
+                            responseTask = client.SendAsync(msg);
+                        }
+                        else
+                        {
+                            responseTask = client.GetAsync(request.CollectorUri);
+                        }
                         break;
                 }
 
-                AddToResultQueue(response.Result);
+                AddToResultQueue(responseTask.Result);
             }
             catch (Exception)
-            { 
+            {
                 AddToResultQueue(new HttpResponseMessage(HttpStatusCode.BadRequest));
             }
         }
@@ -94,7 +118,7 @@ namespace SnowplowTracker.Requests
             webRequest.Dispose();
         }
 
-        private UnityWebRequest GetUnityWebRequest(string method, Uri endpoint, string content = "")
+        internal UnityWebRequest GetUnityWebRequest(string method, Uri endpoint, string content = "")
         {
             var requestUri = endpoint;
             var webRequest = UnityWebRequest.Get(requestUri);
@@ -107,6 +131,11 @@ namespace SnowplowTracker.Requests
                 var data = new System.Text.UTF8Encoding().GetBytes(content);
                 webRequest.uploadHandler = new UploadHandlerRaw(data);
                 webRequest.SetRequestHeader("Content-Type", "application/json");
+            }
+
+            if (serverAnonymisation)
+            {
+                webRequest.SetRequestHeader("SP-Anonymous", "*");
             }
 
             return webRequest;

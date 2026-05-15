@@ -59,3 +59,6 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Editor documentation files (not Unity assets)
+[Aa]ssets/**/CLAUDE.md.meta
