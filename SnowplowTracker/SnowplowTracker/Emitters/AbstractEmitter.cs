@@ -41,6 +41,7 @@ namespace SnowplowTracker.Emitters
         protected long byteLimitGet;
         protected long byteLimitPost;
         protected IStore eventStore;
+        protected bool serverAnonymisation;
 
         /// <summary>
         /// Adds an event payload to the database.
@@ -166,7 +167,8 @@ namespace SnowplowTracker.Emitters
                         new HttpRequest(Enums.HttpMethod.GET, GetGETRequest(payload.GetDictionary())),
                         new List<Guid> { eRow.GetRowId() },
                         oversize,
-                        resultQueue
+                        resultQueue,
+                        serverAnonymisation
                     )
                 );
             }
@@ -199,7 +201,7 @@ namespace SnowplowTracker.Emitters
                     List<Dictionary<string, object>> singlePayloadPost = new List<Dictionary<string, object>> { payload.GetDictionary() };
                     List<Guid> singlePayloadId = new List<Guid> { eventRows[i].GetRowId() };
                     requests.Add(
-                        new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(singlePayloadPost)), singlePayloadId, true, resultQueue)
+                        new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(singlePayloadPost)), singlePayloadId, true, resultQueue, serverAnonymisation)
                     );
                 }
                 else if ((totalByteSize + payloadByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)) > byteLimitPost)
@@ -208,7 +210,7 @@ namespace SnowplowTracker.Emitters
                                 " is > " + byteLimitPost);
                     Log.Debug("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
                     requests.Add(
-                        new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(payloadDicts)), rowIds, false, resultQueue)
+                        new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(payloadDicts)), rowIds, false, resultQueue, serverAnonymisation)
                     );
 
                     // Reset collections
@@ -228,7 +230,7 @@ namespace SnowplowTracker.Emitters
             {
                 Log.Debug("Emitter: Sending POST with byte-size: " + (totalByteSize + POST_WRAPPER_BYTES + (payloadDicts.Count - 1)));
                 requests.Add(
-                    new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(payloadDicts)), rowIds, false, resultQueue)
+                    new ReadyRequest(new HttpRequest(Enums.HttpMethod.POST, collectorUri, GetPOSTRequest(payloadDicts)), rowIds, false, resultQueue, serverAnonymisation)
                 );
             }
 
@@ -353,6 +355,15 @@ namespace SnowplowTracker.Emitters
         public void SetByteLimitPost(long byteLimitPost)
         {
             this.byteLimitPost = byteLimitPost;
+        }
+
+        /// <summary>
+        /// Sets server-side anonymisation; when true, the SP-Anonymous header is added to all UnityWebRequests.
+        /// </summary>
+        /// <param name="serverAnonymisation">If set to <c>true</c> enables server-side anonymisation.</param>
+        public void SetServerAnonymisation(bool serverAnonymisation)
+        {
+            this.serverAnonymisation = serverAnonymisation;
         }
 
         // --- Getters

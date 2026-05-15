@@ -53,4 +53,7 @@
   <ItemGroup>
     <PackageReference Include="LiteDB" Version="5.0.20" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Tests" />
+  </ItemGroup>
 </Project>

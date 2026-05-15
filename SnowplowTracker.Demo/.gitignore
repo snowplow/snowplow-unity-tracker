@@ -58,3 +58,10 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Editor documentation files (not Unity assets)
+[Aa]ssets/**/CLAUDE.md.meta
+
+# Unity lighting data (auto-generated)
+[Aa]ssets/**/*.lighting
+[Aa]ssets/**/*.lighting.meta

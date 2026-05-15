@@ -86,6 +86,12 @@ namespace SnowplowTracker.Emitters {
 		/// </summary>
 		/// <param name="byteLimitPost">Byte limit post.</param>
 		void SetByteLimitPost (long byteLimitPost);
+
+		/// <summary>
+		/// Sets server-side anonymisation; when true, the SP-Anonymous header is added to all UnityWebRequests.
+		/// </summary>
+		/// <param name="serverAnonymisation">If set to <c>true</c> enables server-side anonymisation.</param>
+		void SetServerAnonymisation (bool serverAnonymisation);
 		
 		// --- Getters
 		

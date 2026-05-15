@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using SnowplowTracker.Payloads;
 
 namespace SnowplowTracker {
@@ -117,8 +118,16 @@ namespace SnowplowTracker {
 		/// Gets the subject.
 		/// </summary>
 		/// <returns>The subject.</returns>
-		public TrackerPayload GetPayload() {
-			return this.standardDict;
+		public TrackerPayload GetPayload(bool userAnonymisation = false) {
+			if (!userAnonymisation) return this.standardDict;
+			var filtered = new TrackerPayload();
+			var maskedKeys = new HashSet<string> { Constants.UID, Constants.DOMAIN_UID, Constants.NETWORK_UID, Constants.IP_ADDRESS };
+			foreach (var kvp in this.standardDict.GetDictionary()) {
+				if (!maskedKeys.Contains(kvp.Key) && kvp.Value is string sv) {
+					filtered.Add(kvp.Key, sv);
+				}
+			}
+			return filtered;
 		}
 	}
 }
