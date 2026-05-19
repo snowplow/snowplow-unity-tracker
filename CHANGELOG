@@ -1,3 +1,8 @@
+Version 0.9.0 (2026-05-19)
+--------------------------
+Add user anonymisation and server anonymisation support (#91)
+Bump Ubuntu Version in GH Actions (Close #85) 
+
 Version 0.8.2 (2026-05-07)
 --------------------------
 Fall back to InMemoryEventStore on 32-bit Android in AsyncEmitter and SyncEmitter (#89)
