@@ -35,6 +35,8 @@ namespace SnowplowTracker
         private string appId;
         private DevicePlatforms platform;
         private bool base64Encoded;
+        private bool userAnonymisation;
+        private bool serverAnonymisation;
 
         private bool dataCollection = false;
         private bool synchronous;
@@ -48,7 +50,7 @@ namespace SnowplowTracker
         /// <param name="platform">The DevicePlatform the tracker is running on.</param>
         /// <param name="base64Encoded">If set to <c>true</c> all unstructured events and contextes will be base64 encoded.</param>
         public Tracker(IEmitter emitter, string trackerNamespace, string appId, Subject subject = null, Session session = null, DevicePlatforms platform = null,
-                       bool base64Encoded = true)
+                       bool base64Encoded = true, bool userAnonymisation = false, bool serverAnonymisation = false)
         {
             // Preconditions
             Utils.CheckArgument(emitter != null, "Emitter cannot be null.");
@@ -61,6 +63,9 @@ namespace SnowplowTracker
             this.base64Encoded = base64Encoded;
             this.subject = subject;
             this.session = session;
+            this.userAnonymisation = userAnonymisation;
+            this.serverAnonymisation = serverAnonymisation;
+            if (serverAnonymisation) emitter.SetServerAnonymisation(true);
 
             // Set Synchronous or Asynchronous operation
             if (typeof(AsyncEmitter) == emitter.GetType())
@@ -200,14 +205,14 @@ namespace SnowplowTracker
             // Add the subject data if available
             if (subject != null)
             {
-                payload.AddDict(subject.GetPayload().GetDictionary());
+                payload.AddDict(subject.GetPayload(userAnonymisation).GetDictionary());
             }
 
             // Add the session context if available
             if (session != null)
             {
                 contexts = new List<IContext>(contexts);
-                contexts.Add(session.GetSessionContext(eventId));
+                contexts.Add(session.GetSessionContext(eventId, userAnonymisation));
             }
 
             // Build the final context and add it to the payload
@@ -321,6 +326,28 @@ namespace SnowplowTracker
         public void SetBase64Encoded(bool base64Encoded)
         {
             this.base64Encoded = base64Encoded;
+        }
+
+        /// <summary>
+        /// Sets user-side anonymisation. When enabled, user identifiers are masked from event payloads at track time.
+        /// If a session is present, toggling this flag rotates the session.
+        /// </summary>
+        public void SetUserAnonymisation(bool userAnonymisation)
+        {
+            if (this.userAnonymisation != userAnonymisation && session != null)
+            {
+                session.StartNewSession();
+            }
+            this.userAnonymisation = userAnonymisation;
+        }
+
+        /// <summary>
+        /// Sets server-side anonymisation. When enabled, the SP-Anonymous header is added to all outgoing requests.
+        /// </summary>
+        public void SetServerAnonymisation(bool serverAnonymisation)
+        {
+            this.serverAnonymisation = serverAnonymisation;
+            emitter.SetServerAnonymisation(serverAnonymisation);
         }
 
         // --- Getters

@@ -96,7 +96,8 @@ namespace SnowplowTracker
         /// </summary>
         /// <returns>The session context.</returns>
         /// <param name="eventId">Event identifier.</param>
-        public SessionContext GetSessionContext(string eventId)
+        /// <param name="userAnonymisation">If true, returns an anonymous session context.</param>
+        public SessionContext GetSessionContext(string eventId, bool userAnonymisation = false)
         {
             UpdateAccessedLast();
             if (firstEventId == null)
@@ -106,7 +107,26 @@ namespace SnowplowTracker
                 sessionContext.Build();
             }
             Log.Verbose("Session: data: " + Utils.DictToJSONString(sessionContext.GetData()));
-            return sessionContext;
+            if (!userAnonymisation) return sessionContext;
+            return new SessionContext()
+                .SetUserId(Constants.SESSION_ANONYMOUS_USER_ID)
+                .SetSessionId(currentSessionId)
+                .SetPreviousSessionId(null)
+                .SetSessionIndex(sessionIndex)
+                .SetStorageMechanism(sessionStorage)
+                .SetFirstEventId(firstEventId)
+                .Build();
+        }
+
+        /// <summary>
+        /// Starts a new session immediately, rotating the session ID.
+        /// </summary>
+        public void StartNewSession()
+        {
+            UpdateSession();
+            UpdateAccessedLast();
+            UpdateSessionDict();
+            WriteSessionDictionary(sessionContext.GetData());
         }
 
         /// <summary>

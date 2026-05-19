@@ -15,11 +15,35 @@ public class TrackerManager : MonoBehaviour
     /// </summary>
     public InputField CollectorInput;
     private static string _collectorUrl = "<<COLLECTORURL>>";
+    private static bool _userAnonymisation = false;
+    private static bool _serverAnonymisation = false;
 
     /// <summary>
     /// Static Tracker object that accesses the Lazy Tracker variable defined below
     /// </summary>
     public static Tracker SnowplowTracker => _snowplowTracker.Value;
+
+    public static bool UserAnonymisation
+    {
+        get => _userAnonymisation;
+        set
+        {
+            _userAnonymisation = value;
+            if (_snowplowTracker.IsValueCreated)
+                _snowplowTracker.Value.SetUserAnonymisation(value);
+        }
+    }
+
+    public static bool ServerAnonymisation
+    {
+        get => _serverAnonymisation;
+        set
+        {
+            _serverAnonymisation = value;
+            if (_snowplowTracker.IsValueCreated)
+                _snowplowTracker.Value.SetServerAnonymisation(value);
+        }
+    }
 
     /// <summary>
     /// Initialises the Emitter and Tracker.
@@ -29,11 +53,13 @@ public class TrackerManager : MonoBehaviour
     /// <typeparam name="Tracker"></typeparam>
     /// <returns></returns>
     private static readonly Lazy<Tracker> _snowplowTracker = new Lazy<Tracker>(() => {
-        IEmitter emitter = Application.platform == RuntimePlatform.WebGLPlayer 
-                ? new WebGlEmitter(_collectorUrl, HttpProtocol.HTTPS, HttpMethod.POST) 
+        IEmitter emitter = Application.platform == RuntimePlatform.WebGLPlayer
+                ? new WebGlEmitter(_collectorUrl, HttpProtocol.HTTPS, HttpMethod.POST)
                 : new AsyncEmitter(_collectorUrl, HttpProtocol.HTTPS, HttpMethod.POST);
         var tracker = new Tracker(emitter, "SnowplowUnityTrackerNamespace", "SnowplowUnityTracker-AppId", GetSubject(), new Session(null));
         tracker.StartEventTracking();
+        tracker.SetUserAnonymisation(_userAnonymisation);
+        tracker.SetServerAnonymisation(_serverAnonymisation);
         return tracker;
     });
 

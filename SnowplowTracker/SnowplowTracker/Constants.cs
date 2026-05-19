@@ -50,6 +50,7 @@ namespace SnowplowTracker {
 		public readonly static string SESSION_INDEX         = "sessionIndex";
 		public readonly static string SESSION_STORAGE       = "storageMechanism";
 		public readonly static string SESSION_FIRST_ID      = "firstEventId";
+		public readonly static string SESSION_ANONYMOUS_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 		// Platform Generic
 		public readonly static string PLAT_OS_TYPE          = "osType";
