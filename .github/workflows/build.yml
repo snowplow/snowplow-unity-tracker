@@ -17,10 +17,10 @@ jobs:
       - name: Build SnowplowTracker
         working-directory: SnowplowTracker
         run: |
-          dotnet build
+          dotnet build --configuration Release
 
       - name: Insert build files into Unity projects
-        working-directory: SnowplowTracker/SnowplowTracker/bin/Debug/netstandard2.0
+        working-directory: SnowplowTracker/SnowplowTracker/bin/Release/netstandard2.0
         run: |
           find . -name \*.dll -and -not -name UnityEngine.dll -and -not -name Newtonsoft.Json.dll -exec cp {} ../../../../../SnowplowTracker.Demo/Assets/Plugins/SnowplowTracker/ \;
           find . -name \*.dll -and -not -name UnityEngine.dll -and -not -name Newtonsoft.Json.dll -exec cp {} ../../../../../SnowplowTracker.Tests/Assets/Plugins/SnowplowTracker/ \;
